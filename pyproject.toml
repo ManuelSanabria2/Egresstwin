@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "egresstwin"
+version = "0.1.0"
+description = "Verifiable AI agent that turns a space image into an evacuation digital twin."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "EgressTwin contributors" }]
+dependencies = [
+    "fastapi>=0.115",
+    "matplotlib>=3.8",
+    "numpy>=1.26",
+    "numba>=0.60",
+    "openai>=1.40",
+    "opencv-python-headless>=4.10",
+    "pillow>=10.4",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "scipy>=1.13",
+    "sse-starlette>=2.1",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+parallel = ["mpi4py>=3.1"]
+dev = ["pytest>=8.2", "ruff>=0.5"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/egresstwin"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

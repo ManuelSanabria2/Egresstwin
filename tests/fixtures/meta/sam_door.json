@@ -1,0 +1,1 @@
+{"concept": "door", "image_size": {"w": 320, "h": 240}, "segments": [{"label": "door", "confidence": 0.97, "box": {"x": 120, "y": 40, "w": 60, "h": 140}}], "usage": {"images": 1}}
