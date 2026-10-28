@@ -53,3 +53,66 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
 - Accumulated API cost: spike ledger `runs/spikes/costs_spike.jsonl`
   USD 0.0658 plus ~USD 0.0133 of probes, total ~USD 0.08 (cap USD 2).
   `runs/costs.jsonl` unchanged (production client not used by spike).
+
+## 2026-10-28 - P02: social force engine with geodesic floor field and metrics
+
+- Done: `layout/schema.py` (`Layout` with `meters_per_pixel`,
+  `cell_size_m` = 0.1 default, walkable mask and obstacle masks
+  serialised to `.npz`, obstacles with id/polygon-or-mask/label/
+  `removable`, exits as meter segments with derived width, spawn
+  zones by count or density, `source_image_hash`) and
+  `layout/validate.py` (every walkable cell must reach an exit, exits
+  must sit on the walkable boundary, warnings for passages and exits
+  narrower than 0.6 m).
+- Done: `sim/floor_field.py` (per-exit geodesic distances plus
+  normalised desired-direction grids), `sim/wall_field.py` (EDT
+  distance and gradient precomputed; O(1) wall-force lookup),
+  `sim/social_force.py` (Helbing-Farkas-Vicsek 2000: cell list +
+  serial Numba kernel, each agent writes only its own force row),
+  `sim/reference.py` (pure NumPy O(N^2) twin used only in tests),
+  `sim/engine.py` (`run(layout, scenario, seed) -> SimResult` with
+  per-agent exit times, per-step exit counts, accumulated density
+  grid and 5 fps `float16` frames; nearest-geodesic exit choice at
+  spawn, optional congestion reconsideration every T s, off by
+  default), `sim/metrics.py` (total/T95/mean egress, flow per exit,
+  peak density, seconds above 4 people/m^2, hotspot clusters).
+- Decision (floor field): Dijkstra with 8-neighbourhood and sqrt(2)
+  diagonal cost instead of `scikit-fmm`. Dijkstra is exact for the
+  grid graph the agents actually walk on, deterministic, adds no
+  dependency (scikit-fmm is not in `pyproject.toml`), and per-exit
+  arrays make N-1 exit blocking a slice drop. Fast marching solves a
+  smoother continuum eikonal equation, but that is not the metric the
+  grid-stepping integrator follows.
+- Decision (integration): semi-implicit Euler at dt = 0.01 s with 5
+  force substeps per step. At a bare 0.01 s step the k = 1.2e5
+  contact spring plus sliding friction is numerically unstable in
+  dense overlap (velocity flips sign every step; a 26-agent jam in
+  the example room never dissolved). Substeps keep the 0.01 s output
+  step and fixed-seed determinism. `validate_dt` enforces
+  dt <= 0.5*sqrt(m/k) = 0.0129 s for the outer step.
+- Verified parameters against Helbing, Farkas and Vicsek (Nature
+  407, 487-490, 2000; arXiv:cond-mat/0009448): m = 80 kg, tau = 0.5 s,
+  A = 2e3 N, B = 0.08 m, k = 1.2e5 kg/s^2, kappa = 2.4e5 kg/(m s),
+  diameters uniform in [0.5, 0.7] m. Note: the desired-speed
+  distribution (mean 1.34, sd 0.26 m/s) is NOT from that paper (it
+  uses scenario speeds 0.6/1.0/1.5 m/s); it is the conventional
+  normal-walking distribution, adopted and documented as such in
+  the README.
+- Exit semantics: exit segments are openings. The engine carves the
+  cells the segment crosses into the walkable mask before computing
+  fields, otherwise the wall force seals its own exit (agents stall
+  about 0.5 m from the door plane).
+- Example: `scripts/run_example.py`, 30 x 20 m room, 2 exits of
+  2.4 m, 1000 people, seed 42: all 1000 evacuated, total 88.4 s,
+  T95 72.2 s, mean 36.7 s, exits split 492/508, peak density
+  6.69 people/m^2, heatmap at `runs/example/heatmap.png`, 24 s
+  wall-clock on this machine.
+- Tests: corridor travel time vs distance/speed, no wall crossing
+  (sampled frames), no-exit layout error, same-seed determinism,
+  symmetric-room exit balance, Numba kernel vs NumPy reference,
+  floor/wall field sanity, dt stability guard. Full suite green.
+- Open issues: peak door flow (9-10 people/s per 2.4 m exit) runs
+  above handbook values at crush densities; revisit when calibrating
+  against scenarios in later prompts. Parallel kernels (Numba
+  threads / MPI sweep) are P03, not here.
+- Accumulated API cost: unchanged, ~USD 0.08 (no API use in P02).
