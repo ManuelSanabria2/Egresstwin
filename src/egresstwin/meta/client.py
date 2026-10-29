@@ -153,6 +153,62 @@ class MetaClient:
         self._settle(payload, result, cost, time.perf_counter() - started)
         return result
 
+    def responses_turn(
+        self,
+        *,
+        input_items: list[dict[str, Any]],
+        tools: list[dict[str, Any]],
+        instructions: str,
+        previous_response_id: str | None = None,
+        model: str | None = None,
+    ) -> MetaResult:
+        """One Muse Spark Responses turn with function calling.
+
+        Follows INSTRUCCIONES section 5: tool_choice is only "auto",
+        previous_response_id chains turns, and a turn may carry
+        several function_call items. Cost is settled through the
+        usual cache/budget/log path (payloads with tool outputs are
+        not disk-cached: they are conversational state).
+        """
+        model = model or self.settings.meta_spark_model
+        self._precheck_text(model, instructions)
+        started = time.perf_counter()
+        if self.settings.mock:
+            raw = self._load_fixture("agent_turn.json")
+            data = dict(raw.get("data", raw))
+            usage = dict(raw.get("usage", {"input_tokens": 120, "output_tokens": 40}))
+        else:
+            data, usage = self._with_retries(
+                lambda: self._real_responses_turn(
+                    model, input_items, tools, instructions, previous_response_id
+                )
+            )
+        cost = estimate_text_cost(
+            model,
+            int(usage.get("input_tokens", 0)),
+            int(usage.get("output_tokens", 0)),
+            int(usage.get("cached_input_tokens", 0)),
+        )
+        result = MetaResult(
+            kind="responses_turn", model=model,
+            text=data.get("text"), data=data, usage=usage,
+        )
+        # Conversational turns are charged and logged but not cached.
+        self.tracker.charge(cost)
+        result.cost_usd = cost
+        self.runs_dir.mkdir(parents=True, exist_ok=True)
+        entry = {
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "kind": result.kind, "model": model,
+            "cost_usd": round(cost, 8),
+            "spent_usd": round(self.tracker.spent_usd, 8),
+            "elapsed_s": round(time.perf_counter() - started, 4),
+            "mock": bool(self.settings.mock), "usage": result.usage,
+        }
+        with (self.runs_dir / "costs.jsonl").open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        return result
+
     def segment_image_boxes(
         self,
         image_path: str | Path,
@@ -414,6 +470,49 @@ class MetaClient:
             "cached_input_tokens": 0,
         }
         return dict(data), text, usage
+
+    def _real_responses_turn(
+        self,
+        model: str,
+        input_items: list[dict[str, Any]],
+        tools: list[dict[str, Any]],
+        instructions: str,
+        previous_response_id: str | None,
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        kwargs: dict[str, Any] = {
+            "model": model,
+            "instructions": instructions,
+            "tools": tools,
+            "tool_choice": "auto",
+            "input": input_items,
+        }
+        if previous_response_id:
+            kwargs["previous_response_id"] = previous_response_id
+        resp = self._sdk_client().responses.create(**kwargs)
+        calls: list[dict[str, Any]] = []
+        for item in getattr(resp, "output", []) or []:
+            if getattr(item, "type", None) == "function_call":
+                calls.append(
+                    {
+                        "name": str(getattr(item, "name", "")),
+                        "arguments": str(getattr(item, "arguments", "") or ""),
+                        "call_id": str(
+                            getattr(item, "call_id", "") or getattr(item, "id", "")
+                        ),
+                    }
+                )
+        usage_obj = getattr(resp, "usage", None)
+        usage = {
+            "input_tokens": int(getattr(usage_obj, "input_tokens", 0) or 0),
+            "output_tokens": int(getattr(usage_obj, "output_tokens", 0) or 0),
+            "cached_input_tokens": 0,
+        }
+        data = {
+            "response_id": str(getattr(resp, "id", "") or ""),
+            "function_calls": calls,
+            "text": str(getattr(resp, "output_text", "") or ""),
+        }
+        return data, usage
 
     def _real_sam_stream(self, model: str, path: Path, prompt_text: str) -> str:
         """SAM 3.1 Responses streaming call; returns raw wire text."""

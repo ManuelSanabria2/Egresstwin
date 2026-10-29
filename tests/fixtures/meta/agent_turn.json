@@ -1,0 +1,1 @@
+{"data": {"response_id": "mock-resp-1", "function_calls": [{"name": "get_layout_summary", "arguments": "{}", "call_id": "mock-call-1"}], "text": ""}, "usage": {"input_tokens": 120, "output_tokens": 40, "cached_input_tokens": 0}}

@@ -155,3 +155,42 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
   `layout/edit.py` (UI arrives in P06).
 - Accumulated API cost: unchanged, ~USD 0.08 (tests are mock-only;
   pipeline cost is recorded per run in `layout_report.json`).
+
+## 2026-10-28 - Agent: Muse Spark optimizer with N-1 tests and verifier
+
+- Done: minimal scenario layer the agent needed (`scenarios/spec.py`
+  with remove_obstacle / add_exit / widen_exit, `scenarios/apply.py`
+  feasibility via validate_layout) and sweep/store
+  (`parallel/sweep.py` serial `run_sweep` with explicit seeds,
+  `parallel/store.py` per-replica metrics, t CIs, Welch + Cohen d).
+  A replica where not everyone exits is censored at max_time_s:
+  averaging only those who left would reward a clogged exit.
+- Done: `agent/tools.py` (strict JSON schemas for get_layout_summary,
+  get_baseline, run_scenarios up to 8, get_hotspots, stress_test,
+  compare, submit_report), `agent/prompts/system.md` (objective,
+  constraints, every number from a tool, N-1 before recommending,
+  mandatory submit_report), `agent/loop.py` (Responses API via
+  `MetaClient.responses_turn`, previous_response_id, several
+  function_call per turn executed, Pydantic argument validation,
+  max_turns 25, max_scenarios 60, run budget, UI events, up to 2
+  report corrections), `agent/verifier.py` (no LLM: claimed numbers
+  within 1% of the store, Welch p < 0.05 plus CI separation,
+  N-1 stressed T95 within a configurable % of baseline, modification
+  feasibility; VERIFIED / PARTIALLY_VERIFIED / FAILED per claim) and
+  `agent/trace.py` (`runs/<run_id>/trace.jsonl` plus report,
+  verification and scenario store files).
+- Verified acceptance: with the real engine on a 12-person room
+  whose two 0.5 m exits clog (baseline censored at 60 s, 0-1 of 12
+  out), the scripted agent widens one exit to 2.4 m (T95 4.6 s, all
+  out), passes stress_test and gets VERIFIED with 10/10 claims in
+  about 25 s of simulation. Tests also cover the multi-call turn,
+  invalid arguments returned as tool errors, an invented number
+  caught by the verifier and then corrected, and an honest
+  no-improvement report verified as such. Full suite: 50 passed,
+  `ruff check` clean.
+- Open issues: the multiprocessing/MPI sweep backends and scenario
+  DSL remain future work (serial backend only); the real-model run
+  still needs a live API smoke test when a key is available.
+- Accumulated API cost: unchanged, ~USD 0.08 (agent tests use a
+  scripted model at USD 0.001 per turn; per-run cost is recorded
+  in the trace, target < USD 1).
