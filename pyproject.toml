@@ -13,6 +13,7 @@ authors = [{ name = "EgressTwin contributors" }]
 dependencies = [
     "fastapi>=0.115",
     "matplotlib>=3.8",
+    "meta-sam-parser>=0.1.0",
     "numpy>=1.26",
     "numba>=0.60",
     "openai>=1.40",

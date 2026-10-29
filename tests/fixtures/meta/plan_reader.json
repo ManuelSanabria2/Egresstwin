@@ -1,0 +1,1 @@
+{"data": {"image_type": "floor_plan", "exits": [{"label": "door", "confidence": 0.9, "box_px": [120, 40, 60, 140], "x_min": 375, "y_min": 167, "x_max": 562, "y_max": 750}], "dimension_annotations": [], "scale_annotation": null, "notes": "Mock plan read.", "confidence": 0.9}, "usage": {"input_tokens": 120, "output_tokens": 40, "cached_input_tokens": 0}}

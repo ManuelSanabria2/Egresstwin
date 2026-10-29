@@ -116,3 +116,42 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
   against scenarios in later prompts. Parallel kernels (Numba
   threads / MPI sweep) are P03, not here.
 - Accumulated API cost: unchanged, ~USD 0.08 (no API use in P02).
+
+## 2026-10-28 - Perception pipeline: image to Layout (Spark, SAM, OpenCV)
+
+- Done: production transport fixed in `meta/client.py` (Spark vision
+  via Responses with strict JSON schema; SAM 3.1 via Responses
+  streaming, one concept per request and one box-prompt request;
+  both disk-cached by image hash and cost-logged). `meta-sam-parser`
+  0.1.0 added to `pyproject.toml`.
+- Done: `perception/plan_reader.py` (prompt in
+  `perception/prompts/plan_reader.md`; image type, exits in pixel
+  boxes with label/confidence, dimension annotations, notes),
+  `perception/segmenter.py` (P01 decision: no concepts on plans,
+  SAM box prompts at threshold 0.5, official-parser mask decoding
+  with box fallback, masks to labelled obstacles),
+  `perception/cv_fallback.py` (OpenCV walls and outer-wall gaps),
+  `perception/scale.py` (user two points, known door, annotation,
+  or assumed door width always flagged), `perception/pipeline.py`
+  (Layout plus default spawn zone, validation, overlay PNG,
+  `layout_report.json` with warnings, per-element confidence and
+  cost) and `layout/edit.py` (pure add/remove exit, add/remove
+  obstacle, mark obstacle walkable, paint wall).
+- Decisions: exits are OpenCV outer-wall gaps matched to Spark
+  doors (Spark alone cannot separate exits from interior doors);
+  Spark door boxes are carved (dilated) into the walkable mask or
+  interior walls seal every room; each exit gets a 0.6 m walkable
+  throat outward or the wall field blocks exit capture; walkable
+  specks under 1 m2 enclosed by ink (stair treads) are pruned with
+  a warning. Aerial photo path stays deferred per P01.
+- Tests: mock-fixture suite in `tests/test_perception.py`. Plan B
+  walkable IoU 0.946 at layout grid (0.957 before exit throats)
+  against GT, both exits found, layout simulated to full egress;
+  hand-style plan A substitute also yields a valid 2-exit layout.
+  Clear `PerceptionError` on blank/missing/corrupt/no-exit images.
+  Full suite: 43 passed, `ruff check` clean.
+- Open issues: re-run with Manuel's real A/C when supplied; exit
+  widths on hand-drawn input may need the manual corrections in
+  `layout/edit.py` (UI arrives in P06).
+- Accumulated API cost: unchanged, ~USD 0.08 (tests are mock-only;
+  pipeline cost is recorded per run in `layout_report.json`).

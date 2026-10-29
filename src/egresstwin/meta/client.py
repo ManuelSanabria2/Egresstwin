@@ -102,6 +102,108 @@ class MetaClient:
         self._settle(payload, result, cost, time.perf_counter() - started)
         return result
 
+    def vision_structured(
+        self,
+        image_path: str | Path,
+        prompt: str,
+        schema: dict[str, Any],
+        *,
+        schema_name: str = "StructuredRead",
+        model: str | None = None,
+    ) -> MetaResult:
+        """One Muse Spark vision call with strict JSON-schema output."""
+        if not prompt.strip():
+            raise ValueError("prompt must not be empty")
+        path = Path(image_path)
+        if not path.is_file():
+            raise FileNotFoundError(f"image not found: {path}")
+        model = model or self.settings.meta_spark_model
+        image_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+        payload = {
+            "kind": "vision_structured",
+            "model": model,
+            "prompt": prompt,
+            "schema_name": schema_name,
+            "schema": schema,
+            "image_sha256": image_hash,
+        }
+        hit = self._cache_hit(payload)
+        if hit is not None:
+            return hit
+        self._precheck_text(model, prompt)
+        started = time.perf_counter()
+        if self.settings.mock:
+            raw = self._load_fixture("plan_reader.json")
+            data = dict(raw.get("data", raw))
+            usage = dict(raw.get("usage", {"input_tokens": 120, "output_tokens": 40}))
+            text = json.dumps(data, ensure_ascii=False)
+        else:
+            data, text, usage = self._with_retries(
+                lambda: self._real_vision(model, path, prompt, schema, schema_name)
+            )
+        cost = estimate_text_cost(
+            model,
+            int(usage.get("input_tokens", 0)),
+            int(usage.get("output_tokens", 0)),
+            int(usage.get("cached_input_tokens", 0)),
+        )
+        result = MetaResult(
+            kind="vision_structured", model=model, text=text, data=data, usage=usage
+        )
+        self._settle(payload, result, cost, time.perf_counter() - started)
+        return result
+
+    def segment_image_boxes(
+        self,
+        image_path: str | Path,
+        boxes: list[list[int]],
+        *,
+        model: str | None = None,
+    ) -> MetaResult:
+        """One SAM 3.1 box-prompt request seeded by pixel boxes [x, y, w, h]."""
+        path = Path(image_path)
+        if not path.is_file():
+            raise FileNotFoundError(f"image not found: {path}")
+        if not boxes:
+            return MetaResult(
+                kind="segment_image_boxes",
+                model=model or self.settings.meta_sam_model,
+                data={"segments": [], "records": [], "raw": ""},
+            )
+        model = model or self.settings.meta_sam_model
+        image_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+        payload = {
+            "kind": "segment_image_boxes",
+            "model": model,
+            "boxes": boxes,
+            "image_sha256": image_hash,
+        }
+        hit = self._cache_hit(payload)
+        if hit is not None:
+            return hit
+        self.tracker.check(estimate_sam_image_cost(1))
+        started = time.perf_counter()
+        if self.settings.mock:
+            data: dict[str, Any] = {
+                "segments": [
+                    {
+                        "label": "door",
+                        "confidence": 0.97,
+                        "box": {"x": int(b[0]), "y": int(b[1]), "w": int(b[2]), "h": int(b[3])},
+                    }
+                    for b in boxes
+                ],
+                "records": [],
+                "raw": "",
+            }
+            usage = {"images": 1}
+        else:
+            data, usage = self._with_retries(lambda: self._real_sam_boxes(model, path, boxes))
+        cost = estimate_sam_image_cost(int(usage.get("images", 1)))
+        result = MetaResult(kind="segment_image_boxes", model=model, data=data, usage=usage)
+        self._settle(payload, result, cost, time.perf_counter() - started)
+        return result
+
     def segment_image(
         self, image_path: str | Path, concept: str, *, model: str | None = None
     ) -> MetaResult:
@@ -268,27 +370,93 @@ class MetaClient:
             )
         return text, usage
 
+    @staticmethod
+    def _data_url(path: Path) -> str:
+        mime = "image/png" if path.suffix.lower() == ".png" else "image/jpeg"
+        return f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode("ascii")
+
+    def _real_vision(
+        self,
+        model: str,
+        path: Path,
+        prompt: str,
+        schema: dict[str, Any],
+        schema_name: str,
+    ) -> tuple[dict[str, Any], str, dict[str, Any]]:
+        """Responses API vision call (documented transport, spike P01)."""
+        resp = self._sdk_client().responses.create(
+            model=model,
+            input=[
+                {
+                    "type": "message",
+                    "role": "user",
+                    "content": [
+                        {"type": "input_text", "text": prompt},
+                        {"type": "input_image", "image_url": self._data_url(path)},
+                    ],
+                }
+            ],
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": schema_name,
+                    "strict": True,
+                    "schema": schema,
+                }
+            },
+        )
+        text = str(getattr(resp, "output_text", "") or "")
+        data = json.loads(text)
+        usage_obj = getattr(resp, "usage", None)
+        usage = {
+            "input_tokens": int(getattr(usage_obj, "input_tokens", 0) or 0),
+            "output_tokens": int(getattr(usage_obj, "output_tokens", 0) or 0),
+            "cached_input_tokens": 0,
+        }
+        return dict(data), text, usage
+
+    def _real_sam_stream(self, model: str, path: Path, prompt_text: str) -> str:
+        """SAM 3.1 Responses streaming call; returns raw wire text."""
+        stream = self._sdk_client().responses.create(
+            model=model,
+            input=[
+                {
+                    "type": "message",
+                    "role": "user",
+                    "content": [
+                        {"type": "input_text", "text": prompt_text},
+                        {"type": "input_image", "image_url": self._data_url(path)},
+                    ],
+                }
+            ],
+            stream=True,
+            metadata={"include_confidence": "true"},
+        )
+        return "".join(
+            str(getattr(ev, "delta", "") or "")
+            for ev in stream
+            if getattr(ev, "type", "") == "response.output_text.delta"
+        )
+
     def _real_segment(
         self, model: str, path: Path, concept: str
     ) -> tuple[dict[str, Any], dict[str, Any]]:
-        # Provisional transport pending verification against dev.meta.ai:
-        # SAM has no OpenAI-SDK endpoint, so request structured JSON from
-        # the vision model. Documented in PROGRESS.md as an open issue.
-        encoded = base64.b64encode(path.read_bytes()).decode("ascii")
-        messages = [
-            {
-                "role": "user",
-                "content": (
-                    f"Segment every '{concept}' in this image. Reply with JSON "
-                    '{"segments": [{"label": str, "confidence": float, '
-                    '"box": {"x": int, "y": int, "w": int, "h": int}}]}. '
-                    f"data:image/png;base64,{encoded}"
-                ),
-            }
-        ]
-        text, _usage = self._real_chat(model, messages)  # type: ignore[arg-type]
-        try:
-            data = json.loads(text)
-        except json.JSONDecodeError:
-            data = {"segments": []}
-        return dict(data), {"images": 1}
+        """One concept per request (INSTRUCCIONES section 5). Zero is valid."""
+        raw = self._real_sam_stream(model, path, concept)
+        return {"raw": raw, "segments": [], "concept": concept}, {"images": 1}
+
+    def _real_sam_boxes(
+        self, model: str, path: Path, boxes: list[list[int]]
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        from PIL import Image
+
+        with Image.open(path) as im:
+            w, h = im.size
+        parts = []
+        for i, (x, y, bw, bh) in enumerate(boxes, start=1):
+            parts.append(
+                f"{i}<|box;x1={int(x)};y1={int(y)};x2={int(x + bw - 1)};"
+                f"y2={int(y + bh - 1)};w={w};h={h}|>"
+            )
+        raw = self._real_sam_stream(model, path, "<0f>" + ",".join(parts))
+        return {"raw": raw, "segments": [], "records": []}, {"images": 1}
