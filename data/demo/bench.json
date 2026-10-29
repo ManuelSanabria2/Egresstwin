@@ -1,0 +1,26 @@
+{
+  "scaling": [
+    {
+      "n_people": 30,
+      "wall_s": 1.066
+    },
+    {
+      "n_people": 100,
+      "wall_s": 2.944
+    },
+    {
+      "n_people": 300,
+      "wall_s": 23.497
+    }
+  ],
+  "throughput": {
+    "scenarios": 4,
+    "replicas": 3,
+    "wall_s": 18.56,
+    "scenarios_per_min": 38.79
+  },
+  "figures": [
+    "bench_scaling.png",
+    "bench_throughput.png"
+  ]
+}

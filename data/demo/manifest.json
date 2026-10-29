@@ -1,0 +1,124 @@
+{
+  "layout_file": "layout.npz",
+  "image": "data/samples/spike_plan_synth.png",
+  "simulation_file": "simulation.json",
+  "agent_file": "agent.json",
+  "bench_file": "bench.json",
+  "perception": {
+    "source_image": "C:\\Users\\manue\\OneDrive\\Documentos\\PROYECTOS PORTAFOLIO REAL\\hackthon meta}\\egresstwin\\data\\samples\\spike_plan_synth.png",
+    "source_image_hash": "257b6754f58b3fc19791c7670877dfa61eb9c1f2125d4690c031e221ded05d95",
+    "image_size_px": {
+      "w": 800,
+      "h": 600
+    },
+    "image_type": "floor_plan",
+    "models": {
+      "spark": "muse-spark-1.3",
+      "sam": "sam-3.1"
+    },
+    "cell_size_m": 0.1,
+    "grid_shape": {
+      "rows": 120,
+      "cols": 160
+    },
+    "meters_per_pixel": 0.02,
+    "scale": {
+      "meters_per_pixel": 0.02,
+      "source": "user_two_points",
+      "assumed": false,
+      "detail": "user reference: 680.0 px = 13.6 m"
+    },
+    "exits": [
+      {
+        "id": "E1",
+        "label": "exit",
+        "confidence": 0.96,
+        "source": "spark+sam+opencv_gap",
+        "box_px": [
+          180,
+          452,
+          80,
+          88
+        ],
+        "width_m": 1.5399999999999996
+      },
+      {
+        "id": "E2",
+        "label": "exit",
+        "confidence": 0.96,
+        "source": "spark+sam+opencv_gap",
+        "box_px": [
+          652,
+          420,
+          88,
+          60
+        ],
+        "width_m": 1.1400000000000006
+      }
+    ],
+    "doors": [
+      {
+        "label": "door",
+        "confidence": 0.95,
+        "box_px": [
+          360,
+          200,
+          44,
+          60
+        ]
+      },
+      {
+        "label": "door",
+        "confidence": 0.95,
+        "box_px": [
+          540,
+          316,
+          60,
+          48
+        ]
+      }
+    ],
+    "obstacles": [],
+    "spawn_zones": [
+      {
+        "id": "spawn-1",
+        "count": 50,
+        "polygon": [
+          [
+            3.5350000000000006,
+            2.9350000000000005
+          ],
+          [
+            13.265,
+            2.9350000000000005
+          ],
+          [
+            13.265,
+            9.865000000000002
+          ],
+          [
+            3.5350000000000006,
+            9.865000000000002
+          ]
+        ]
+      }
+    ],
+    "plan_notes": "demo cache read",
+    "plan_confidence": 0.95,
+    "warnings": [
+      "pruned 229 isolated walkable cells smaller than 1 m2 (ink specks)",
+      "passage narrower than 0.60 m detected (minimum local width about 0.20 m)"
+    ],
+    "validation_warnings": [
+      "passage narrower than 0.60 m detected (minimum local width about 0.20 m)"
+    ],
+    "costs": {
+      "spark_usd": 0.0,
+      "sam_usd": 0.0,
+      "total_usd": 0.0,
+      "cached": false
+    },
+    "walkable_cells": 11509
+  },
+  "note": "Cached demo run. Simulations and verification are real; the perception read is seeded from the synthetic plan ground truth so the demo needs no network or API key."
+}

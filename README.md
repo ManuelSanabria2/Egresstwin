@@ -71,6 +71,20 @@ dense overlap) and a per-agent speed cap of 1.3 x desired speed.
 Same seed, same result: the kernel is serial and deterministic in
 P02; parallelism arrives in P03.
 
+## Web app and demo
+
+```bash
+.venv/Scripts/python.exe -m uvicorn egresstwin.app.api:app --app-dir src --port 8077
+```
+
+Open http://127.0.0.1:8077 in a browser: upload a plan, correct the
+layout on the image, watch the evacuation, run the agent and read
+its verified report. The "Load demo" button replays a complete
+cached run from `data/demo` (perception layout, simulation, agent
+trace with a VERIFIED stamp, benchmark figures) with no network
+and no API key. Rebuild that cache with
+`python scripts/build_demo_cache.py`.
+
 ## Real API use
 
 Copy `.env.example` to `.env`, set `MODEL_API_KEY`, set `META_MOCK=0`, and run

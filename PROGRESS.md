@@ -194,3 +194,37 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
 - Accumulated API cost: unchanged, ~USD 0.08 (agent tests use a
   scripted model at USD 0.001 per turn; per-run cost is recorded
   in the trace, target < USD 1).
+
+## 2026-10-28 - Web app: FastAPI backend, single-page UI, demo mode
+
+- Done: `app/api.py` (FastAPI): image upload with scale options,
+  background jobs (in-memory registry mirrored to runs/jobs/),
+  layout payload and corrections through layout/edit.py, simulation
+  jobs returning metric CIs plus canvas animation frames, agent
+  optimization jobs streaming the trace over SSE, report retrieval,
+  benchmark figures, and `data/demo` replay. New exits from
+  scenarios now carve a wall throat or agents trap at the wall face.
+- Done: `app/static/index.html` (vanilla JS + canvas, no build):
+  Layout tab (image preview, two-point scale clicks, overlay,
+  add/remove exit, paint wall, mark obstacle walkable, visible
+  warnings), Simulation tab (animation, density heatmap toggle,
+  metrics with CIs), Agent tab (live trace cards, VERIFIED stamp,
+  claim-by-claim checks, synchronized baseline vs recommended
+  animations), Performance tab (benchmark figures and throughput).
+  Light/dark themes, large type for 1080p recording.
+- Done: demo mode in `data/demo` built by
+  `scripts/build_demo_cache.py`: plan B perception layout, 12-person
+  baseline (T95 10.9 s, 95% CI 8.4-13.4, 3 replicas), a full agent
+  run whose widening attempts did not beat the baseline and whose
+  honest no-improvement report is stamped VERIFIED, and real bench
+  figures (sweep 38.8 scenarios/min, serial). Works with no network
+  and no API key.
+- Tests: `tests/test_app.py` (injected runners: layout flow and
+  edits, simulation aggregates, SSE trace, demo replay, bench job);
+  live uvicorn check: /api/health, / (28 KB), /api/demo (VERIFIED,
+  13 trace events, 50 frames), demo image and bench figure all 200.
+  Full suite: 54 passed, `ruff check` clean. Note: Starlette's
+  TestClient needs loopback socketpairs, which this sandbox blocks;
+  the app tests run outside the sandbox (as in CI).
+- Accumulated API cost: unchanged, ~USD 0.08 (the demo cache and
+  the app tests spend nothing).

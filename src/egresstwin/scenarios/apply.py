@@ -18,6 +18,39 @@ from egresstwin.scenarios.spec import (
 _ADAPTER = TypeAdapter(list[Modification])
 
 
+def _carve_exit_throat(layout: Layout, segment, depth_m: float = 0.6) -> Layout:
+    """Open a walkable throat outward from a new exit segment.
+
+    Without it the wall field traps agents at the wall face and the
+    engine's exit capture never triggers (same fix as perception).
+    Outward is the side away from the walkable centroid.
+    """
+    (x1, y1), (x2, y2) = segment
+    out = layout.model_copy(deep=True)
+    walk = np.array(layout.walkable_mask, dtype=bool, copy=True)
+    rows, cols = walk.shape
+    cell = layout.cell_size_m
+    ys, xs = np.where(layout.effective_walkable())
+    cx, cy = (xs.mean() + 0.5) * cell, (ys.mean() + 0.5) * cell
+    mx, my = (x1 + x2) / 2.0, (y1 + y2) / 2.0
+    dx, dy = x2 - x1, y2 - y1
+    length = float(np.hypot(dx, dy))
+    if length <= 0:
+        return layout
+    nx, ny = -dy / length, dx / length
+    if (cx - mx) * nx + (cy - my) * ny > 0:
+        nx, ny = -nx, -ny  # normal pointing outward, away from the room
+    cols_g, rows_g = np.meshgrid(np.arange(cols), np.arange(rows))
+    px = (cols_g + 0.5) * cell - x1
+    py = (rows_g + 0.5) * cell - y1
+    t = (px * dx + py * dy) / (length * length)
+    along = px * nx + py * ny
+    throat = (t >= 0.0) & (t <= 1.0) & (along >= -cell) & (along <= depth_m)
+    walk[throat] = True
+    out.walkable_mask = walk
+    return out
+
+
 def apply_modifications(layout: Layout, modifications: list[Modification]) -> Layout:
     """Return a modified copy of layout. Raises ValueError if infeasible."""
     modifications = _ADAPTER.validate_python(list(modifications))
@@ -38,6 +71,7 @@ def apply_modifications(layout: Layout, modifications: list[Modification]) -> La
             ):
                 raise ValueError("new exit segment lies outside the layout")
             out = edit.add_exit(out, mod.segment, exit_id=mod.exit_id)
+            out = _carve_exit_throat(out, mod.segment)
         elif isinstance(mod, WidenExitModification):
             target = next((e for e in out.exits if e.id == mod.exit_id), None)
             if target is None:

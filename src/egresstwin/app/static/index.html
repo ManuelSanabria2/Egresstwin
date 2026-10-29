@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EgressTwin — evacuation digital twin that proves its advice</title>
+<style>
+:root{
+  --bg:#eef2f0; --surface:#ffffff; --surface2:#e6ece9; --ink:#16211c; --muted:#4c5d55;
+  --line:#c9d4ce; --accent:#0b6e5d; --accent-ink:#ffffff; --warn:#8a5a00; --warn-bg:#fdf0d3;
+  --bad:#a12622; --bad-bg:#fbe3e1; --good:#0b6e5d; --good-bg:#dcf0e9; --exit:#c22f2f;
+  --shadow:0 1px 3px rgba(20,35,28,.18);
+}
+html[data-theme="dark"]{
+  --bg:#101612; --surface:#1a221d; --surface2:#232d27; --ink:#e8f0eb; --muted:#a7bab0;
+  --line:#33413a; --accent:#2cb598; --accent-ink:#08110d; --warn:#f2c14e; --warn-bg:#3a2f10;
+  --bad:#ff8f89; --bad-bg:#3d1715; --good:#4ed3ae; --good-bg:#0f2f26; --exit:#ff6b64;
+  --shadow:0 1px 3px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.45}
+header{background:var(--surface);border-bottom:2px solid var(--line);padding:14px 22px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+header h1{font-size:26px;margin:0;letter-spacing:.2px}
+header .tag{color:var(--muted);max-width:560px}
+header .spacer{flex:1}
+button,.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:9px 16px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--line)}
+button:disabled{opacity:.45;cursor:wait}
+input,select{padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font-size:15px}
+label{font-weight:600;font-size:14px}
+nav.tabs{display:flex;gap:4px;padding:10px 22px 0;flex-wrap:wrap}
+nav.tabs button{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;padding:10px 22px;font-size:16px}
+nav.tabs button.active{background:var(--surface);color:var(--accent);box-shadow:var(--shadow)}
+main{padding:0 22px 30px}
+section.tab{display:none;background:var(--surface);border:1px solid var(--line);border-radius:0 8px 8px 8px;padding:18px;box-shadow:var(--shadow)}
+section.tab.active{display:block}
+h2{margin:4px 0 10px;font-size:21px}
+h3{margin:14px 0 6px;font-size:17px}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.col{flex:1 1 340px;min-width:300px}
+canvas.stage{width:100%;height:auto;background:var(--surface2);border:1px solid var(--line);border-radius:6px}
+.warnbox{background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:10px 14px;margin:8px 0}
+.warnbox:empty{display:none}
+.card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0;background:var(--surface)}
+.card .tool{font-weight:700;font-size:15px}
+.card pre{white-space:pre-wrap;word-break:break-word;font-size:12.5px;color:var(--muted);max-height:180px;overflow:auto;margin:6px 0 0}
+.metrics{display:flex;gap:12px;flex-wrap:wrap}
+.metric{background:var(--surface2);border-radius:8px;padding:10px 16px;min-width:150px}
+.metric .v{font-size:24px;font-weight:700}
+.metric .k{color:var(--muted);font-size:13px}
+.stamp{display:inline-block;font-size:22px;font-weight:800;letter-spacing:1px;padding:8px 18px;border-radius:6px;border:3px solid var(--good);color:var(--good);background:var(--good-bg);transform:rotate(-2deg)}
+.stamp.failed{border-color:var(--bad);color:var(--bad);background:var(--bad-bg)}
+.stamp.partial{border-color:var(--warn);color:var(--warn);background:var(--warn-bg)}
+.check{padding:4px 0;font-size:15px}
+.check .ok{color:var(--good);font-weight:700}
+.check .no{color:var(--bad);font-weight:700}
+table{border-collapse:collapse;width:100%}
+td,th{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;font-size:14.5px}
+img.figure{max-width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+.small{color:var(--muted);font-size:13.5px}
+.status{font-weight:700}
+.kbd{background:var(--surface2);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>EgressTwin</h1>
+    <div class="tag">Turn a floor plan into an evacuation digital twin. The agent only recommends what it can prove with simulations.</div>
+  </div>
+  <div class="spacer"></div>
+  <span id="global-status" class="status">Ready.</span>
+  <button id="demo-btn" type="button">Load demo (no network)</button>
+  <button id="theme-btn" type="button" class="secondary">Dark theme</button>
+</header>
+<nav class="tabs">
+  <button data-tab="layout" class="active" type="button">1. Layout</button>
+  <button data-tab="simulation" type="button">2. Simulation</button>
+  <button data-tab="agent" type="button">3. Agent</button>
+  <button data-tab="performance" type="button">4. Performance</button>
+</nav>
+<main>
+<section class="tab active" id="tab-layout">
+  <h2>From image to a layout you can correct</h2>
+  <div class="row">
+    <div class="col">
+      <p><label for="file">Plan image</label><br><input id="file" type="file" accept="image/*"></p>
+      <p><label for="scale-mode">Scale</label><br>
+        <select id="scale-mode">
+          <option value="annotation">Read the printed dimension</option>
+          <option value="two_points">Two points + real distance</option>
+          <option value="known_door">Known door width</option>
+          <option value="assumed">Assume a standard door (flagged)</option>
+        </select></p>
+      <p id="scale-distance-row" hidden><label for="scale-distance">Real distance (m)</label><br>
+        <input id="scale-distance" type="number" step="0.1" min="0.1" value="13.6">
+        <span class="small">With "two points", click the two ends on the preview.</span></p>
+      <p id="door-width-row" hidden><label for="door-width">Known door width (m)</label><br>
+        <input id="door-width" type="number" step="0.05" min="0.2" value="0.9">
+        <span class="small">Applied to the widest detected door box.</span></p>
+      <p><button id="process-btn" type="button">Build layout</button>
+      <span id="layout-status" class="small"></span></p>
+      <h3>Correct it by clicking</h3>
+      <p>
+        <button type="button" class="secondary edit-mode" data-mode="add-exit">Add exit (2 clicks)</button>
+        <button type="button" class="secondary edit-mode" data-mode="paint-wall">Paint wall</button>
+        <button type="button" class="secondary" id="finish-wall" hidden>Finish wall</button>
+        <button type="button" class="secondary edit-mode" data-mode="none">Stop editing</button>
+      </p>
+      <p class="small" id="edit-hint">Corrections use the same edit functions the tests exercise. Nothing is final until you are happy with it.</p>
+      <div id="exit-list"></div>
+      <div id="obstacle-list"></div>
+    </div>
+    <div class="col" style="flex:2 1 520px">
+      <canvas id="layout-canvas" class="stage" width="800" height="600"></canvas>
+      <div class="warnbox" id="layout-warnings"></div>
+    </div>
+  </div>
+</section>
+<section class="tab" id="tab-simulation">
+  <h2>Watch the evacuation</h2>
+  <p>
+    <label>Replicas <input id="sim-replicas" type="number" value="3" min="1" max="20" style="width:70px"></label>
+    <button id="sim-btn" type="button">Run simulation</button>
+    <button id="sim-play" type="button" class="secondary">Play / pause</button>
+    <label><input id="sim-heat" type="checkbox"> Density heatmap</label>
+    <span id="sim-status" class="small"></span>
+  </p>
+  <canvas id="sim-canvas" class="stage" width="900" height="500"></canvas>
+  <p class="small">Time: <span id="sim-time">0.0</span> s &nbsp;|&nbsp; dots are people; red lines are exits.</p>
+  <div class="metrics" id="sim-metrics"></div>
+</section>
+<section class="tab" id="tab-agent">
+  <h2>An agent that has to prove it</h2>
+  <p>
+    <label>Objective
+      <select id="agent-objective">
+        <option value="minimize_t95">Minimize T95 egress time</option>
+        <option value="minimize_peak_density">Minimize peak density</option>
+      </select></label>
+    <button id="agent-btn" type="button">Run optimization</button>
+    <span id="agent-status" class="small"></span>
+  </p>
+  <div class="row">
+    <div class="col">
+      <h3>Live trace</h3>
+      <div id="agent-cards"></div>
+    </div>
+    <div class="col">
+      <h3>Verified report</h3>
+      <div id="agent-report"><p class="small">No report yet. Run the optimization or load the demo.</p></div>
+    </div>
+  </div>
+  <h3>Baseline vs recommended, synchronized</h3>
+  <div class="row">
+    <div class="col"><p class="small">Baseline</p><canvas id="anim-base" class="stage" width="640" height="400"></canvas></div>
+    <div class="col"><p class="small">Recommended</p><canvas id="anim-rec" class="stage" width="640" height="400"></canvas></div>
+  </div>
+  <p><button id="anim-play" type="button" class="secondary">Play / pause comparison</button>
+  <span class="small">Time: <span id="anim-time">0.0</span> s</span></p>
+</section>
+<section class="tab" id="tab-performance">
+  <h2>Performance</h2>
+  <p><button id="bench-btn" type="button">Run benchmark</button> <span id="bench-status" class="small"></span></p>
+  <div id="bench-summary"></div>
+  <div class="row">
+    <div class="col"><img id="bench-fig-1" class="figure" alt="Simulation scaling figure"></div>
+    <div class="col"><img id="bench-fig-2" class="figure" alt="Sweep throughput figure"></div>
+  </div>
+</section>
+</main>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const state = {
+  layout: null, layoutId: null, image: null, previewUrl: null,
+  scalePoints: [], editMode: "none", pending: [], wallPoints: [],
+  simAnim: null, agentBase: null, agentRec: null,
+};
+function setStatus(text) { $("global-status").textContent = text; }
+function esc(s) { const d = document.createElement("div"); d.textContent = String(s ?? ""); return d.innerHTML; }
+async function api(path, options) {
+  const r = await fetch(path, options);
+  if (!r.ok) { let msg = r.statusText; try { msg = (await r.json()).detail || msg; } catch (e) {}
+    throw new Error(msg); }
+  return r.json();
+}
+async function pollJob(jobId, statusEl) {
+  for (;;) {
+    const j = await api("/api/jobs/" + jobId);
+    if (statusEl) statusEl.textContent = "Job " + j.kind + ": " + j.status + "…";
+    if (j.status === "done") return j.result;
+    if (j.status === "error") throw new Error(j.error || "job failed");
+    await new Promise((res) => setTimeout(res, 800));
+  }
+}
+/* theme */
+$("theme-btn").addEventListener("click", () => {
+  const html = document.documentElement;
+  const dark = html.dataset.theme !== "dark";
+  html.dataset.theme = dark ? "dark" : "light";
+  $("theme-btn").textContent = dark ? "Light theme" : "Dark theme";
+  drawLayout(); drawSim(); drawAgentAnims();
+});
+/* tabs */
+document.querySelectorAll("nav.tabs button").forEach((b) => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach((x) => x.classList.remove("active"));
+    document.querySelectorAll("section.tab").forEach((x) => x.classList.remove("active"));
+    b.classList.add("active");
+    $("tab-" + b.dataset.tab).classList.add("active");
+  });
+});
+function showTab(name) { document.querySelector('nav.tabs button[data-tab="' + name + '"]').click(); }
+/* ---------- layout ---------- */
+$("scale-mode").addEventListener("change", () => {
+  const mode = $("scale-mode").value;
+  $("scale-distance-row").hidden = mode !== "two_points";
+  $("door-width-row").hidden = mode !== "known_door";
+  state.scalePoints = [];
+  if (mode === "two_points") setStatus("Click the two ends of a known distance on the preview.");
+});
+$("file").addEventListener("change", () => {
+  const f = $("file").files[0];
+  if (!f) return;
+  state.previewUrl = URL.createObjectURL(f);
+  state.scalePoints = [];
+  loadImage(state.previewUrl, () => drawLayout());
+});
+function loadImage(src, done) {
+  const img = new Image();
+  img.onload = () => { state.image = img; if (done) done(); };
+  img.src = src;
+}
+function canvasPoint(ev, canvas) {
+  const r = canvas.getBoundingClientRect();
+  return [(ev.clientX - r.left) * canvas.width / r.width,
+          (ev.clientY - r.top) * canvas.height / r.height];
+}
+function drawGrid(ctx, grid, w, h, color) {
+  if (!grid || !grid.rows) return;
+  const rows = grid.rows, step = grid.step || 1;
+  const cw = w / (rows[0].length * step), ch = h / (rows.length * step);
+  ctx.fillStyle = color;
+  rows.forEach((row, ri) => {
+    for (let ci = 0; ci < row.length; ci++)
+      if (row[ci] === "1") ctx.fillRect(ci * step * cw, ri * step * ch, cw * step + 1, ch * step + 1);
+  });
+}
+function drawLayout() {
+  const c = $("layout-canvas"), ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  if (state.image) {
+    if (state.image.width !== c.width) { c.width = state.image.width; c.height = state.image.height; }
+    ctx.drawImage(state.image, 0, 0);
+  }
+  const L = state.layout;
+  if (L) {
+    const w = c.width, h = c.height;
+    drawGrid(ctx, L.walkable, w, h, "rgba(20,160,90,0.20)");
+    L.obstacles.forEach((o) => drawGrid(ctx, o.grid, w, h, "rgba(200,40,30,0.35)"));
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--exit") || "#c22f2f";
+    ctx.lineWidth = Math.max(4, w / 160);
+    L.exits.forEach((e) => {
+      ctx.beginPath();
+      ctx.moveTo(e.segment_px[0][0], e.segment_px[0][1]);
+      ctx.lineTo(e.segment_px[1][0], e.segment_px[1][1]);
+      ctx.stroke();
+    });
+    ctx.fillStyle = "#0b6e5d";
+    state.scalePoints.concat(state.pending, state.wallPoints).forEach((p) => {
+      ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, 7); ctx.fill();
+    });
+    $("layout-warnings").innerHTML = (L.warnings || []).map((x) => "⚠ " + esc(x)).join("<br>");
+    $("exit-list").innerHTML = "<h3>Exits</h3>" + L.exits.map((e) =>
+      '<p>' + esc(e.id) + " — " + e.width_m.toFixed(2) + ' m <button type="button" class="secondary" data-remove-exit="' +
+      esc(e.id) + '">Remove</button></p>').join("");
+    document.querySelectorAll("[data-remove-exit]").forEach((b) =>
+      b.addEventListener("click", () => sendEdit({action: "remove_exit", exit_id: b.dataset.removeExit})));
+    $("obstacle-list").innerHTML = L.obstacles.length ? "<h3>Obstacles</h3>" + L.obstacles.map((o) =>
+      '<p>' + esc(o.id) + " (" + esc(o.label) + ")" +
+      ' <button type="button" class="secondary" data-walk="' + esc(o.id) + '">Mark walkable</button></p>').join("") : "";
+    document.querySelectorAll("[data-walk]").forEach((b) =>
+      b.addEventListener("click", () => sendEdit({action: "mark_walkable", obstacle_id: b.dataset.walk})));
+  } else if (state.image) {
+    ctx.fillStyle = "#c22f2f";
+    state.scalePoints.forEach((p) => { ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, 7); ctx.fill(); });
+  }
+}
+async function sendEdit(body) {
+  if (!state.layoutId) return;
+  try {
+    state.layout = await api("/api/layouts/" + state.layoutId + "/edits", {
+      method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body),
+    });
+    state.layoutId = state.layout.layout_id;
+    drawLayout();
+    setStatus("Layout corrected. Re-run the simulation when ready.");
+  } catch (e) { setStatus("Edit rejected: " + e.message); }
+}
+$("layout-canvas").addEventListener("click", (ev) => {
+  const p = canvasPoint(ev, $("layout-canvas"));
+  if (!state.layout && $("scale-mode").value === "two_points") {
+    state.scalePoints.push(p);
+    if (state.scalePoints.length > 2) state.scalePoints = [p];
+    drawLayout();
+    return;
+  }
+  if (state.editMode === "add-exit") {
+    state.pending.push(p);
+    if (state.pending.length === 2) {
+      sendEdit({action: "add_exit", segment_px: state.pending});
+      state.pending = [];
+    }
+    drawLayout();
+  } else if (state.editMode === "paint-wall") {
+    state.wallPoints.push(p);
+    $("finish-wall").hidden = state.wallPoints.length < 2;
+    drawLayout();
+  }
+});
+document.querySelectorAll(".edit-mode").forEach((b) =>
+  b.addEventListener("click", () => {
+    state.editMode = b.dataset.mode; state.pending = []; state.wallPoints = [];
+    $("finish-wall").hidden = true;
+    $("edit-hint").textContent = state.editMode === "add-exit"
+      ? "Click the two ends of the new exit on the image."
+      : state.editMode === "paint-wall" ? "Click along the wall, then Finish wall." : "Editing off.";
+  }));
+$("finish-wall").addEventListener("click", () => {
+  if (state.wallPoints.length >= 2) sendEdit({action: "paint_wall", points_px: state.wallPoints, width_m: 0.2});
+  state.wallPoints = []; $("finish-wall").hidden = true;
+});
+$("process-btn").addEventListener("click", async () => {
+  const f = $("file").files[0];
+  if (!f) { setStatus("Choose a plan image first, or load the demo."); return; }
+  const form = new FormData();
+  form.append("image", f);
+  const mode = $("scale-mode").value;
+  form.append("scale_mode", mode === "assumed" ? "annotation" : mode);
+  if (mode === "two_points") {
+    if (state.scalePoints.length !== 2) { setStatus("Click the two scale points on the preview first."); return; }
+    form.append("scale_points", JSON.stringify(state.scalePoints));
+    form.append("scale_distance_m", $("scale-distance").value);
+  }
+  if (mode === "known_door") form.append("known_door_width_m", $("door-width").value);
+  try {
+    const started = await api("/api/layouts", {method: "POST", body: form});
+    state.layoutId = started.layout_id;
+    state.layout = await pollJob(started.job_id, $("layout-status"));
+    state.layoutId = state.layout.layout_id;
+    loadImage("/api/layouts/" + state.layoutId + "/image", () => drawLayout());
+    setStatus("Layout ready. Correct it if needed, then run a simulation.");
+  } catch (e) { setStatus("Layout failed: " + e.message); }
+});
+/* ---------- simulation ---------- */
+let simClock = {playing: false, t: 0, last: 0};
+function drawAgents(ctx, anim, frameIdx, w, h, heat) {
+  ctx.clearRect(0, 0, w, h);
+  const sx = w / anim.width_m, sy = h / anim.height_m;
+  drawGridMeters(ctx, anim.walkable, anim, sx, sy, "rgba(120,140,130,0.35)");
+  if (heat && anim.density) drawDensity(ctx, anim, sx, sy);
+  ctx.strokeStyle = "#c22f2f"; ctx.lineWidth = 5;
+  anim.exits.forEach((e) => {
+    ctx.beginPath();
+    ctx.moveTo(e.segment_m[0][0] * sx, e.segment_m[0][1] * sy);
+    ctx.lineTo(e.segment_m[1][0] * sx, e.segment_m[1][1] * sy);
+    ctx.stroke();
+  });
+  const frame = anim.frames[Math.min(frameIdx, anim.frames.length - 1)] || [];
+  ctx.fillStyle = "#0b6e5d";
+  frame.forEach((p) => {
+    if (p[0] < 0) return;
+    ctx.beginPath(); ctx.arc(p[0] * sx, p[1] * sy, 3.2, 0, 7); ctx.fill();
+  });
+}
+function drawGridMeters(ctx, grid, anim, sx, sy, color) {
+  if (!grid || !grid.rows) return;
+  const step = grid.step || 1;
+  const cw = anim.width_m / (grid.rows[0].length * step) * sx;
+  const ch = anim.height_m / (grid.rows.length * step) * sy;
+  ctx.fillStyle = color;
+  grid.rows.forEach((row, ri) => {
+    for (let ci = 0; ci < row.length; ci++)
+      if (row[ci] === "1") ctx.fillRect(ci * step * cw, ri * step * ch, cw * step, ch * step);
+  });
+}
+function drawDensity(ctx, anim, sx, sy) {
+  const d = anim.density, step = (d.step_cells || 1);
+  const cw = anim.width_m / (d.rows[0].length * step) * sx;
+  const ch = anim.height_m / (d.rows.length * step) * sy;
+  d.rows.forEach((row, ri) => row.forEach((v, ci) => {
+    if (v <= 0) return;
+    ctx.fillStyle = "rgba(220,60,30," + Math.min(0.75, v / Math.max(d.max, 0.01) * 0.75).toFixed(3) + ")";
+    ctx.fillRect(ci * step * cw, ri * step * ch, cw * step, ch * step);
+  }));
+}
+function frameAt(anim, t) { return Math.max(0, Math.min(anim.frames.length - 1, Math.floor(t / anim.frame_dt))); }
+function drawSim() {
+  if (!state.simAnim) return;
+  drawAgents($("sim-canvas").getContext("2d"), state.simAnim, frameAt(state.simAnim, simClock.t),
+    $("sim-canvas").width, $("sim-canvas").height, $("sim-heat").checked);
+  $("sim-time").textContent = simClock.t.toFixed(1);
+}
+function tick(ts) {
+  if (simClock.playing) {
+    const dt = Math.min(0.05, (ts - simClock.last) / 1000 || 0);
+    simClock.t += dt * 2;
+    if (state.simAnim && simClock.t > state.simAnim.frames.length * state.simAnim.frame_dt) simClock.t = 0;
+    drawSim(); drawAgentAnims();
+  }
+  simClock.last = ts;
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+$("sim-play").addEventListener("click", () => { simClock.playing = !simClock.playing; });
+$("sim-heat").addEventListener("change", drawSim);
+$("sim-btn").addEventListener("click", async () => {
+  if (!state.layoutId) { setStatus("Build a layout first, or load the demo."); return; }
+  try {
+    const started = await api("/api/layouts/" + state.layoutId + "/simulate", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({replicas: Number($("sim-replicas").value || 3)}),
+    });
+    const result = await pollJob(started.job_id, $("sim-status"));
+    showSimulation(result);
+    setStatus("Simulation done.");
+  } catch (e) { setStatus("Simulation failed: " + e.message); }
+});
+function showSimulation(result) {
+  state.simAnim = result.animation;
+  simClock.t = 0; simClock.playing = true;
+  const a = result.aggregates || {};
+  const m = state.simAnim.metrics || {};
+  const ci = (k) => a[k] ? a[k].mean.toFixed(1) + " s (95% CI " + a[k].ci_low.toFixed(1) + "–" + a[k].ci_high.toFixed(1) + ")" : "—";
+  $("sim-metrics").innerHTML =
+    metric("T95", a.t95_s ? ci("t95_s") : (m.t95_s || 0).toFixed(1) + " s") +
+    metric("Total time", a.total_time_s ? ci("total_time_s") : (m.total_time_s || 0).toFixed(1) + " s") +
+    metric("Peak density", (m.peak_density_per_m2 || 0).toFixed(2) + " people/m²") +
+    metric("Evacuated", (m.n_exited || 0) + " / " + (m.n_people || 0)) +
+    (result.n_replicas ? metric("Replicas", result.n_replicas) : "");
+  drawSim();
+}
+function metric(k, v) { return '<div class="metric"><div class="v">' + esc(v) + '</div><div class="k">' + esc(k) + "</div></div>"; }
+/* ---------- agent ---------- */
+function addCard(event) {
+  const box = $("agent-cards");
+  const card = document.createElement("div");
+  card.className = "card";
+  let title = event.event || "event";
+  if (event.tool) title += " · " + event.tool;
+  if (event.turn) title += " · turn " + event.turn;
+  let body = event.summary || event.text || "";
+  if (event.event === "tool_call") body = JSON.stringify(event.arguments || {});
+  if (event.cost_usd) body += "\ncost so far in turn: $" + event.cost_usd;
+  card.innerHTML = '<div class="tool">' + esc(title) + "</div>" + (body ? "<pre>" + esc(body) + "</pre>" : "");
+  box.appendChild(card);
+  card.scrollIntoView({block: "nearest"});
+}
+function showReport(result) {
+  const v = result.verification || {};
+  const report = result.report || {};
+  const cls = v.status === "VERIFIED" ? "" : v.status === "PARTIALLY_VERIFIED" ? "partial" : "failed";
+  let html = '<p><span class="stamp ' + cls + '">' + esc(v.status || result.status || "NO REPORT") + "</span></p>";
+  html += "<p>" + esc(report.summary || result.reason || "") + "</p>";
+  (report.recommendations || []).forEach((r) => {
+    html += '<div class="card"><div class="tool">Recommendation · ' + esc(r.scenario_id) + "</div><pre>" +
+      esc(JSON.stringify(r.modifications)) + "\n" + esc(JSON.stringify(r.claimed_metrics)) + "</pre></div>";
+  });
+  if (!(report.recommendations || []).length)
+    html += '<p class="small">No change is recommended: nothing simulated beat the baseline with significance. That honest answer is what the verifier stamps.</p>';
+  html += "<h3>Claim by claim</h3>" + (v.checks || []).map((c) =>
+    '<div class="check"><span class="' + (c.passed ? "ok" : "no") + '">' + (c.passed ? "PASS" : "FAIL") +
+    "</span> " + esc(c.claim) + ' <span class="small">' + esc(c.detail) + "</span></div>").join("");
+  if (result.total_cost_usd !== undefined)
+    html += '<p class="small">Agent cost this run: $' + Number(result.total_cost_usd).toFixed(4) + "</p>";
+  $("agent-report").innerHTML = html;
+}
+function drawAgentAnims() {
+  if (state.agentBase)
+    drawAgents($("anim-base").getContext("2d"), state.agentBase, frameAt(state.agentBase, simClock.t),
+      $("anim-base").width, $("anim-base").height, false);
+  if (state.agentRec)
+    drawAgents($("anim-rec").getContext("2d"), state.agentRec, frameAt(state.agentRec, simClock.t),
+      $("anim-rec").width, $("anim-rec").height, false);
+  $("anim-time").textContent = simClock.t.toFixed(1);
+}
+$("anim-play").addEventListener("click", () => { simClock.playing = !simClock.playing; });
+$("agent-btn").addEventListener("click", async () => {
+  if (!state.layoutId) { setStatus("Build a layout first, or load the demo."); return; }
+  $("agent-cards").innerHTML = "";
+  try {
+    const started = await api("/api/layouts/" + state.layoutId + "/optimize", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({objective: $("agent-objective").value, replicas: 5}),
+    });
+    setStatus("Agent running… watch the trace.");
+    const source = new EventSource("/api/optimize/" + started.job_id + "/stream");
+    source.onmessage = (msg) => {
+      const event = JSON.parse(msg.data);
+      if (event.event === "stream_end") { source.close(); finishAgent(started.job_id); return; }
+      addCard(event);
+    };
+    source.onerror = () => { source.close(); finishAgent(started.job_id); };
+  } catch (e) { setStatus("Agent failed to start: " + e.message); }
+});
+async function finishAgent(jobId) {
+  try {
+    const j = await api("/api/jobs/" + jobId);
+    if (j.status !== "done") { setStatus("Agent job: " + j.status + (j.error ? " — " + j.error : "")); return; }
+    showReport(j.result);
+    const anims = j.result.animations || {};
+    state.agentBase = anims.baseline || null;
+    state.agentRec = anims.recommended || null;
+    simClock.t = 0; simClock.playing = true;
+    drawAgentAnims();
+    setStatus("Agent done: " + j.result.status + " ($" + Number(j.result.total_cost_usd || 0).toFixed(4) + ").");
+  } catch (e) { setStatus("Agent failed: " + e.message); }
+}
+/* ---------- performance ---------- */
+function showBench(bench) {
+  const fig = bench.figures || [];
+  if (fig[0]) $("bench-fig-1").src = "/api/bench/figures/" + fig[0];
+  if (fig[1]) $("bench-fig-2").src = "/api/bench/figures/" + fig[1];
+  let html = "";
+  if (bench.scaling) html += "<table><tr><th>People</th><th>Wall-clock (s)</th></tr>" +
+    bench.scaling.map((s) => "<tr><td>" + s.n_people + "</td><td>" + s.wall_s + "</td></tr>").join("") + "</table>";
+  if (bench.throughput) html += '<p class="small">Sweep: ' + bench.throughput.scenarios + " scenarios × " +
+    bench.throughput.replicas + " replicas in " + bench.throughput.wall_s + " s = " +
+    bench.throughput.scenarios_per_min + " scenarios/min (serial backend).</p>";
+  $("bench-summary").innerHTML = html || '<p class="small">No benchmark data yet.</p>';
+}
+$("bench-btn").addEventListener("click", async () => {
+  try {
+    const started = await api("/api/bench/run", {method: "POST"});
+    const summary = await pollJob(started.job_id, $("bench-status"));
+    showBench(summary);
+    setStatus("Benchmark done.");
+  } catch (e) { setStatus("Benchmark failed: " + e.message); }
+});
+/* ---------- demo ---------- */
+$("demo-btn").addEventListener("click", async () => {
+  try {
+    setStatus("Loading the cached demo run…");
+    const demo = await api("/api/demo");
+    state.layout = demo.layout;
+    state.layoutId = demo.layout.layout_id;
+    loadImage("/api/layouts/demo/image", () => drawLayout());
+    drawLayout();
+    showSimulation(demo.simulation);
+    $("agent-cards").innerHTML = "";
+    (demo.agent.events || []).forEach(addCard);
+    showReport(demo.agent);
+    const anims = demo.agent.animations || {};
+    state.agentBase = anims.baseline || demo.simulation.animation || null;
+    state.agentRec = anims.recommended || null;
+    drawAgentAnims();
+    showBench(demo.bench);
+    setStatus("Demo loaded from cache. No network, no API key, no cost.");
+    showTab("layout");
+  } catch (e) { setStatus("Demo failed: " + e.message); }
+});
+api("/api/bench").then(showBench).catch(() => {});
+drawLayout();
+</script>
+</body>
+</html>
