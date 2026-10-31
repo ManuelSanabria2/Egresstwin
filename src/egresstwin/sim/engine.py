@@ -41,6 +41,11 @@ class Scenario:
     reconsider_interval_s: float | None = None  # None = keep spawn choice
     params: SFParams = field(default_factory=SFParams)
     events: tuple[SimEvent, ...] = ()  # timed live events (P07)
+    # Pre-movement (reaction) times: uniform per agent in
+    # [pre_movement_min_s, pre_movement_max_s]; both zero (default)
+    # means everyone starts at t = 0, exactly as before.
+    pre_movement_min_s: float = 0.0
+    pre_movement_max_s: float = 0.0
 
 
 @dataclass
@@ -62,6 +67,9 @@ class SimResult:
     seed: int
     applied_events: list = field(default_factory=list)  # P07 event log
     warnings: list = field(default_factory=list)  # P07 hazard warnings
+    reaction_times_s: np.ndarray = field(  # per-agent pre-movement times
+        default_factory=lambda: np.zeros(0)
+    )
 
 
 def _segment_distance(pos: np.ndarray, segment: tuple) -> np.ndarray:
@@ -145,6 +153,16 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
     )
     vel = np.zeros((n, 2))
     active = np.ones(n, dtype=bool)
+    if scenario.pre_movement_max_s > 0:
+        if scenario.pre_movement_min_s < 0 or (
+            scenario.pre_movement_min_s > scenario.pre_movement_max_s
+        ):
+            raise ValueError("pre-movement range must satisfy 0 <= min <= max")
+        reaction = rng.uniform(
+            scenario.pre_movement_min_s, scenario.pre_movement_max_s, size=n
+        )
+    else:
+        reaction = np.zeros(n)
 
     def reassign() -> np.ndarray:
         """Geodesically nearest open exit per agent (-1: none reachable)."""
@@ -273,10 +291,14 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
         rows = np.clip((pos[:, 1] / layout.cell_size_m).astype(int), 0, layout.shape[0] - 1)
         cols = np.clip((pos[:, 0] / layout.cell_size_m).astype(int), 0, layout.shape[1] - 1)
         np.add.at(density_accum, (rows[active], cols[active]), 1.0)
+        # People whose reaction time has not elapsed wait at spawn:
+        # they do not move, cannot be captured, and (documented
+        # simplification) do not yet exert or receive social forces.
+        started = step * scenario.dt >= reaction
         if reconsider_every and step > 0 and step % reconsider_every == 0 and open_ids:
             open_k = sorted(exit_index[e] for e in open_ids)
             d_now = np.stack([floor.distance_at(k, pos) for k in open_k])
-            valid = active & (assigned >= 0)
+            valid = active & started & (assigned >= 0)
             assigned_count = np.bincount(
                 assigned[valid], minlength=len(exits)
             )[open_k]
@@ -288,7 +310,7 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
             )
         desired_dir = np.zeros((n, 2))
         for k in range(len(exits)):
-            sel = active & (assigned == k)
+            sel = active & started & (assigned == k)
             if sel.any():
                 desired_dir[sel] = floor.direction_at(k, pos[sel])
         wall_d, wall_gx, wall_gy = wall.sample(pos)
@@ -308,7 +330,7 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
                 wall_d,
                 wall_gx,
                 wall_gy,
-                active,
+                active & started,
                 layout.shape,
                 layout.cell_size_m,
                 params,
@@ -331,7 +353,7 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
         for k, ex in enumerate(exits):
             if ex.id not in open_ids:
                 continue
-            sel = np.flatnonzero(active & (assigned == k))
+            sel = np.flatnonzero(active & started & (assigned == k))
             if len(sel) == 0:
                 continue
             near = sel[_segment_distance(pos[sel], ex.segment) < capture]
@@ -362,4 +384,5 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
         seed=seed,
         applied_events=applied_events,
         warnings=warnings,
+        reaction_times_s=reaction,
     )

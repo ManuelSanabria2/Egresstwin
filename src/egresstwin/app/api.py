@@ -346,11 +346,14 @@ def default_agent_factory(layout: Layout, objective: str, on_event, runs_dir: Pa
             animations["recommended_scenario_id"] = rec.get("scenario_id")
         except Exception as exc:  # noqa: BLE001 - shown in the result
             animations["recommended_error"] = str(exc)
+    from egresstwin.validation.status import load_verification_status
+
     return {
         "status": result.status, "report": result.report,
         "verification": result.verification, "reason": result.reason,
         "total_cost_usd": result.total_cost_usd, "turns": result.turns,
         "scenarios_run": result.scenarios_run, "animations": animations,
+        "simulator_verification": load_verification_status(),
     }
 
 
@@ -594,12 +597,31 @@ def create_app(
         def load(name: str) -> dict[str, Any]:
             return json.loads((demo / manifest[name]).read_text(encoding="utf-8"))
 
+        from egresstwin.validation.status import load_verification_status
+
+        agent_payload = load("agent_file")
+        agent_payload["simulator_verification"] = load_verification_status()
         return {
             "layout": record.payload(),
             "simulation": load("simulation_file"),
-            "agent": load("agent_file"),
+            "agent": agent_payload,
             "bench": load("bench_file"),
         }
+
+    @app.get("/api/verification")
+    def verification_status() -> dict[str, Any]:
+        from egresstwin.validation.status import load_verification_status
+
+        return load_verification_status()
+
+    @app.get("/api/verification/report")
+    def verification_report() -> FileResponse:
+        report = ROOT / "docs" / "verification" / "report.md"
+        if not report.is_file():
+            raise HTTPException(
+                404, "verification report not generated; run scripts/run_verification.py"
+            )
+        return FileResponse(report, media_type="text/markdown")
 
     @app.get("/api/bench")
     def bench_summary() -> dict[str, Any]:

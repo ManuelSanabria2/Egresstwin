@@ -281,3 +281,57 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
   falls after the current animation ends.
 - Accumulated API cost: unchanged, ~USD 0.08 (P07 is pure
   simulation; API cost zero by construction).
+
+## 2026-10-30 - Verification: simulator vs RiMEA standard test cases
+
+- Done: sources read from the official RiMEA site (guideline
+  4.1.1, Annex 2 per-test pages, accessed 2026-10-30), IMO
+  MSC.1/Circ.1533 (2016) as cross-reference only, and Weidmann
+  (1993) via the Kladek parameterisation quoted in secondary
+  literature. `docs/verification/test_cases.md` summarises six
+  chosen cases in our own words with document, version and test
+  number; nothing is copied into the repo. Data that only exists
+  in source figures (geometries of RiMEA Tests 6/11/12, Table 1
+  demographic speeds, the Test 4 formula figure, the IMO full
+  text, the Weidmann original) is marked PENDING for Manuel
+  instead of being invented; adapted geometries are labelled.
+- Done: small engine feature the cases needed - per-agent
+  pre-movement (reaction) times, uniform in
+  `[pre_movement_min_s, pre_movement_max_s]` on `Scenario` and
+  `ScenarioSpec` (forwarded by the sweep, plus an optional fixed
+  `desired_speed_mps`). Default zero keeps every previous result
+  bit-identical (existing determinism tests unchanged and green).
+  People not yet started do not move and cannot be captured;
+  documented simplification: they do not yet exert or receive
+  social forces.
+- Done: `validation/cases.py` with six cases (V1 corridor speed
+  at 1.33 m/s, V2 corner without wall crossing, V3 reaction-time
+  distribution, V4 two-room bottleneck, V5 exit choice, V6
+  fundamental diagram vs Weidmann), `scripts/run_verification.py`
+  generating figures in `docs/figures/verification/`, the report
+  in `docs/verification/report.md` and `status.json` /
+  `results.json` with real data.
+- Result: 5 of 6 PASS. V1 travel 30.5-31.1 s (band 26-34 s).
+  V2 20/20 out, zero wall crossings. V3 max start error 0.82 s.
+  V4 peak density room 1 2.38 vs room 2 0.49 people/m^2. V5 split
+  85/15 for the near/far exit. V6 FAIL, reported as-is: RMSE
+  0.188 m/s is inside the project tolerance and speed drops
+  overall (1.13 -> 0.34 m/s), but the two lowest density bins are
+  not monotonic (1.13 -> 1.21) and the highest bin stays faster
+  than the empirical curve - the crush-density limitation noted
+  since P02. The criterion was fixed before running and was not
+  relaxed.
+- Done: integration - agent results (live and demo) now carry
+  `simulator_verification` ("5 of 6 standard cases passed"), the
+  UI shows it next to the VERIFIED stamp with a link to the
+  report (`/api/verification` and `/api/verification/report`
+  endpoints). `tests/test_verification.py` runs every case as a
+  slow pytest; the documented V6 failure is asserted as such.
+  Full suite: 68 passed (4 app tests outside the sandbox, as
+  before), `ruff check` clean.
+- Open issues for Manuel: the PENDING source data listed in
+  `docs/verification/test_cases.md` (figure geometries, RiMEA
+  Table 1, IMO circular, Weidmann original) if literal
+  replication is wanted before the deadline.
+- Accumulated API cost: unchanged, ~USD 0.08 (verification is
+  pure simulation; API cost zero by construction).

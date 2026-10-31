@@ -1,0 +1,40 @@
+{
+  "available": true,
+  "passed": 5,
+  "total": 6,
+  "generated_at": "2026-10-31T05:04:13Z",
+  "seed": 42,
+  "report": "docs/verification/report.md",
+  "cases": [
+    {
+      "id": "V1",
+      "title": "Free walking speed in a straight corridor",
+      "passed": true
+    },
+    {
+      "id": "V2",
+      "title": "Movement around a corner",
+      "passed": true
+    },
+    {
+      "id": "V3",
+      "title": "Pre-movement (reaction) time distribution",
+      "passed": true
+    },
+    {
+      "id": "V4",
+      "title": "Bottleneck effect between two rooms",
+      "passed": true
+    },
+    {
+      "id": "V5",
+      "title": "Exit assignment and route choice",
+      "passed": true
+    },
+    {
+      "id": "V6",
+      "title": "Fundamental diagram vs Weidmann (1993)",
+      "passed": false
+    }
+  ]
+}

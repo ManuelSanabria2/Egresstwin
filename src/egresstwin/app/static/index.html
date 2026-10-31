@@ -647,6 +647,13 @@ function showReport(result) {
   const report = result.report || {};
   const cls = v.status === "VERIFIED" ? "" : v.status === "PARTIALLY_VERIFIED" ? "partial" : "failed";
   let html = '<p><span class="stamp ' + cls + '">' + esc(v.status || result.status || "NO REPORT") + "</span></p>";
+  const sv = result.simulator_verification;
+  if (sv && sv.available)
+    html += '<p class="small">Simulator verification: <strong>' + sv.passed + " of " + sv.total +
+      ' standard cases passed</strong> (RiMEA / Weidmann) — <a href="/api/verification/report" target="_blank" rel="noopener">verification report</a>. ' +
+      "The stamp above verifies this report against the simulator; this line states how the simulator itself scores against standard tests.</p>";
+  else if (sv)
+    html += '<p class="small">Simulator verification: not run yet (python scripts/run_verification.py).</p>';
   html += "<p>" + esc(report.summary || result.reason || "") + "</p>";
   (report.recommendations || []).forEach((r) => {
     html += '<div class="card"><div class="tool">Recommendation · ' + esc(r.scenario_id) + "</div><pre>" +

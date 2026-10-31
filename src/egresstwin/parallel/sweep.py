@@ -13,6 +13,7 @@ from egresstwin.scenarios.apply import apply_modifications
 from egresstwin.scenarios.spec import ScenarioSpec
 from egresstwin.sim.engine import Scenario, run
 from egresstwin.sim.metrics import compute_metrics
+from egresstwin.sim.social_force import SFParams
 
 
 def run_sweep(
@@ -48,9 +49,17 @@ def run_sweep(
         )
         for replica in range(replicas):
             replica_seed = seed + replica
+            params = (
+                SFParams(desired_speed_mean=spec.desired_speed_mps, desired_speed_sd=0.0)
+                if spec.desired_speed_mps is not None
+                else SFParams()
+            )
             scenario = Scenario(
                 max_time_s=spec.max_time_s, blocked_exit_ids=blocked,
                 events=tuple(spec.events),
+                pre_movement_min_s=spec.pre_movement_min_s,
+                pre_movement_max_s=spec.pre_movement_max_s,
+                params=params,
             )
             result = run(modified, scenario, seed=replica_seed)
             metrics = compute_metrics(result, modified)

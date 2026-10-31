@@ -48,3 +48,9 @@ class ScenarioSpec(BaseModel):
     blocked_exit_ids: list[str] = Field(default_factory=list)
     max_time_s: float = Field(default=300.0, gt=0)
     events: list[SimEvent] = Field(default_factory=list)  # timed live events (P07)
+    # Pre-movement (reaction) times, uniform in [min, max]; 0 = instant.
+    pre_movement_min_s: float = Field(default=0.0, ge=0)
+    pre_movement_max_s: float = Field(default=0.0, ge=0)
+    # Fixed desired speed for every agent (verification cases); None
+    # keeps the engine's population distribution.
+    desired_speed_mps: float | None = Field(default=None, gt=0)

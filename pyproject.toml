@@ -37,6 +37,7 @@ packages = ["src/egresstwin"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = ["slow: long-running simulation tests (verification cases)"]
 
 [tool.ruff]
 line-length = 100
