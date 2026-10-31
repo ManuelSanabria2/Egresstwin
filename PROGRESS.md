@@ -335,3 +335,27 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
   replication is wanted before the deadline.
 - Accumulated API cost: unchanged, ~USD 0.08 (verification is
   pure simulation; API cost zero by construction).
+
+## 2026-10-31 - Submission materials: final README, NEW_WORK, video script, checklist
+
+- Done: `README.md` rewritten in English with real results only (demo
+  baseline T95 10.9 s, 95% CI 8.4-13.4; agent VERIFIED honest
+  no-improvement 2/2, acceptance widening case 10/10; verification
+  5/6 with the V6 failure explained; bench 1.75/4.45/36.26 s and
+  20.7 scenarios/min from `data/demo/bench.json`; 70 tests; about
+  USD 0.08 API spend). No TBD remains.
+- Done: `NEW_WORK.md` completed (first commit 2026-10-27 20:13 -05:00
+  `9c161b2`, full commit table, every new module, inspiration,
+  published-work reuse declared).
+- Done: `docs/submission/video_script.md` (timed 0:00-3:00),
+  `submission_text.md` (short and long), `checklist.md` (public repo
+  verified without sign-in, MIT license, secret scan of full history
+  clean via the `git log -p` fallback - gitleaks not installed here;
+  video upload and form submission remain manual for Manuel before
+  6:00 PM Colombia).
+- Done: `docs/screenshots/` generated from the real demo cache by
+  `scripts/make_screenshots.py` and registered in `data/ASSETS.md`.
+- Note: pre-existing working-tree changes from the previous task
+  (engine wall-ahead fallback, upload validation, demo/cost scripts)
+  are intentionally not part of the submission commit.
+- Accumulated API cost: unchanged, ~USD 0.08 (this task used no API).
