@@ -196,6 +196,7 @@ class SimulateRequest(BaseModel):
     max_time_s: float = Field(default=90.0, gt=0)
     modifications: list[dict[str, Any]] = Field(default_factory=list)
     blocked_exit_ids: list[str] = Field(default_factory=list)
+    events: list[dict[str, Any]] = Field(default_factory=list)  # timed events (P07)
     name: str = "simulation"
 
 
@@ -240,15 +241,22 @@ def animation_payload(layout: Layout, result: Any, metrics: Any) -> dict[str, An
             "n_people": metrics.n_people, "n_exited": metrics.n_exited,
             "hotspots": metrics.hotspots[:5],
         },
+        "events": getattr(result, "applied_events", []),
+        "warnings": getattr(result, "warnings", []),
     }
 
 
 def simulate_once(layout: Layout, *, seed: int = 42, max_time_s: float = 90.0,
-                  blocked: frozenset[str] = frozenset()) -> dict[str, Any]:
+                  blocked: frozenset[str] = frozenset(),
+                  events: tuple = ()) -> dict[str, Any]:
     from egresstwin.sim.engine import Scenario, run
     from egresstwin.sim.metrics import compute_metrics
 
-    result = run(layout, Scenario(max_time_s=max_time_s, blocked_exit_ids=blocked), seed=seed)
+    result = run(
+        layout,
+        Scenario(max_time_s=max_time_s, blocked_exit_ids=blocked, events=tuple(events)),
+        seed=seed,
+    )
     return animation_payload(layout, result, compute_metrics(result, layout))
 
 
@@ -497,6 +505,7 @@ def create_app(
             spec = ScenarioSpec(
                 name=req.name, modifications=req.modifications,  # type: ignore[arg-type]
                 blocked_exit_ids=req.blocked_exit_ids, max_time_s=req.max_time_s,
+                events=req.events,  # type: ignore[arg-type]
             )
             records = run_sweep(
                 record.layout, [spec], replicas=req.replicas, seed=req.seed
@@ -506,6 +515,7 @@ def create_app(
             animation = simulate_once(
                 modified, seed=req.seed, max_time_s=req.max_time_s,
                 blocked=frozenset(req.blocked_exit_ids),
+                events=tuple(spec.events),
             )
             return {
                 "name": req.name,

@@ -6,6 +6,8 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
 
+from egresstwin.sim.events import SimEvent
+
 Point = tuple[float, float]
 
 
@@ -45,3 +47,4 @@ class ScenarioSpec(BaseModel):
     modifications: list[Modification] = Field(default_factory=list)
     blocked_exit_ids: list[str] = Field(default_factory=list)
     max_time_s: float = Field(default=300.0, gt=0)
+    events: list[SimEvent] = Field(default_factory=list)  # timed live events (P07)

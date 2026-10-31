@@ -60,6 +60,10 @@ img.figure{max-width:100%;border:1px solid var(--line);border-radius:6px;backgro
 .small{color:var(--muted);font-size:13.5px}
 .status{font-weight:700}
 .kbd{background:var(--surface2);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+#event-timeline{position:relative;height:22px;background:var(--surface2);border:1px solid var(--line);border-radius:6px;cursor:pointer;margin:8px 0}
+.tl-marker{position:absolute;top:2px;width:4px;height:18px;background:var(--bad);border-radius:2px}
+.tl-marker.planned{background:var(--warn)}
+.tl-playhead{position:absolute;top:0;width:2px;height:22px;background:var(--accent)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 </head>
@@ -129,7 +133,31 @@ img.figure{max-width:100%;border:1px solid var(--line);border-radius:6px;backgro
   </p>
   <canvas id="sim-canvas" class="stage" width="900" height="500"></canvas>
   <p class="small">Time: <span id="sim-time">0.0</span> s &nbsp;|&nbsp; dots are people; red lines are exits.</p>
+  <div class="card">
+    <h3>Live event: something unexpected happens</h3>
+    <p>
+      <label>Type
+        <select id="event-type">
+          <option value="none">No event</option>
+          <option value="block_exit">Block an exit</option>
+          <option value="reopen_exit">Reopen an exit</option>
+          <option value="hazard_zone">Hazard zone (smoke / cordoned area)</option>
+        </select></label>
+      <label>Exit <select id="event-exit"></select></label>
+      <label>At second <input id="event-at" type="number" value="30" min="0" step="1" style="width:80px"></label>
+      <button id="event-pick-exit" type="button" class="secondary">Pick exit on canvas</button>
+      <button id="event-draw-hazard" type="button" class="secondary">Draw hazard zone</button>
+      <button id="event-finish-hazard" type="button" class="secondary" hidden>Finish zone</button>
+      <button id="event-clear" type="button" class="secondary">Clear event</button>
+    </p>
+    <p class="small" id="event-hint">Choose a type, click an exit on the canvas (or pick it from the list), set the second, then run the simulation. Click the timeline to move the event time.</p>
+    <div id="event-timeline" title="Click to set the event time"></div>
+    <p class="small" id="event-summary">No event configured.</p>
+  </div>
+  <div class="warnbox" id="sim-event-banner"></div>
+  <div class="warnbox" id="sim-warnings"></div>
   <div class="metrics" id="sim-metrics"></div>
+  <div id="sim-events"></div>
 </section>
 <section class="tab" id="tab-agent">
   <h2>An agent that has to prove it</h2>
@@ -177,6 +205,7 @@ const state = {
   layout: null, layoutId: null, image: null, previewUrl: null,
   scalePoints: [], editMode: "none", pending: [], wallPoints: [],
   simAnim: null, agentBase: null, agentRec: null,
+  eventPick: null, hazardPts: [],
 };
 function setStatus(text) { $("global-status").textContent = text; }
 function esc(s) { const d = document.createElement("div"); d.textContent = String(s ?? ""); return d.innerHTML; }
@@ -272,6 +301,7 @@ function drawLayout() {
     state.scalePoints.concat(state.pending, state.wallPoints).forEach((p) => {
       ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, 7); ctx.fill();
     });
+    if (typeof refreshEventExits === "function") refreshEventExits();
     $("layout-warnings").innerHTML = (L.warnings || []).map((x) => "⚠ " + esc(x)).join("<br>");
     $("exit-list").innerHTML = "<h3>Exits</h3>" + L.exits.map((e) =>
       '<p>' + esc(e.id) + " — " + e.width_m.toFixed(2) + ' m <button type="button" class="secondary" data-remove-exit="' +
@@ -397,10 +427,96 @@ function drawDensity(ctx, anim, sx, sy) {
   }));
 }
 function frameAt(anim, t) { return Math.max(0, Math.min(anim.frames.length - 1, Math.floor(t / anim.frame_dt))); }
+/* ---------- live events (P07) ---------- */
+function simDuration() {
+  return state.simAnim ? state.simAnim.frames.length * state.simAnim.frame_dt : 120;
+}
+function refreshEventExits() {
+  const sel = $("event-exit");
+  const exits = (state.layout && state.layout.exits) || [];
+  const current = sel.value;
+  sel.innerHTML = exits.map((e) => '<option value="' + esc(e.id) + '">' + esc(e.id) + "</option>").join("");
+  if (exits.some((e) => e.id === current)) sel.value = current;
+}
+function configuredEvent() {
+  const type = $("event-type").value;
+  const at = Math.max(0, Number($("event-at").value || 0));
+  if (type === "block_exit" || type === "reopen_exit") {
+    const exitId = $("event-exit").value;
+    return exitId ? {type: type, exit_id: exitId, at_s: at} : null;
+  }
+  if (type === "hazard_zone" && state.hazardPts.length >= 3)
+    return {type: "hazard_zone", polygon: state.hazardPts, at_s: at};
+  return null;
+}
+function eventLabel(ev) {
+  if (!ev) return "No event configured.";
+  if (ev.type === "hazard_zone") return "Hazard zone at t = " + ev.at_s + " s (" + ev.polygon.length + " points). Run the simulation to apply it.";
+  return (ev.type === "block_exit" ? "Block exit " : "Reopen exit ") + ev.exit_id + " at t = " + ev.at_s + " s. Run the simulation to apply it.";
+}
+function renderTimeline() {
+  const bar = $("event-timeline");
+  const dur = Math.max(simDuration(), 1);
+  const planned = configuredEvent();
+  let html = '<div class="tl-playhead" style="left:' + Math.min(100, simClock.t / dur * 100) + '%"></div>';
+  if (planned) html += '<div class="tl-marker planned" title="planned" style="left:calc(' + Math.min(100, planned.at_s / dur * 100) + '% - 2px)"></div>';
+  ((state.simAnim && state.simAnim.events) || []).forEach((ev) => {
+    html += '<div class="tl-marker" title="' + esc(ev.type) + '" style="left:calc(' + Math.min(100, (ev.applied_at_s ?? ev.at_s) / dur * 100) + '% - 2px)"></div>';
+  });
+  bar.innerHTML = html;
+  let label = eventLabel(planned);
+  if (planned && state.simAnim && planned.at_s > dur)
+    label += " Warning: the current animation ends at " + dur.toFixed(1) + " s, so this event would not fire in it.";
+  $("event-summary").textContent = label;
+}
+function blockedAt(anim, t) {
+  const blocked = new Set();
+  ((anim && anim.events) || []).forEach((ev) => {
+    if (ev.at_s > t) return;
+    if (ev.type === "block_exit") blocked.add(ev.exit_id);
+    if (ev.type === "reopen_exit") blocked.delete(ev.exit_id);
+  });
+  return blocked;
+}
+function drawEventOverlay() {
+  const anim = state.simAnim;
+  if (!anim) return;
+  const c = $("sim-canvas"), ctx = c.getContext("2d");
+  const sx = c.width / anim.width_m, sy = c.height / anim.height_m, t = simClock.t;
+  ctx.fillStyle = "rgba(200,40,30,0.30)";
+  (anim.events || []).filter((ev) => ev.type === "hazard_zone" && ev.at_s <= t).forEach((ev) => {
+    ctx.beginPath();
+    ev.polygon.forEach((p, i) => { if (i) ctx.lineTo(p[0] * sx, p[1] * sy); else ctx.moveTo(p[0] * sx, p[1] * sy); });
+    ctx.closePath(); ctx.fill();
+  });
+  if (state.hazardPts.length) {
+    ctx.strokeStyle = "#a12622"; ctx.fillStyle = "#a12622"; ctx.lineWidth = 2;
+    ctx.beginPath();
+    state.hazardPts.forEach((p, i) => { if (i) ctx.lineTo(p[0] * sx, p[1] * sy); else ctx.moveTo(p[0] * sx, p[1] * sy); });
+    ctx.stroke();
+    state.hazardPts.forEach((p) => { ctx.beginPath(); ctx.arc(p[0] * sx, p[1] * sy, 4, 0, 7); ctx.fill(); });
+  }
+  const blocked = blockedAt(anim, t);
+  ctx.strokeStyle = "#222222"; ctx.lineWidth = 4;
+  (anim.exits || []).filter((e) => blocked.has(e.id)).forEach((e) => {
+    const a = e.segment_m[0], b = e.segment_m[1];
+    ctx.beginPath();
+    ctx.moveTo(a[0] * sx - 7, a[1] * sy - 7); ctx.lineTo(a[0] * sx + 7, a[1] * sy + 7);
+    ctx.moveTo(a[0] * sx + 7, a[1] * sy - 7); ctx.lineTo(a[0] * sx - 7, a[1] * sy + 7);
+    ctx.moveTo(b[0] * sx, b[1] * sy); ctx.lineTo(a[0] * sx, a[1] * sy);
+    ctx.stroke();
+  });
+  const fired = (anim.events || []).filter((ev) => Math.abs(t - (ev.applied_at_s ?? ev.at_s)) <= 1.5);
+  $("sim-event-banner").textContent = fired.length
+    ? fired.map((ev) => "t = " + (ev.applied_at_s ?? ev.at_s) + " s: " + ev.type.replace("_", " ") + (ev.exit_id ? " " + ev.exit_id : "") + " — people re-route now.").join(" ")
+    : "";
+  renderTimeline();
+}
 function drawSim() {
   if (!state.simAnim) return;
   drawAgents($("sim-canvas").getContext("2d"), state.simAnim, frameAt(state.simAnim, simClock.t),
     $("sim-canvas").width, $("sim-canvas").height, $("sim-heat").checked);
+  drawEventOverlay();
   $("sim-time").textContent = simClock.t.toFixed(1);
 }
 function tick(ts) {
@@ -416,12 +532,69 @@ function tick(ts) {
 requestAnimationFrame(tick);
 $("sim-play").addEventListener("click", () => { simClock.playing = !simClock.playing; });
 $("sim-heat").addEventListener("change", drawSim);
+$("event-pick-exit").addEventListener("click", () => {
+  state.eventPick = "exit";
+  if ($("event-type").value === "none") $("event-type").value = "block_exit";
+  $("event-hint").textContent = "Click near an exit on the simulation canvas.";
+});
+$("event-draw-hazard").addEventListener("click", () => {
+  state.eventPick = "hazard"; state.hazardPts = [];
+  $("event-type").value = "hazard_zone";
+  $("event-finish-hazard").hidden = true;
+  $("event-hint").textContent = "Click the corners of the hazard zone on the simulation canvas, then Finish zone.";
+  drawSim();
+});
+$("event-finish-hazard").addEventListener("click", () => {
+  state.eventPick = null;
+  $("event-finish-hazard").hidden = true;
+  $("event-hint").textContent = eventLabel(configuredEvent());
+  renderTimeline(); drawSim();
+});
+$("event-clear").addEventListener("click", () => {
+  state.eventPick = null; state.hazardPts = [];
+  $("event-type").value = "none";
+  renderTimeline(); drawSim();
+});
+["event-type", "event-exit", "event-at"].forEach((id) =>
+  $(id).addEventListener("change", () => { renderTimeline(); drawSim(); }));
+$("event-timeline").addEventListener("click", (ev) => {
+  const r = $("event-timeline").getBoundingClientRect();
+  const frac = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+  $("event-at").value = Math.round(frac * simDuration() * 10) / 10;
+  renderTimeline();
+});
+$("sim-canvas").addEventListener("click", (ev) => {
+  if (!state.eventPick || !state.simAnim) return;
+  const p = canvasPoint(ev, $("sim-canvas"));
+  const m = [p[0] / $("sim-canvas").width * state.simAnim.width_m,
+             p[1] / $("sim-canvas").height * state.simAnim.height_m];
+  if (state.eventPick === "exit") {
+    let best = null, bestD = 1.5;
+    (state.simAnim.exits || []).forEach((e) => {
+      const a = e.segment_m[0], b = e.segment_m[1];
+      const dx = b[0] - a[0], dy = b[1] - a[1];
+      const tt = Math.min(1, Math.max(0, ((m[0] - a[0]) * dx + (m[1] - a[1]) * dy) / (dx * dx + dy * dy || 1)));
+      const d = Math.hypot(m[0] - (a[0] + tt * dx), m[1] - (a[1] + tt * dy));
+      if (d < bestD) { bestD = d; best = e.id; }
+    });
+    if (best) { $("event-exit").value = best; state.eventPick = null;
+      $("event-hint").textContent = eventLabel(configuredEvent()); }
+    else $("event-hint").textContent = "No exit near that click. Try closer to a red exit line.";
+  } else if (state.eventPick === "hazard") {
+    state.hazardPts.push([Math.round(m[0] * 100) / 100, Math.round(m[1] * 100) / 100]);
+    $("event-finish-hazard").hidden = state.hazardPts.length < 3;
+    $("event-hint").textContent = state.hazardPts.length + " point(s). " +
+      (state.hazardPts.length >= 3 ? "Finish zone when the polygon is complete." : "Keep clicking.");
+  }
+  renderTimeline(); drawSim();
+});
 $("sim-btn").addEventListener("click", async () => {
   if (!state.layoutId) { setStatus("Build a layout first, or load the demo."); return; }
   try {
+    const ev = configuredEvent();
     const started = await api("/api/layouts/" + state.layoutId + "/simulate", {
       method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({replicas: Number($("sim-replicas").value || 3)}),
+      body: JSON.stringify({replicas: Number($("sim-replicas").value || 3), events: ev ? [ev] : []}),
     });
     const result = await pollJob(started.job_id, $("sim-status"));
     showSimulation(result);
@@ -430,7 +603,18 @@ $("sim-btn").addEventListener("click", async () => {
 });
 function showSimulation(result) {
   state.simAnim = result.animation;
+  refreshEventExits();
   simClock.t = 0; simClock.playing = true;
+  const animEv = (result.animation && result.animation.events) || [];
+  $("sim-warnings").innerHTML = ((result.animation && result.animation.warnings) || [])
+    .map((w) => "Warning: " + esc(w)).join("<br>");
+  $("sim-events").innerHTML = animEv.length
+    ? "<h3>Live events in this run</h3>" + animEv.map((ev) =>
+        '<p class="small">t = ' + esc(ev.applied_at_s ?? ev.at_s) + " s — " + esc(ev.type) +
+        (ev.exit_id ? " " + esc(ev.exit_id) : "") +
+        " (floor field recomputed for: " + esc((ev.recomputed_exit_ids || []).join(", ") || "none — slice dropped") + ")" +
+        (ev.relocated_agents ? ", relocated " + ev.relocated_agents + " people" : "") + "</p>").join("")
+    : "";
   const a = result.aggregates || {};
   const m = state.simAnim.metrics || {};
   const ci = (k) => a[k] ? a[k].mean.toFixed(1) + " s (95% CI " + a[k].ci_low.toFixed(1) + "–" + a[k].ci_high.toFixed(1) + ")" : "—";
@@ -562,6 +746,7 @@ $("demo-btn").addEventListener("click", async () => {
   } catch (e) { setStatus("Demo failed: " + e.message); }
 });
 api("/api/bench").then(showBench).catch(() => {});
+renderTimeline();
 drawLayout();
 </script>
 </body>

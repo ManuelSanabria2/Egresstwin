@@ -51,6 +51,9 @@ class ScenarioIdArgs(BaseModel):
 class StressTestArgs(BaseModel):
     scenario_id: str = Field(min_length=1)
     replicas: int = Field(default=5, ge=1, le=MAX_REPLICAS)
+    # None (default): blocked from t = 0, as before. A value blocks the
+    # exit mid-evacuation at that second instead (P07 timed event).
+    block_at_s: float | None = Field(default=None, ge=0)
 
 
 class CompareArgs(BaseModel):
@@ -100,7 +103,8 @@ _DESCRIPTIONS = {
     "get_baseline": "Run or retrieve the unmodified baseline scenario with replicas.",
     "run_scenarios": "Simulate up to 8 modification scenarios. Returns metrics with CIs.",
     "get_hotspots": "Highest-density zones and saturated exits of a simulated scenario.",
-    "stress_test": "N-1 test: block each exit in turn and report T95 with CI.",
+    "stress_test": "N-1 test: block each exit in turn and report T95 with CI. "
+    "Optional block_at_s blocks mid-evacuation at that second instead of from t=0.",
     "compare": "Compare two scenarios: mean difference, Welch test and effect size.",
     "submit_report": "Mandatory closing call with the structured final report.",
 }
@@ -258,40 +262,62 @@ class AgentTools:
             "exits_by_saturation": exits,
         }
 
-    def stress_test(self, scenario_id: str, replicas: int = 5) -> dict[str, Any]:
+    def stress_test(
+        self, scenario_id: str, replicas: int = 5, block_at_s: float | None = None
+    ) -> dict[str, Any]:
         record = self._require(scenario_id)
         mods = _mods_of(record)
         results = []
         for exit_id in record.exit_ids:
-            cached = self.store.stress.get((scenario_id, exit_id))
+            # Timed blocks live under a distinct store key so the
+            # verifier's t=0 lookup is never polluted by a P07 run.
+            stress_key = (
+                (scenario_id, exit_id)
+                if block_at_s is None
+                else (scenario_id, f"{exit_id}@{block_at_s:g}")
+            )
+            cached = self.store.stress.get(stress_key)
             if cached is not None:
                 stressed = cached
-            elif len(record.exit_ids) <= 1:
+            elif len(record.exit_ids) <= 1 and block_at_s is None:
                 # Blocking the only exit: nobody can leave, by definition.
                 stressed = self._penalty_record(scenario_id, exit_id, replicas)
                 self.store.add_stress(scenario_id, exit_id, stressed)
             else:
-                stress_id = f"{scenario_id}--no-{exit_id}"
-                spec = ScenarioSpec(
-                    name=stress_id,
-                    modifications=mods,
-                    blocked_exit_ids=[*record.blocked_exit_ids, exit_id],
-                    max_time_s=self.default_max_time_s,
-                )
+                if block_at_s is None:
+                    stress_id = f"{scenario_id}--no-{exit_id}"
+                    spec = ScenarioSpec(
+                        name=stress_id,
+                        modifications=mods,
+                        blocked_exit_ids=[*record.blocked_exit_ids, exit_id],
+                        max_time_s=self.default_max_time_s,
+                    )
+                else:
+                    from egresstwin.sim.events import BlockExitEvent
+
+                    stress_id = f"{scenario_id}--no-{exit_id}-at-{block_at_s:g}"
+                    spec = ScenarioSpec(
+                        name=stress_id,
+                        modifications=mods,
+                        blocked_exit_ids=list(record.blocked_exit_ids),
+                        max_time_s=self.default_max_time_s,
+                        events=[BlockExitEvent(exit_id=exit_id, at_s=block_at_s)],
+                    )
                 try:
                     stressed = self._run_specs([spec], replicas, ids=[stress_id])[0]
                 except Exception as exc:  # noqa: BLE001 - reported, not hidden
                     results.append(
-                        {"blocked_exit_id": exit_id, "error": str(exc),
-                         "t95_s": None}
+                        {"blocked_exit_id": exit_id, "block_at_s": block_at_s,
+                         "error": str(exc), "t95_s": None}
                     )
                     continue
-                self.store.stress[(scenario_id, exit_id)] = stressed
+                self.store.stress[stress_key] = stressed
             agg = stressed.aggregate("t95_s")
             base = record.aggregate("t95_s")
             results.append(
                 {
                     "blocked_exit_id": exit_id,
+                    "block_at_s": block_at_s,
                     "scenario_id": stressed.scenario_id,
                     "t95_s": agg,
                     "delta_vs_unblocked_pct": (

@@ -44,11 +44,13 @@ def run_sweep(
             modifications=[m.model_dump(mode="json") for m in spec.modifications],
             blocked_exit_ids=list(spec.blocked_exit_ids),
             exit_ids=[e.id for e in modified.exits if e.id not in blocked],
+            events=[e.model_dump(mode="json") for e in spec.events],
         )
         for replica in range(replicas):
             replica_seed = seed + replica
             scenario = Scenario(
-                max_time_s=spec.max_time_s, blocked_exit_ids=blocked
+                max_time_s=spec.max_time_s, blocked_exit_ids=blocked,
+                events=tuple(spec.events),
             )
             result = run(modified, scenario, seed=replica_seed)
             metrics = compute_metrics(result, modified)

@@ -228,3 +228,56 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
   the app tests run outside the sandbox (as in CI).
 - Accumulated API cost: unchanged, ~USD 0.08 (the demo cache and
   the app tests spend nothing).
+
+## 2026-10-30 - P07 (optional): timed live events by click
+
+- Done: `sim/events.py` (`block_exit` / `reopen_exit` / `hazard_zone`
+  with activation time `at_s`, discriminated union, stable time
+  ordering). Relocation rule for hazard zones, documented in the
+  module: anyone standing on a cell that turns non-walkable moves to
+  the centre of the nearest still-walkable cell (Euclidean nearest
+  via EDT, velocity zeroed). If a hazard disconnects walkable cells
+  from every open exit, the run records a warning; it never passes
+  silently.
+- Done: `sim/engine.py` applies events mid-run and recomputes only
+  the affected floor-field slices (new `single_exit_field` in
+  `sim/floor_field.py`): blocking drops the slice to inf with zero
+  Dijkstra runs and seals the exit opening, reopening recomputes
+  exactly that exit, a hazard recomputes only the exits still open.
+  People heading to a blocked exit re-choose by geodesic distance;
+  with no reachable open exit they wait (assigned -1). Each applied
+  event is logged in `SimResult.applied_events` with its
+  `recomputed_exit_ids`, relocated count and disconnected count;
+  hazard warnings land in `SimResult.warnings`.
+- Done: events are part of `scenarios/spec.py` `ScenarioSpec`, flow
+  through `parallel/sweep.py` into every replica, and are stored on
+  the scenario record (`parallel/store.py`, flushed to JSON).
+  `agent/tools.py` `stress_test` accepts optional `block_at_s`
+  (default None = block from t = 0, exactly as before; timed runs
+  use a distinct store key so the verifier's t=0 lookup is intact).
+- Done: Simulation tab UI - event type/exit/second controls, click
+  an exit on the canvas to pick it, draw a hazard polygon by clicks,
+  clickable timeline with planned (amber) and applied (red) markers
+  plus playhead, event banner at the firing second, blocked exits
+  crossed out and hazard zones shaded during playback, and a warning
+  if the chosen second falls after the animation ends. The simulate
+  endpoint accepts `events` and the animation payload carries the
+  applied events and warnings. No voice, no API calls.
+- Tests: `tests/test_events.py` (7 tests) - blocking the only near
+  exit at t = 30 s reroutes everyone remaining through the far exit
+  (zero exits through the blocked one), reopen recomputes only that
+  exit, hazard disconnection warns with a disconnected-cell count,
+  hazard relocation empties the zone in every later frame, same spec
+  + seed gives identical results through both the engine and the
+  sweep/store, timed `stress_test`, and the API animation payload.
+  Full suite: 60 passed plus the 4 `test_app.py` tests that this
+  sandbox blocks on loopback sockets (verified passing outside it),
+  `ruff check` clean.
+- Demo check: the cached demo room (12 people) evacuates in ~10 s,
+  so a t = 30 s block can only fire in a longer run; on the same
+  demo plan with 120 people, blocking E2 at t = 30 s reroutes
+  everyone remaining (120/120 out, T95 28.5 s; probe kept at
+  `runs/_p07_demo_probe.py`). The UI warns when an event second
+  falls after the current animation ends.
+- Accumulated API cost: unchanged, ~USD 0.08 (P07 is pure
+  simulation; API cost zero by construction).

@@ -118,15 +118,23 @@ def _directions(
     return dx.astype(np.float64), dy.astype(np.float64)
 
 
+def single_exit_field(
+    walkable: np.ndarray, cell_size_m: float, ex: Exit
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """(distance, dir_x, dir_y) grids for one exit over ``walkable``."""
+    sources = exit_source_cells(walkable, ex.segment, cell_size_m)
+    if len(sources) == 0:
+        raise ValueError(f"exit {ex.id!r} does not touch any walkable cell")
+    dist = _dijkstra(walkable, sources, cell_size_m)
+    dx, dy = _directions(dist, ex.midpoint, cell_size_m)
+    return dist, dx, dy
+
+
 def compute_floor_field(walkable: np.ndarray, cell_size_m: float, exits: list[Exit]) -> FloorField:
     """Distance and direction grids for every exit in the list."""
     distances, dir_xs, dir_ys = [], [], []
     for ex in exits:
-        sources = exit_source_cells(walkable, ex.segment, cell_size_m)
-        if len(sources) == 0:
-            raise ValueError(f"exit {ex.id!r} does not touch any walkable cell")
-        dist = _dijkstra(walkable, sources, cell_size_m)
-        dx, dy = _directions(dist, ex.midpoint, cell_size_m)
+        dist, dx, dy = single_exit_field(walkable, cell_size_m, ex)
         distances.append(dist), dir_xs.append(dx), dir_ys.append(dy)
     return FloorField(
         distances=np.stack(distances),

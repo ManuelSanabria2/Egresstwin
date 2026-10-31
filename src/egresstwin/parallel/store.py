@@ -37,6 +37,7 @@ class ScenarioRecord:
     modifications: list[dict[str, Any]] = field(default_factory=list)
     blocked_exit_ids: list[str] = field(default_factory=list)
     exit_ids: list[str] = field(default_factory=list)
+    events: list[dict[str, Any]] = field(default_factory=list)
     replicas: list[ReplicaMetrics] = field(default_factory=list)
 
     def values(self, metric: str) -> np.ndarray:
@@ -125,6 +126,7 @@ class ScenarioStore:
                 "modifications": rec.modifications,
                 "blocked_exit_ids": rec.blocked_exit_ids,
                 "exit_ids": rec.exit_ids,
+                "events": rec.events,
                 "aggregates": {k: rec.aggregate(k) for k in METRIC_KEYS},
                 "replicas": [
                     {k: getattr(r, k) for k in ("seed", *METRIC_KEYS, "n_people", "n_exited")}
