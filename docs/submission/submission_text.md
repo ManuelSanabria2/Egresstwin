@@ -9,7 +9,7 @@ social-force simulator (verified 5/6 against the standard RiMEA
 test cases) measures it across replicas, a Spark agent proposes
 improvements and stress-tests them N-1, and a deterministic verifier
 stamps the report VERIFIED only when every number checks out. Built
-in the hackathon for about USD 0.08 of API spend; 70 tests; runs
+in the hackathon for about USD 0.08 of API spend; 75 tests; runs
 fully offline in mock/demo mode.
 
 ## Long version (project page)
@@ -49,9 +49,9 @@ digital twin:
    honest "change nothing" is verified as such - on the bundled
    demo plan the agent explored widening both exits, found no
    significant improvement, recommended nothing, and was stamped
-   VERIFIED (2/2 checks). In the acceptance test on a clogged room,
+   VERIFIED (3/3 checks). In the acceptance test on a clogged room,
    it widened an exit from 0.5 m to 2.4 m (T95 from a censored 60 s
-   to 4.6 s), passed N-1, and earned VERIFIED with 10/10 claims.
+   to 4.6 s), passed N-1, and earned VERIFIED with 11/11 claims.
 
 ### Evidence, not adjectives
 
@@ -64,7 +64,7 @@ digital twin:
 - Performance on a 4-core Ryzen, no GPU: 30 people in 1.75 s,
   300 in 36.26 s; a 4-scenario x 3-replica sweep in 34.82 s
   (20.7 scenarios/min).
-- 70 tests pass, `ruff` clean. Total API spend for the whole
+- 75 tests pass, `ruff` clean. Total API spend for the whole
   project: about USD 0.08, behind a hard budget guard.
 - Runs with no network and no API key: `python scripts/demo.py --mock`,
   or the web app's cached demo mode.

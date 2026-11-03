@@ -8,20 +8,21 @@ One integration test at the bottom uses the real engine.
 from __future__ import annotations
 
 import json
+import zlib
 from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from pydantic import ValidationError
 
 from egresstwin.agent.loop import AgentLoop
 from egresstwin.agent.report import AgentReport
-from egresstwin.agent.tools import AgentTools, tool_schemas
+from egresstwin.agent.tools import AgentTools, RunScenariosArgs, tool_schemas
 from egresstwin.agent.verifier import verify_report
 from egresstwin.layout.schema import Exit, Layout, Obstacle, SpawnZone
 from egresstwin.parallel.store import ReplicaMetrics, ScenarioRecord, ScenarioStore
 from egresstwin.scenarios.apply import apply_modifications
-from egresstwin.scenarios.spec import ScenarioSpec
 
 
 def room() -> Layout:
@@ -58,7 +59,7 @@ def fake_runner(layout, specs, *, replicas, seed, store, scenario_ids):  # noqa:
             t95, peak = 13.0, 3.8
         if spec.blocked_exit_ids:
             t95 *= 1.1
-        rng = np.random.default_rng(abs(hash(sid)) % 1000)
+        rng = np.random.default_rng(zlib.crc32(sid.encode()))  # hash() varies per process
         modified = apply_modifications(layout, list(spec.modifications))
         blocked = set(spec.blocked_exit_ids)
         record = ScenarioRecord(
@@ -231,7 +232,7 @@ def test_verifier_catches_invented_number_directly() -> None:
     store = ScenarioStore()
     tools = AgentTools(layout, store=store, sweep_runner=fake_runner, default_max_time_s=60.0)
     tools.get_baseline(replicas=5)
-    tools.run_scenarios([ScenarioSpec(name="widen", modifications=[WIDEN])], replicas=5)
+    tools.run_scenarios([{"name": "widen", "modifications": [WIDEN]}], replicas=5)
     widen_id = _widen_id(tools)
     tools.stress_test(widen_id, replicas=3)
     bad = AgentReport.model_validate(good_report(tools, t95_factor=0.5)["report"])
@@ -270,8 +271,8 @@ def test_real_layout_agent_finds_verified_improvement(tmp_path: Path) -> None:
     tools = AgentTools(room(), store=store, default_max_time_s=60.0)
     turns = [
         [("get_layout_summary", {}), ("get_baseline", {"replicas": 3})],
-        [("run_scenarios", {"specs": [{"name": "widen", "modifications": [WIDEN],
-                                       "max_time_s": 60.0}], "replicas": 3})],
+        [("run_scenarios", {"specs": [{"name": "widen", "modifications": [WIDEN]}],
+                            "replicas": 3})],
         [("stress_test", lambda t: {"scenario_id": _widen_id(t), "replicas": 2})],
         [("submit_report", good_report)],
     ]
@@ -302,3 +303,138 @@ def test_apply_modifications_feasibility() -> None:
         apply_modifications(
             layout, [{"type": "widen_exit", "exit_id": "E", "width_m": 0.4}]
         )
+
+
+# fake_runner leaves T95 unchanged for remove_obstacle: a change that does nothing.
+CLEAR = {"type": "remove_obstacle", "obstacle_id": "pile"}
+
+
+def report_for(tools: AgentTools, recs: list[tuple[str, dict]], *,
+               baseline_id: str = "baseline") -> AgentReport:
+    """Report that copies the store exactly for each (scenario_id, modification)."""
+    store = tools.store
+    recommendations, robustness = [], []
+    for scenario_id, mod in recs:
+        record = store.get(scenario_id)
+        assert record is not None
+        recommendations.append(
+            {"modifications": [mod], "scenario_id": scenario_id,
+             "claimed_metrics": {"t95_s": record.aggregate("t95_s")["mean"]}}
+        )
+        robustness += [
+            {"scenario_id": scenario_id, "blocked_exit_id": e,
+             "claimed_t95_s": store.stress[(scenario_id, e)].aggregate("t95_s")["mean"]}
+            for e in record.exit_ids
+        ]
+    return AgentReport.model_validate(
+        {"baseline_id": baseline_id, "objective": "minimize_t95",
+         "recommendations": recommendations, "robustness": robustness}
+    )
+
+
+def test_report_cannot_pick_a_slower_baseline() -> None:
+    """Naming a stress record (an exit blocked) as baseline must not prove a no-op."""
+    layout = room()
+    tools = AgentTools(layout, store=ScenarioStore(), sweep_runner=fake_runner,
+                       default_max_time_s=60.0)
+    tools.get_baseline(replicas=5)
+    tools.stress_test("baseline", replicas=5)  # stores "baseline--no-W", T95 x 1.1
+    tools.run_scenarios([{"name": "clear", "modifications": [CLEAR]}], replicas=5)
+    tools.stress_test("clear", replicas=3)
+    report = report_for(tools, [("clear", CLEAR)], baseline_id="baseline--no-W")
+    verification = verify_report(report, layout, tools.store)
+    assert verification.status != "VERIFIED"
+    failed = {c.claim for c in verification.checks if not c.passed}
+    assert "baseline_matches" in failed
+    assert "[clear] significant_improvement_t95_s" in failed  # judged vs the real baseline
+
+
+def test_no_change_report_must_name_the_real_baseline() -> None:
+    """'Change nothing' measured against a slower record is not verified."""
+    layout = room()
+    tools = AgentTools(layout, store=ScenarioStore(), sweep_runner=fake_runner)
+    tools.get_baseline(replicas=3)
+    tools.stress_test("baseline", replicas=3)  # stores "baseline--no-W"
+    report = AgentReport(baseline_id="baseline--no-W", objective="minimize_t95")
+    verification = verify_report(report, layout, tools.store)
+    assert verification.status == "FAILED"
+    assert "baseline_matches" in {c.claim for c in verification.checks if not c.passed}
+
+
+def test_agent_scenarios_use_baseline_run_settings() -> None:
+    seen: list = []
+
+    def capture(layout, specs, **kwargs):  # noqa: ANN001, ANN003, ANN202
+        seen.extend(specs)
+        return fake_runner(layout, specs, **kwargs)
+
+    tools = AgentTools(room(), store=ScenarioStore(), sweep_runner=capture,
+                       default_max_time_s=60.0)
+    tools.get_baseline(replicas=3)
+    tools.run_scenarios([{"name": "widen", "modifications": [WIDEN]}], replicas=3)
+    assert len(seen) == 2
+    for spec in seen:
+        assert spec.max_time_s == 60.0
+        assert spec.desired_speed_mps is None
+        assert spec.blocked_exit_ids == [] and spec.events == []
+        assert spec.pre_movement_min_s == spec.pre_movement_max_s == 0.0
+    for extra in ({"desired_speed_mps": 2.5}, {"max_time_s": 5.0},
+                  {"blocked_exit_ids": ["W"]}, {"pre_movement_max_s": 0.0}):
+        with pytest.raises(ValidationError):
+            RunScenariosArgs.model_validate(
+                {"specs": [{"name": "x", "modifications": [WIDEN], **extra}]}
+            )
+
+
+def test_timed_stress_run_cannot_stand_in_for_n_minus_1() -> None:
+    """An added exit named "W@999" must not inherit the timed run for W."""
+    layout = room()
+    tools = AgentTools(layout, store=ScenarioStore(), sweep_runner=fake_runner,
+                       default_max_time_s=60.0)
+    tools.get_baseline(replicas=5)
+    add = {"type": "add_exit", "segment": [[8.0, 0.25], [9.0, 0.25]], "exit_id": "W@999"}
+    tools.run_scenarios([{"name": "add", "modifications": [add]}], replicas=5)
+    # Only the timed test: W "closes" at 999 s, after the run is over.
+    tools.stress_test("add", replicas=3, block_at_s=999.0)
+    assert ("add", "W@999") not in tools.store.stress
+    report = AgentReport.model_validate({
+        "baseline_id": "baseline", "objective": "minimize_t95",
+        "recommendations": [{"modifications": [add], "scenario_id": "add",
+                             "claimed_metrics": {"t95_s": tools.store.get("add")
+                                                 .aggregate("t95_s")["mean"]}}],
+        "robustness": [
+            {"scenario_id": "add", "blocked_exit_id": e,
+             "claimed_t95_s": tools.store.stress[("add", e.split("@")[0], 999.0)]
+             .aggregate("t95_s")["mean"]}
+            for e in ("E", "W", "W@999")
+        ],
+    })
+    verification = verify_report(report, layout, tools.store)
+    assert verification.status != "VERIFIED"
+    failed = {c.claim for c in verification.checks if not c.passed}
+    assert {"[add] n_minus_1[E]", "[add] n_minus_1[W]", "[add] n_minus_1[W@999]"} <= failed
+    # The real N-1 test still runs W@999 blocked from t = 0.
+    tools.stress_test("add", replicas=3)
+    assert tools.store.stress[("add", "W@999")].blocked_exit_ids == ["W@999"]
+
+
+def test_partial_status_needs_a_fully_verified_recommendation() -> None:
+    layout = room()
+    tools = AgentTools(layout, store=ScenarioStore(), sweep_runner=fake_runner,
+                       default_max_time_s=60.0)
+    tools.get_baseline(replicas=5)
+    tools.run_scenarios(
+        [{"name": "clear", "modifications": [CLEAR]},
+         {"name": "widen", "modifications": [WIDEN]}],
+        replicas=5,
+    )
+    tools.stress_test("clear", replicas=3)
+    tools.stress_test("widen", replicas=3)
+    # A feasible change with no improvement is FAILED, not partial credit.
+    alone = verify_report(report_for(tools, [("clear", CLEAR)]), layout, tools.store)
+    assert alone.status == "FAILED"
+    # Next to a recommendation that passes every check, it is partial.
+    mixed = verify_report(
+        report_for(tools, [("clear", CLEAR), ("widen", WIDEN)]), layout, tools.store
+    )
+    assert mixed.status == "PARTIALLY_VERIFIED"

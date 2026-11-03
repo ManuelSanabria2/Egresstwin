@@ -67,7 +67,7 @@ Voice: "And here is the point of the whole project. A deterministic
 verifier - plain code, no language model - rechecks every claim
 against the stored simulations. On this plan, widening did not beat
 the baseline significantly, so the honest report recommends changing
-nothing... and that honesty is what gets verified. Two of two checks,
+nothing... and that honesty is what gets verified. Three of three checks,
 VERIFIED."
 
 ### 2:05-2:20 - N-1 stress test
@@ -78,7 +78,7 @@ the Simulation tab and replay.]
 Voice: "Before any real recommendation, the agent must also survive
 an N-1 test: each exit blocked in turn. In our acceptance test, the
 agent widened a clogged exit, passed N-1, and earned VERIFIED with
-ten of ten claims. A recommendation that collapses when one door
+eleven of eleven claims. A recommendation that collapses when one door
 closes never reaches the user."
 
 ## 2:20-2:40 - Parallel performance
@@ -99,7 +99,7 @@ report. End card: repo URL and "Decision support, not a safety
 certification."]
 
 Voice: "All of this was built during the hackathon: perception,
-simulator, agent, verifier, web app - seventy tests, and the
+simulator, agent, verifier, web app - seventy-five tests, and the
 simulator itself verified against the standard RiMEA cases: five of
 six pass, and the one failure is published, not hidden. Total API
 spend: eight cents. Next: aerial photos, MPI sweeps, and calibration

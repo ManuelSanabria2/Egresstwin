@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field, TypeAdapter
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
 
 from egresstwin.agent.report import AgentReport
 from egresstwin.layout.schema import Layout
@@ -39,8 +39,22 @@ class BaselineArgs(BaseModel):
     replicas: int = Field(default=10, ge=1, le=MAX_REPLICAS)
 
 
+class AgentScenarioSpec(BaseModel):
+    """What the agent may vary: the modifications, nothing else.
+
+    Run settings (time cap, speeds, reaction times, blocked exits,
+    events) always match the baseline, so a scenario can only beat it
+    through the layout change it claims.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(min_length=1)
+    modifications: list[_Modification] = Field(default_factory=list)
+
+
 class RunScenariosArgs(BaseModel):
-    specs: list[ScenarioSpec] = Field(min_length=1, max_length=MAX_BATCH)
+    specs: list[AgentScenarioSpec] = Field(min_length=1, max_length=MAX_BATCH)
     replicas: int = Field(default=10, ge=1, le=MAX_REPLICAS)
 
 
@@ -101,7 +115,8 @@ def tool_schemas() -> list[dict[str, Any]]:
 _DESCRIPTIONS = {
     "get_layout_summary": "Exits, widths, obstacles, spawn zones and warnings of the layout.",
     "get_baseline": "Run or retrieve the unmodified baseline scenario with replicas.",
-    "run_scenarios": "Simulate up to 8 modification scenarios. Returns metrics with CIs.",
+    "run_scenarios": "Simulate up to 8 modification scenarios under the baseline's run "
+    "settings. Returns metrics with CIs.",
     "get_hotspots": "Highest-density zones and saturated exits of a simulated scenario.",
     "stress_test": "N-1 test: block each exit in turn and report T95 with CI. "
     "Optional block_at_s blocks mid-evacuation at that second instead of from t=0.",
@@ -217,13 +232,21 @@ class AgentTools:
         self.store.baseline_id = "baseline"
         return {**_record_summary(records[0]), "cached": False}
 
-    def run_scenarios(self, specs: list[ScenarioSpec], replicas: int = 10) -> dict[str, Any]:
-        specs = [
-            s if isinstance(s, ScenarioSpec) else ScenarioSpec.model_validate(s) for s in specs
+    def run_scenarios(
+        self, specs: list[AgentScenarioSpec], replicas: int = 10
+    ) -> dict[str, Any]:
+        agent_specs = [
+            s if isinstance(s, AgentScenarioSpec) else AgentScenarioSpec.model_validate(s)
+            for s in specs
         ]
-        if len(specs) > MAX_BATCH:
+        if len(agent_specs) > MAX_BATCH:
             raise ValueError(f"run_scenarios accepts at most {MAX_BATCH} scenarios per batch")
-        records = self._run_specs(specs, replicas)
+        run_specs = [
+            ScenarioSpec(name=s.name, modifications=s.modifications,
+                         max_time_s=self.default_max_time_s)
+            for s in agent_specs
+        ]
+        records = self._run_specs(run_specs, replicas)
         return {"scenarios": [_record_summary(r) for r in records]}
 
     def _require(self, scenario_id: str):  # noqa: ANN202
@@ -269,12 +292,13 @@ class AgentTools:
         mods = _mods_of(record)
         results = []
         for exit_id in record.exit_ids:
-            # Timed blocks live under a distinct store key so the
-            # verifier's t=0 lookup is never polluted by a P07 run.
-            stress_key = (
+            # Timed blocks use a 3-part key, so the verifier's 2-part
+            # t=0 lookup can never hit a P07 run, whatever the exit id
+            # (an added exit named "W@999" once could).
+            stress_key: tuple = (
                 (scenario_id, exit_id)
                 if block_at_s is None
-                else (scenario_id, f"{exit_id}@{block_at_s:g}")
+                else (scenario_id, exit_id, block_at_s)
             )
             cached = self.store.stress.get(stress_key)
             if cached is not None:

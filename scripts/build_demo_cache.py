@@ -89,8 +89,7 @@ class ScriptedModel:
                 "modifications": [
                     {"type": "widen_exit", "exit_id": "E1", "width_m": 2.6},
                     {"type": "widen_exit", "exit_id": "E2", "width_m": 2.4},
-                ],
-                "max_time_s": 90.0}], "replicas": 3})],
+                ]}], "replicas": 3})],
             [("submit_report", {"report": {
                 "baseline_id": "baseline", "objective": "minimize_t95",
                 "recommendations": [], "robustness": [],

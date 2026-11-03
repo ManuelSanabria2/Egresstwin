@@ -98,7 +98,9 @@ class ScenarioStore:
 
     def __init__(self, path: str | Path | None = None) -> None:
         self.records: dict[str, ScenarioRecord] = {}
-        self.stress: dict[tuple[str, str], ScenarioRecord] = {}
+        # (scenario_id, exit_id) for N-1 from t = 0; timed blocks add
+        # block_at_s as a third element.
+        self.stress: dict[tuple, ScenarioRecord] = {}
         self.baseline_id: str | None = None
         self.path = Path(path) if path is not None else None
 

@@ -67,12 +67,12 @@ machine, with no network and no cost:
 - Agent: explored widening both exits; no modification beat the
   baseline with statistical significance, so the report recommends
   changing nothing and the verifier stamps it **VERIFIED**
-  (2 of 2 checks). This is deliberate: the verifier rewards honesty,
+  (3 of 3 checks). This is deliberate: the verifier rewards honesty,
   not change for its own sake.
 - In the agent acceptance test (a clogged 12-person room with two
   0.5 m exits, baseline censored at 60 s), the agent widens one exit
   to 2.4 m (T95 4.6 s, everyone out), passes the N-1 stress test and
-  is stamped VERIFIED with 10 of 10 claims (`tests/test_agent.py`,
+  is stamped VERIFIED with 11 of 11 claims (`tests/test_agent.py`,
   `PROGRESS.md`).
 
 ### Simulator verification (RiMEA / Weidmann)
@@ -110,7 +110,7 @@ Measured on the development machine (Ryzen 3 3300X, 4 cores / 8 threads,
 
 ### Tests and API cost
 
-- Test suite: 70 passed (`pytest`), `ruff check` clean. The 6 web-app
+- Test suite: 75 passed (`pytest`), `ruff check` clean. The 6 web-app
   tests need loopback sockets and run outside restricted sandboxes,
   as in CI.
 - Total project API spend: USD 0.0658 in the logged ledgers

@@ -1,0 +1,11 @@
+{
+  "baseline_id": "baseline",
+  "objective": "minimize_t95",
+  "recommendations": [],
+  "robustness": [],
+  "limitations": [
+    "Decision support, not a safety certification.",
+    "No simulated modification beat the baseline with statistical significance on this plan, so no change is recommended."
+  ],
+  "summary": "Explored widening both exits; the simulations do not demonstrate an improvement, so the honest recommendation is to change nothing."
+}

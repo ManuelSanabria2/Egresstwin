@@ -74,15 +74,24 @@ def verify_report(
     def add(claim: str, passed: bool, detail: str) -> None:
         checks.append(ClaimCheck(claim=claim, passed=passed, detail=detail))
 
-    baseline = store.get(report.baseline_id)
+    # The baseline is the one get_baseline ran, never one the report
+    # names: any other scenario (an exit blocked, say) would make a
+    # do-nothing change look like an improvement.
+    baseline = store.get(store.baseline_id) if store.baseline_id else None
     add(
         "baseline_exists",
         baseline is not None,
-        f"baseline {report.baseline_id!r} "
-        + ("found in store" if baseline else "not found in store; run get_baseline"),
+        f"baseline {store.baseline_id!r} found in store"
+        if baseline
+        else "no baseline in store; run get_baseline",
     )
     if baseline is None:
         return VerificationResult(status="FAILED", checks=checks)
+    add(
+        "baseline_matches",
+        report.baseline_id == store.baseline_id,
+        f"report baseline {report.baseline_id!r} vs store baseline {store.baseline_id!r}",
+    )
 
     metric = OBJECTIVE_METRIC[report.objective]
     base_agg = baseline.aggregate(metric)
@@ -93,7 +102,8 @@ def verify_report(
             True,
             "report recommends nothing; no improvement claim to check",
         )
-        return VerificationResult(status="VERIFIED", checks=checks)
+        status = "VERIFIED" if all(c.passed for c in checks) else "FAILED"
+        return VerificationResult(status=status, checks=checks)
 
     rec_fully_verified = 0
     for rec in report.recommendations:
@@ -185,14 +195,11 @@ def verify_report(
         if all(c.passed for c in checks[rec_start:]):
             rec_fully_verified += 1
 
-    failed = [c for c in checks if not c.passed]
-    substantive_pass = any(
-        c.passed and any(k in c.claim for k in ("claim ", "significant", "feasible", "n_minus_1"))
-        for c in checks
-    )
-    if not failed:
+    # PARTIALLY_VERIFIED means at least one recommendation passed every
+    # check; a feasible but unproven change is not partial credit.
+    if all(c.passed for c in checks):
         status = "VERIFIED"
-    elif rec_fully_verified > 0 or substantive_pass:
+    elif rec_fully_verified > 0:
         status = "PARTIALLY_VERIFIED"
     else:
         status = "FAILED"
