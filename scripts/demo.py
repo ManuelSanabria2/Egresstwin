@@ -50,6 +50,7 @@ from dataclasses import dataclass, field  # noqa: E402
 from egresstwin.agent.loop import AgentLoop  # noqa: E402
 from egresstwin.agent.tools import AgentTools  # noqa: E402
 from egresstwin.layout.schema import SpawnZone  # noqa: E402
+from egresstwin.parallel.store import ScenarioStore  # noqa: E402
 from egresstwin.perception.pipeline import image_to_layout  # noqa: E402
 
 
@@ -59,7 +60,7 @@ class _StubResult:
     text: str = ""
     cost_usd: float = 0.0
     cached: bool = False
-    model: str = "demo-stub"
+    model: str = "scripted"
 
 
 class GroundTruthClient:
@@ -85,7 +86,9 @@ class GroundTruthClient:
                       {"text": "13.6 m", "box_px": [372, 578, 60, 14]}],
                   "scale_annotation": "13.6 m",
                   "notes": "demo ground-truth read", "confidence": 0.95},
-            model="muse-spark-1.3",
+            # A ground-truth stub, not a model call: never label it
+            # as the real model.
+            model="scripted",
         )
 
     def segment_image_boxes(self, image_path, boxes):  # noqa: ANN001, ANN202
@@ -94,12 +97,12 @@ class GroundTruthClient:
                 {"label": "door", "confidence": 0.97,
                  "box": {"x": b[0], "y": b[1], "w": b[2], "h": b[3]}}
                 for b in boxes]},
-            model="sam-3.1",
+            model="scripted",
         )
 
     def segment_image(self, image_path, concept):  # noqa: ANN001, ANN202
         return _StubResult(data={"segments": [], "concept": concept},
-                           model="sam-3.1")
+                           model="scripted")
 
 
 class ScriptedDemoModel:
@@ -122,10 +125,10 @@ class ScriptedDemoModel:
             for i, (name, args) in enumerate(specs)
         ]
         return SimpleNamespace(
-            data={"response_id": f"demo-resp-{self.step}",
+            data={"response_id": f"scripted-{self.step}",
                   "function_calls": calls, "text": ""},
             cost_usd=0.0, usage={"input_tokens": 0, "output_tokens": 0},
-            model="scripted-demo",
+            model="scripted",
         )
 
     def _honest(self) -> SimpleNamespace:
@@ -278,7 +281,13 @@ def main() -> int:
           f"exits {[e.id for e in layout.exits]}, "
           f"warnings {len(result.warnings)}")
 
-    tools = AgentTools(layout, default_max_time_s=ARGS.max_time)
+    run_dir = out / "demo-cli"
+    # The trace is append-only: start this run's trace clean.
+    (run_dir / "trace.jsonl").unlink(missing_ok=True)
+    tools = AgentTools(
+        layout, default_max_time_s=ARGS.max_time,
+        store=ScenarioStore(path=run_dir / "scenarios.json"),
+    )
     if ARGS.mock:
         loop = AgentLoop(
             layout, objective="minimize_t95",
@@ -296,10 +305,14 @@ def main() -> int:
         "mode": "mock" if ARGS.mock else "real",
         "image": str(image),
         "layout_shape": list(layout.shape),
+        "people": ARGS.people,
+        "max_time_s": ARGS.max_time,
         "exits": [e.id for e in layout.exits],
         "baseline_t95_s": (
             baseline.aggregate("t95_s") if baseline else None
         ),
+        "agent_model": agent.model,
+        "agent_turns": agent.turns,
         "agent_status": agent.status,
         "agent_reason": agent.reason,
         "agent_cost_usd": agent.total_cost_usd,

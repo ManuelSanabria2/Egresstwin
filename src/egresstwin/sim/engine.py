@@ -72,6 +72,17 @@ class SimResult:
     )
 
 
+# Desired-direction sliding starts this far beyond body contact (m):
+# the wall repulsion A*exp((r - d)/B) is still ~10% of the driving
+# force at d - r = 0.3 m, and 0.18 m is where the two balanced.
+WALL_SLIDE_MARGIN_M = 0.3
+# Standstill unjamming: less progress than this in this window, sidestep.
+UNJAM_MIN_PROGRESS_M = 0.25
+UNJAM_AFTER_S = 2.0
+UNJAM_FOR_S = 1.0
+UNJAM_MAX_ANGLE_RAD = float(np.pi / 2.0)
+
+
 def _segment_distance(pos: np.ndarray, segment: tuple) -> np.ndarray:
     """Distance from points (N, 2) to a segment ((x1,y1),(x2,y2))."""
     (x1, y1), (x2, y2) = segment
@@ -194,6 +205,13 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
     applied_events: list[dict] = []
     warnings: list[str] = []
     event_idx = 0
+    # Standstill unjamming (see UNJAM_*): a separate RNG stream, so the
+    # spawn/radius/speed draws above are unchanged for a given seed.
+    unjam_rng = np.random.default_rng([seed, 1])
+    anchor = pos.copy()
+    unjam_window = max(1, round(UNJAM_AFTER_S / scenario.dt))
+    unjam_angle = np.zeros(n)
+    unjam_left_s = np.zeros(n)
 
     def apply_event(ev: SimEvent, at_step: int) -> None:
         """Apply one timed event; recompute only affected floor slices."""
@@ -345,7 +363,58 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
                     norm = float(np.hypot(vec[0], vec[1]))
                     if norm > 1e-12:
                         desired_dir[j] = vec / norm
+        # Standstill unjamming: the 2000 model breaks static arches with
+        # its individual fluctuation term; without it, a few people at a
+        # wall end or doorway can hold each other in an exact force
+        # balance forever (seen on real 200-person runs). Anyone who moved
+        # less than UNJAM_MIN_PROGRESS_M over the last UNJAM_AFTER_S
+        # turns their desired direction by a random angle for
+        # UNJAM_FOR_S (a sidestep), then resumes. Walkers and people in
+        # a slowly moving queue are never touched; it is seeded.
+        live = active & started
+        if step > 0 and step % unjam_window == 0:
+            progress = np.hypot(pos[:, 0] - anchor[:, 0], pos[:, 1] - anchor[:, 1])
+            trigger = live & (progress < UNJAM_MIN_PROGRESS_M) & (unjam_left_s <= 0.0)
+            if trigger.any():
+                unjam_angle[trigger] = unjam_rng.uniform(
+                    -UNJAM_MAX_ANGLE_RAD, UNJAM_MAX_ANGLE_RAD, size=int(trigger.sum())
+                )
+                unjam_left_s[trigger] = UNJAM_FOR_S
+            anchor = pos.copy()
+        turning = live & (unjam_left_s > 0.0)
+        if turning.any():
+            c, s_ = np.cos(unjam_angle[turning]), np.sin(unjam_angle[turning])
+            dxs, dys = desired_dir[turning, 0], desired_dir[turning, 1]
+            desired_dir[turning, 0] = c * dxs - s_ * dys
+            desired_dir[turning, 1] = s_ * dxs + c * dys
+        unjam_left_s = np.maximum(unjam_left_s - scenario.dt, 0.0)
         wall_d, wall_gx, wall_gy = wall.sample(pos)
+        # Wall sliding: near a wall, drop the part of the desired
+        # direction that points into it. Otherwise the driving force
+        # (about m * v0 / tau = 214 N) and the wall repulsion balance a
+        # body width short of the wall and the person stands there
+        # forever (seen on real 200-person runs at room corners: the
+        # cell-level geodesic hugs corners closer than a body allows).
+        # The remaining component follows the same floor field around
+        # the obstacle, so routes do not change.
+        near = active & started & (wall_d < radius + WALL_SLIDE_MARGIN_M)
+        if near.any():
+            gx, gy = wall_gx[near], wall_gy[near]
+            into = desired_dir[near, 0] * gx + desired_dir[near, 1] * gy
+            slide = into < 0.0
+            if slide.any():
+                d_near = desired_dir[near]
+                d_near[slide, 0] -= into[slide] * gx[slide]
+                d_near[slide, 1] -= into[slide] * gy[slide]
+                norm = np.hypot(d_near[slide, 0], d_near[slide, 1])
+                ok = norm > 0.2
+                rows_s = np.flatnonzero(slide)[ok]
+                d_near[rows_s] /= norm[ok][:, None]
+                # Head-on into the wall (no tangential part): keep the
+                # original direction; the wall-ahead fallback handles it.
+                bad = np.flatnonzero(slide)[~ok]
+                d_near[bad] = desired_dir[near][bad]
+                desired_dir[near] = d_near
         # Semi-implicit Euler in substeps: the k = 1.2e5 contact spring
         # is stiff at dt = 0.01 in dense overlap (velocity flips each
         # step and jams never resolve), so forces are integrated at
@@ -366,6 +435,7 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
                 layout.shape,
                 layout.cell_size_m,
                 params,
+                dt=sub_dt,
             )
             vel = vel + forces / params.mass * sub_dt
             speed = np.hypot(vel[:, 0], vel[:, 1])

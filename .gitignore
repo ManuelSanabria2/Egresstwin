@@ -7,6 +7,8 @@
 runs/
 .cache/
 *.jsonl
+# Recorded real-API agent traces are evidence and are committed.
+!data/real_runs/**/trace.jsonl
 
 # Python
 __pycache__/

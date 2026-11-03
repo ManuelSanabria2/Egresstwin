@@ -23,6 +23,8 @@ from concurrent.futures.process import BrokenProcessPool
 from multiprocessing.context import SpawnContext, SpawnProcess
 from typing import Literal
 
+import numpy as np
+
 from egresstwin.layout.schema import Layout
 from egresstwin.parallel.store import ReplicaMetrics, ScenarioRecord, ScenarioStore
 from egresstwin.scenarios.apply import apply_modifications
@@ -166,10 +168,13 @@ def simulate_replica(layout: Layout, spec: ScenarioSpec, replica_seed: int) -> R
     )
     result = run(layout, scenario, seed=replica_seed)
     metrics = compute_metrics(result, layout)
-    if metrics.n_exited < metrics.n_people:
-        # Censored replica: quoting times of the few who left
-        # would reward a clogged exit. Penalize with the cap.
+    if not np.isfinite(metrics.t95_s):
+        # Fewer than 95% got out: T95 is censored at the time cap.
         metrics.t95_s = float(spec.max_time_s)
+    if metrics.n_exited < metrics.n_people:
+        # Anyone still inside: the last-out time and the mean are
+        # censored too; quoting times of those who left would reward
+        # a clogged exit.
         metrics.total_time_s = float(spec.max_time_s)
         metrics.mean_egress_s = float(spec.max_time_s)
     flow = {}

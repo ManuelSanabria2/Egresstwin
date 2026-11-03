@@ -1,0 +1,77 @@
+{
+  "status": "VERIFIED",
+  "checks": [
+    {
+      "claim": "baseline_exists",
+      "passed": true,
+      "detail": "baseline 'baseline' found in store"
+    },
+    {
+      "claim": "baseline_matches",
+      "passed": true,
+      "detail": "report baseline 'baseline' vs store baseline 'baseline'"
+    },
+    {
+      "claim": "[east-south-plus-widene2] scenario_exists",
+      "passed": true,
+      "detail": "found in store"
+    },
+    {
+      "claim": "[east-south-plus-widene2] claim mean_egress_s",
+      "passed": true,
+      "detail": "claimed 217.644, store mean 217.644 (tolerance 1%)"
+    },
+    {
+      "claim": "[east-south-plus-widene2] claim peak_density_per_m2",
+      "passed": true,
+      "detail": "claimed 6.02856, store mean 6.02856 (tolerance 1%)"
+    },
+    {
+      "claim": "[east-south-plus-widene2] claim t95_s",
+      "passed": true,
+      "detail": "claimed 42.1789, store mean 42.1789 (tolerance 1%)"
+    },
+    {
+      "claim": "[east-south-plus-widene2] claim total_time_s",
+      "passed": true,
+      "detail": "claimed 221.61, store mean 221.61 (tolerance 1%)"
+    },
+    {
+      "claim": "[east-south-plus-widene2] modifications_match_scenario",
+      "passed": true,
+      "detail": "report modifications equal the simulated spec"
+    },
+    {
+      "claim": "[east-south-plus-widene2] within_change_limit",
+      "passed": true,
+      "detail": "2 changes vs limit 3"
+    },
+    {
+      "claim": "[east-south-plus-widene2] modifications_feasible",
+      "passed": true,
+      "detail": "apply_modifications succeeds"
+    },
+    {
+      "claim": "[east-south-plus-widene2] significant_improvement_t95_s",
+      "passed": true,
+      "detail": "baseline mean 95.46 CI[88.81,102.1] vs scenario mean 42.18 CI[41.11,43.24], Welch p=3.878e-13, Cohen d=-5.24"
+    },
+    {
+      "claim": "[east-south-plus-widene2] n_minus_1[E1]",
+      "passed": true,
+      "detail": "claimed T95 97.644, stored 97.644; worsening vs baseline 2.29% (limit 20%)"
+    },
+    {
+      "claim": "[east-south-plus-widene2] n_minus_1[E2]",
+      "passed": true,
+      "detail": "claimed T95 54.5796, stored 54.5796; worsening vs baseline -42.82% (limit 20%)"
+    },
+    {
+      "claim": "[east-south-plus-widene2] n_minus_1[exit-1]",
+      "passed": true,
+      "detail": "claimed T95 94.6286, stored 94.6286; worsening vs baseline -0.87% (limit 20%)"
+    }
+  ],
+  "n_passed": 14,
+  "n_checks": 14
+}

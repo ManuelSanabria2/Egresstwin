@@ -46,6 +46,24 @@ def _frame_density(
     return density
 
 
+def population_percentile(exit_times: np.ndarray, q: float) -> float:
+    """q-th percentile of exit time over everyone, not only those out.
+
+    People still inside count as +inf (right-censored). The value is
+    finite only when at least q% of the population got out, and equals
+    np.percentile when everyone did. Taking the percentile over the
+    people who left would make a run where many are trapped look fast.
+    """
+    times = np.sort(np.asarray(exit_times, dtype=float))
+    if len(times) == 0:
+        return float("nan")
+    pos = q / 100.0 * (len(times) - 1)
+    lo, hi = int(np.floor(pos)), int(np.ceil(pos))
+    if not np.isfinite(times[hi]):
+        return float("inf")
+    return float(times[lo] + (times[hi] - times[lo]) * (pos - lo))
+
+
 def compute_metrics(
     result, layout, *, density_threshold_per_m2: float = 4.0, smooth_sigma_m: float = 0.5
 ) -> Metrics:
@@ -53,7 +71,7 @@ def compute_metrics(
     times = result.exit_times[np.isfinite(result.exit_times)]
     n = len(result.exit_times)
     total = float(times.max()) if len(times) else result.total_time_s
-    t95 = float(np.percentile(times, 95)) if len(times) else float("nan")
+    t95 = population_percentile(result.exit_times, 95.0)
     mean = float(times.mean()) if len(times) else float("nan")
     # Flow per exit in 1-second bins from the per-step counts.
     steps_per_s = max(1, round(1.0 / result.dt))

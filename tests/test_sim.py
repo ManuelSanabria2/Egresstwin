@@ -9,7 +9,7 @@ from egresstwin.layout.schema import Exit, Layout, Obstacle, SpawnZone
 from egresstwin.sim.engine import Scenario, run
 from egresstwin.sim.floor_field import compute_floor_field
 from egresstwin.sim.reference import compute_forces_reference
-from egresstwin.sim.social_force import SFParams, compute_forces, validate_dt
+from egresstwin.sim.social_force import SFParams, compute_forces, friction_cap, validate_dt
 from egresstwin.sim.wall_field import compute_wall_field
 
 
@@ -137,6 +137,35 @@ def test_numba_matches_reference() -> None:
         params,
     )
     assert np.allclose(got, expected, rtol=1e-9, atol=1e-7)
+
+
+def test_deep_overlap_friction_does_not_flip_or_freeze() -> None:
+    """Regression: a deeply overlapping pair sliding past each other.
+
+    Uncapped, kappa * overlap * dt / m > 1 made the explicit friction
+    flip the relative tangential velocity every substep; with the speed
+    cap the pair froze in a 2-cycle forever (real 200-person run).
+    """
+    params = SFParams()
+    dt = 0.002  # the engine's substep (0.01 s / 5)
+    pos = np.array([[5.0, 5.0], [5.4, 5.0]])  # overlap 0.2 m
+    vel = np.array([[0.0, 1.0], [0.0, -1.0]])
+    radius = np.array([0.3, 0.3])
+    walkable = np.ones((40, 40), dtype=bool)
+    wall = compute_wall_field(walkable, 0.25)
+    no_drive = np.zeros((2, 2))
+    signs = []
+    for _ in range(6):
+        wd, gx, gy = wall.sample(pos)
+        args = (pos, vel, radius, np.zeros(2), no_drive, wd, gx, gy)
+        forces = compute_forces(*args, np.ones(2, dtype=bool), (40, 40), 0.25, params, dt=dt)
+        assert np.allclose(forces, compute_forces_reference(*args, params, dt=dt))
+        vel = vel + forces / params.mass * dt
+        pos = pos + vel * dt
+        signs.append(np.sign(vel[1, 1] - vel[0, 1]))
+    # Relative tangential velocity decays without changing sign.
+    assert all(s == signs[0] for s in signs)
+    assert friction_cap(params, dt) == params.mass / (2 * dt)
 
 
 def test_floor_field_detours_around_obstacle() -> None:

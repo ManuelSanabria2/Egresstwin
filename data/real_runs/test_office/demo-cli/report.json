@@ -1,0 +1,14 @@
+{
+  "baseline_id": "baseline",
+  "objective": "minimize_t95",
+  "recommendations": [],
+  "robustness": [],
+  "limitations": [
+    "This tool supports decisions; it is not a safety certification.",
+    "Results based on 20 replicas baseline (t95 38.281s) and up to 20 replicas per candidate with 200 agents.",
+    "Run settings matched baseline; only layout changes drive differences.",
+    "N-1 stress blocks one exit from t=0; 20% worsening limit applied vs unblocked baseline (45.937s threshold).",
+    "Scenario budget max 60 reached; further exploration blocked."
+  ],
+  "summary": "No robust recommendation: 3-exit layout cut t95 to 31.745s significant but E1 loss gives 59.377s (+55% vs baseline, exceeds 20% limit). Single-exit addition cut to 35.33s significant but E1 loss 46.214s (+20.7%) and E2 loss 49.031s (+28%) also exceed limit. Baseline itself fails N-1 (E1 loss 64.003s +67%, E2 loss 52.378s +37%). No simulated layout meets both significance and 20% N-1 limit, so no change recommended."
+}

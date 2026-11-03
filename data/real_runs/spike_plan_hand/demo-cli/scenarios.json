@@ -1,0 +1,6428 @@
+{
+  "baseline": {
+    "name": "baseline",
+    "modifications": [],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "widen-e1-4m": {
+    "name": "widen-E1-4m",
+    "modifications": [
+      {
+        "type": "widen_exit",
+        "exit_id": "E1",
+        "width_m": 4.0
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 113.40909999999978,
+        "std": 47.06747326098663,
+        "ci_low": 91.38084444007369,
+        "ci_high": 135.4373555599259,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 94.10149999999977,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 43,
+        "t95_s": 110.7784999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 44,
+        "t95_s": 103.77949999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 192
+      },
+      {
+        "seed": 45,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 165
+      },
+      {
+        "seed": 46,
+        "t95_s": 97.06299999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 85.84449999999947,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 94.87949999999913,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 49,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 170
+      },
+      {
+        "seed": 50,
+        "t95_s": 100.74899999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 51,
+        "t95_s": 88.50999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 52,
+        "t95_s": 89.4814999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 171.9205,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 191
+      },
+      {
+        "seed": 54,
+        "t95_s": 95.4594999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 99.8554999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.58399999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 57,
+        "t95_s": 89.84899999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 94.75799999999991,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 91.23699999999981,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 107.40399999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 61,
+        "t95_s": 83.92749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 194
+      }
+    ]
+  },
+  "widen-e2-5m": {
+    "name": "widen-E2-5m",
+    "modifications": [
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "widen-both": {
+    "name": "widen-both",
+    "modifications": [
+      {
+        "type": "widen_exit",
+        "exit_id": "E1",
+        "width_m": 4.0
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 113.40909999999978,
+        "std": 47.06747326098663,
+        "ci_low": 91.38084444007369,
+        "ci_high": 135.4373555599259,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 94.10149999999977,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 43,
+        "t95_s": 110.7784999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 44,
+        "t95_s": 103.77949999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 192
+      },
+      {
+        "seed": 45,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 165
+      },
+      {
+        "seed": 46,
+        "t95_s": 97.06299999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 85.84449999999947,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 94.87949999999913,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 49,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 170
+      },
+      {
+        "seed": 50,
+        "t95_s": 100.74899999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 51,
+        "t95_s": 88.50999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 52,
+        "t95_s": 89.4814999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 171.9205,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 191
+      },
+      {
+        "seed": 54,
+        "t95_s": 95.4594999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 99.8554999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.58399999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 57,
+        "t95_s": 89.84899999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 94.75799999999991,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 91.23699999999981,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 107.40399999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 61,
+        "t95_s": 83.92749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 194
+      }
+    ]
+  },
+  "widen-e1-3p5": {
+    "name": "widen-E1-3p5",
+    "modifications": [
+      {
+        "type": "widen_exit",
+        "exit_id": "E1",
+        "width_m": 3.5
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 113.40909999999978,
+        "std": 47.06747326098663,
+        "ci_low": 91.38084444007369,
+        "ci_high": 135.4373555599259,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 94.10149999999977,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 43,
+        "t95_s": 110.7784999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 44,
+        "t95_s": 103.77949999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 192
+      },
+      {
+        "seed": 45,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 165
+      },
+      {
+        "seed": 46,
+        "t95_s": 97.06299999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 85.84449999999947,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 94.87949999999913,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 49,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 170
+      },
+      {
+        "seed": 50,
+        "t95_s": 100.74899999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 51,
+        "t95_s": 88.50999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 52,
+        "t95_s": 89.4814999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 171.9205,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 191
+      },
+      {
+        "seed": 54,
+        "t95_s": 95.4594999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 99.8554999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.58399999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 57,
+        "t95_s": 89.84899999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 94.75799999999991,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 91.23699999999981,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 107.40399999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 61,
+        "t95_s": 83.92749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 194
+      }
+    ]
+  },
+  "add-top-mid": {
+    "name": "add-top-mid",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            8.0,
+            10.55
+          ],
+          [
+            10.0,
+            10.55
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-top-east": {
+    "name": "add-top-east",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            11.0,
+            10.55
+          ],
+          [
+            13.0,
+            10.55
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-east-south": {
+    "name": "add-east-south",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 42.713799999999985,
+        "std": 2.882094438534514,
+        "ci_low": 41.364938282103104,
+        "ci_high": 44.062661717896866,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 214.581,
+        "std": 62.67402902907106,
+        "ci_low": 185.24865150601448,
+        "ci_high": 243.9133484939855,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 206.43242250000003,
+        "std": 81.98267018264877,
+        "ci_low": 168.0633517777476,
+        "ci_high": 244.80149322225245,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 38.01599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 43,
+        "t95_s": 43.53949999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 38.58949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 49.14599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 40.99299999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 47,
+        "t95_s": 44.08799999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 48,
+        "t95_s": 40.65849999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 40.58249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 50,
+        "t95_s": 41.38949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 42.572499999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 52,
+        "t95_s": 47.76499999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 47.60299999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 54,
+        "t95_s": 43.34749999999999,
+        "total_time_s": 101.14,
+        "mean_egress_s": 16.2417,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 55,
+        "t95_s": 41.777999999999984,
+        "total_time_s": 55.76,
+        "mean_egress_s": 16.2918,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 56,
+        "t95_s": 41.59499999999999,
+        "total_time_s": 54.72,
+        "mean_egress_s": 16.11495,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 57,
+        "t95_s": 42.23949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 58,
+        "t95_s": 40.52749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 59,
+        "t95_s": 44.16849999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 60,
+        "t95_s": 41.789999999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 43.886999999999986,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 198
+      }
+    ]
+  },
+  "add-south-mid": {
+    "name": "add-south-mid",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            5.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-west": {
+    "name": "add-west",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            0.0,
+            4.0
+          ],
+          [
+            0.0,
+            6.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-south-under-e1": {
+    "name": "add-south-under-E1",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            2.367769784172662,
+            0.0
+          ],
+          [
+            4.65726618705036,
+            0.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-top-west": {
+    "name": "add-top-west",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            0.0,
+            10.55
+          ],
+          [
+            2.0,
+            10.55
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 95.4588999999999,
+        "std": 14.200557196814483,
+        "ci_low": 88.81283465270064,
+        "ci_high": 102.10496534729916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 120.50749999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 104.70749999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 86.27449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 45,
+        "t95_s": 91.61399999999969,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 91.79699999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 94.70349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 78.65549999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 82.47999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 93.57349999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 115.50049999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 88.75749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 101.94349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 54,
+        "t95_s": 129.4139999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 55,
+        "t95_s": 110.93749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 56,
+        "t95_s": 88.59449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 57,
+        "t95_s": 77.44149999999988,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 95.23949999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 83.00749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 87.46499999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 86.56399999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-east-mid": {
+    "name": "add-east-mid",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            4.5
+          ],
+          [
+            14.45,
+            6.5
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 42.69502499999998,
+        "std": 2.791985034621894,
+        "ci_low": 41.38833578128811,
+        "ci_high": 44.00171421871185,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 197.6035,
+        "std": 75.84233072111199,
+        "ci_low": 162.10819660605551,
+        "ci_high": 233.09880339394448,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 183.902755,
+        "std": 99.68778753438012,
+        "ci_low": 137.24743428978203,
+        "ci_high": 230.558075710218,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 40.259499999999996,
+        "total_time_s": 57.9,
+        "mean_egress_s": 15.5541,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 43,
+        "t95_s": 45.67899999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 36.80099999999998,
+        "total_time_s": 93.68,
+        "mean_egress_s": 15.004100000000001,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 45,
+        "t95_s": 50.02149999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 46,
+        "t95_s": 40.03949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 47,
+        "t95_s": 42.421999999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 48,
+        "t95_s": 45.05949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 39.745499999999986,
+        "total_time_s": 88.49,
+        "mean_egress_s": 15.135100000000001,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 50,
+        "t95_s": 40.015999999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 51,
+        "t95_s": 43.485499999999995,
+        "total_time_s": 55.24,
+        "mean_egress_s": 15.913250000000003,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 52,
+        "t95_s": 41.96749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 45.19849999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 54,
+        "t95_s": 42.58549999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 55,
+        "t95_s": 44.53449999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 56,
+        "t95_s": 42.73849999999999,
+        "total_time_s": 56.76,
+        "mean_egress_s": 16.44855,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 57,
+        "t95_s": 42.328499999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 58,
+        "t95_s": 42.06249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 59,
+        "t95_s": 44.71299999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 60,
+        "t95_s": 42.41999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 41.82299999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 198
+      }
+    ]
+  },
+  "add-east-1-4": {
+    "name": "add-east-1-4",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            1.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 42.61804999999998,
+        "std": 2.83172809382688,
+        "ci_low": 41.29276045702498,
+        "ci_high": 43.94333954297498,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 224.1165,
+        "std": 49.31393219119619,
+        "ci_low": 201.03686929730515,
+        "ci_high": 247.19613070269486,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 217.58775,
+        "std": 68.98352385367103,
+        "ci_low": 185.3024670308698,
+        "ci_high": 249.8730329691302,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 40.44349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 43,
+        "t95_s": 44.26649999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 40.067999999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 47.44799999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 46,
+        "t95_s": 42.632499999999986,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 43.31049999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 42.06949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 39.574499999999986,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 50,
+        "t95_s": 37.86199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 51,
+        "t95_s": 44.014499999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 52,
+        "t95_s": 45.55499999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 48.76949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 54,
+        "t95_s": 41.414999999999985,
+        "total_time_s": 101.09,
+        "mean_egress_s": 15.566300000000002,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 55,
+        "t95_s": 44.04949999999999,
+        "total_time_s": 61.24,
+        "mean_egress_s": 16.1887,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 56,
+        "t95_s": 40.05999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 57,
+        "t95_s": 40.98799999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 58,
+        "t95_s": 38.505499999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 59,
+        "t95_s": 44.12749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 60,
+        "t95_s": 43.302499999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 43.89899999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 195
+      }
+    ]
+  },
+  "add-east-2-5": {
+    "name": "add-east-2-5",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            5.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 42.31979999999998,
+        "std": 2.687819143351801,
+        "ci_low": 41.06186191906009,
+        "ci_high": 43.57773808093987,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 225.98900000000003,
+        "std": 45.59843775024708,
+        "ci_low": 204.6482742226425,
+        "ci_high": 247.32972577735757,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 217.49685250000002,
+        "std": 69.26342699083405,
+        "ci_low": 185.08057083027538,
+        "ci_high": 249.91313416972466,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 38.75399999999999,
+        "total_time_s": 54.230000000000004,
+        "mean_egress_s": 14.454949999999998,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 43,
+        "t95_s": 43.55249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 38.270999999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 45.24599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 46,
+        "t95_s": 41.23699999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 47,
+        "t95_s": 43.59799999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 41.924999999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 40.35899999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 50,
+        "t95_s": 40.786999999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 51,
+        "t95_s": 42.05299999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 52,
+        "t95_s": 41.12999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 53,
+        "t95_s": 49.52849999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 54,
+        "t95_s": 41.81049999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 55,
+        "t95_s": 46.91249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 56,
+        "t95_s": 41.050499999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 57,
+        "t95_s": 40.19599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 58,
+        "t95_s": 41.924499999999966,
+        "total_time_s": 145.55,
+        "mean_egress_s": 15.4821,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 59,
+        "t95_s": 44.90949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 60,
+        "t95_s": 41.47399999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 41.67749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 198
+      }
+    ]
+  },
+  "add-east-0p5-3p5": {
+    "name": "add-east-0p5-3p5",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            0.5
+          ],
+          [
+            14.45,
+            3.5
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 43.35277499999998,
+        "std": 2.5155909501128106,
+        "ci_low": 42.17544219468761,
+        "ci_high": 44.53010780531235,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 224.69300000000004,
+        "std": 47.65497412597523,
+        "ci_low": 202.3897855714751,
+        "ci_high": 246.99621442852498,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 217.605575,
+        "std": 68.92859876595318,
+        "ci_low": 185.3459977631956,
+        "ci_high": 249.86515223680436,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 40.74949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 43,
+        "t95_s": 47.27599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 39.81199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 48.40949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 46,
+        "t95_s": 42.45649999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 47,
+        "t95_s": 42.39149999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 48,
+        "t95_s": 42.54199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 41.53049999999999,
+        "total_time_s": 109.0,
+        "mean_egress_s": 15.925300000000002,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 50,
+        "t95_s": 41.88399999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 42.649999999999984,
+        "total_time_s": 64.86,
+        "mean_egress_s": 16.1862,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 52,
+        "t95_s": 42.61799999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 46.70949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 54,
+        "t95_s": 43.59549999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 55,
+        "t95_s": 47.08999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 56,
+        "t95_s": 41.49299999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 57,
+        "t95_s": 41.80749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 58,
+        "t95_s": 40.504499999999986,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 59,
+        "t95_s": 44.03949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 60,
+        "t95_s": 46.67749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 61,
+        "t95_s": 42.818999999999974,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 198
+      }
+    ]
+  },
+  "two-east-exits": {
+    "name": "two-east-exits",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            4.5
+          ],
+          [
+            14.45,
+            6.5
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1",
+      "exit-2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 49.70462499999998,
+        "std": 16.120560265073546,
+        "ci_low": 42.15997055638504,
+        "ci_high": 57.24927944361492,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 224.03400000000002,
+        "std": 49.147307727301865,
+        "ci_low": 201.0323519468697,
+        "ci_high": 247.03564805313033,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 217.71733750000004,
+        "std": 68.58465361003236,
+        "ci_low": 185.61873155118496,
+        "ci_high": 249.81594344881512,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 40.56549999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 43,
+        "t95_s": 55.852499999999964,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 44.85449999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 45,
+        "t95_s": 45.61799999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 46,
+        "t95_s": 53.06499999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 46.02349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 48,
+        "t95_s": 44.09749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 41.62749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 50,
+        "t95_s": 116.16949999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 51,
+        "t95_s": 45.09199999999999,
+        "total_time_s": 82.5,
+        "mean_egress_s": 16.8811,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 52,
+        "t95_s": 46.419999999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 46.87599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 54,
+        "t95_s": 47.407499999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 55,
+        "t95_s": 47.64199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 56,
+        "t95_s": 49.683499999999995,
+        "total_time_s": 78.18,
+        "mean_egress_s": 17.46565,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 57,
+        "t95_s": 38.530999999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 58,
+        "t95_s": 46.391999999999975,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 59,
+        "t95_s": 47.08349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 60,
+        "t95_s": 43.3045,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 47.786999999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 198
+      }
+    ]
+  },
+  "east-south-plus-widene2": {
+    "name": "east-south-plus-widenE2",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 42.178874999999984,
+        "std": 2.277420400567505,
+        "ci_low": 41.11300944305977,
+        "ci_high": 43.2447405569402,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 221.60999999999999,
+        "std": 56.60329346936402,
+        "ci_low": 195.11884320552306,
+        "ci_high": 248.1011567944769,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 217.6442125,
+        "std": 68.80988425105546,
+        "ci_low": 185.44019536641892,
+        "ci_high": 249.8482296335811,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 37.328499999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 43,
+        "t95_s": 41.78299999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 39.377499999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 46.31399999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 46,
+        "t95_s": 39.86799999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 47,
+        "t95_s": 42.61399999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 40.19649999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 49,
+        "t95_s": 41.90449999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 50,
+        "t95_s": 42.68049999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 51,
+        "t95_s": 43.03249999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 52,
+        "t95_s": 45.57799999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 44.920499999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 54,
+        "t95_s": 42.14299999999999,
+        "total_time_s": 55.83,
+        "mean_egress_s": 15.90315,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 55,
+        "t95_s": 43.58999999999998,
+        "total_time_s": 56.370000000000005,
+        "mean_egress_s": 16.9811,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 56,
+        "t95_s": 41.70499999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 57,
+        "t95_s": 41.586499999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 58,
+        "t95_s": 40.18749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 59,
+        "t95_s": 45.698999999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 60,
+        "t95_s": 40.997999999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 42.070999999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 197
+      }
+    ]
+  },
+  "east-mid-plus-widene2": {
+    "name": "east-mid-plus-widenE2",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            4.5
+          ],
+          [
+            14.45,
+            6.5
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 220.54240000000004,
+        "std": 59.891467641498245,
+        "ci_low": 192.51233032214643,
+        "ci_high": 248.57246967785366,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 153
+      },
+      {
+        "seed": 43,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 157
+      },
+      {
+        "seed": 44,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 140
+      },
+      {
+        "seed": 45,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 186
+      },
+      {
+        "seed": 46,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 151
+      },
+      {
+        "seed": 47,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 155
+      },
+      {
+        "seed": 48,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 189
+      },
+      {
+        "seed": 49,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 190
+      },
+      {
+        "seed": 50,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 150
+      },
+      {
+        "seed": 51,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 145
+      },
+      {
+        "seed": 52,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 184
+      },
+      {
+        "seed": 53,
+        "t95_s": 47.01999999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 54,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 188
+      },
+      {
+        "seed": 55,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 131
+      },
+      {
+        "seed": 56,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 151
+      },
+      {
+        "seed": 57,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 162
+      },
+      {
+        "seed": 58,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 139
+      },
+      {
+        "seed": 59,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 147
+      },
+      {
+        "seed": 60,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 146
+      },
+      {
+        "seed": 61,
+        "t95_s": 43.827999999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 197
+      }
+    ]
+  },
+  "add-east-wide-4m": {
+    "name": "add-east-wide-4m",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            1.0
+          ],
+          [
+            14.45,
+            5.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 42.21602499999998,
+        "std": 2.490047671679568,
+        "ci_low": 41.05064681698156,
+        "ci_high": 43.3814031830184,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 213.1555,
+        "std": 65.59324214830608,
+        "ci_low": 182.45691771080246,
+        "ci_high": 243.85408228919752,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 206.274685,
+        "std": 82.36800260845116,
+        "ci_low": 167.72527315121135,
+        "ci_high": 244.82409684878866,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 38.56649999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 43,
+        "t95_s": 43.57999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 38.44949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 45,
+        "t95_s": 47.97349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 46,
+        "t95_s": 40.148499999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 47,
+        "t95_s": 46.16449999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 41.602499999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 41.79349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 50,
+        "t95_s": 42.79749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 51,
+        "t95_s": 44.98249999999998,
+        "total_time_s": 64.04,
+        "mean_egress_s": 15.584450000000002,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 52,
+        "t95_s": 43.63949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 41.73349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 54,
+        "t95_s": 41.95499999999999,
+        "total_time_s": 65.12,
+        "mean_egress_s": 14.840700000000002,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 55,
+        "t95_s": 41.055499999999995,
+        "total_time_s": 53.95,
+        "mean_egress_s": 15.06855,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 56,
+        "t95_s": 44.045999999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 57,
+        "t95_s": 38.68349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 58,
+        "t95_s": 39.62749999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 59,
+        "t95_s": 43.02549999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 60,
+        "t95_s": 42.14599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 42.349999999999966,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "east-south-plus-widene1-3m": {
+    "name": "east-south-plus-widenE1-3m",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E1",
+        "width_m": 3.0
+      }
+    ],
+    "blocked_exit_ids": [],
+    "exit_ids": [
+      "E1",
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 52.721074999999985,
+        "std": 44.16438317220021,
+        "ci_low": 32.051507424760814,
+        "ci_high": 73.39064257523916,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 223.552,
+        "std": 51.18333585722685,
+        "ci_low": 199.59746145018858,
+        "ci_high": 247.5065385498114,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 217.74273000000002,
+        "std": 68.50660423804217,
+        "ci_low": 185.68065228168837,
+        "ci_high": 249.80480771831168,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 37.61499999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 43,
+        "t95_s": 43.35949999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 44,
+        "t95_s": 38.57649999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 44.684999999999995,
+        "total_time_s": 98.74000000000001,
+        "mean_egress_s": 17.90135,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 46,
+        "t95_s": 43.210999999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 47,
+        "t95_s": 43.31049999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 41.78199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 49,
+        "t95_s": 41.794499999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 50,
+        "t95_s": 46.999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 51,
+        "t95_s": 43.405999999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 52,
+        "t95_s": 45.07899999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 44.30399999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 54,
+        "t95_s": 42.23449999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 55,
+        "t95_s": 49.44499999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 56,
+        "t95_s": 41.389999999999986,
+        "total_time_s": 52.300000000000004,
+        "mean_egress_s": 16.953249999999997,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 57,
+        "t95_s": 42.477499999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 58,
+        "t95_s": 40.255999999999986,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 59,
+        "t95_s": 44.47399999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 60,
+        "t95_s": 40.02249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 165
+      }
+    ]
+  },
+  "east-south-plus-widene2--no-E1": {
+    "name": "east-south-plus-widene2--no-E1",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [
+      "E1"
+    ],
+    "exit_ids": [
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 97.64399999999998,
+        "std": 73.18981862793127,
+        "ci_low": 63.39011047886714,
+        "ci_high": 131.8978895211328,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 231.827,
+        "std": 36.55076716021156,
+        "ci_low": 214.7207144033209,
+        "ci_high": 248.9332855966791,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 229.2813675,
+        "std": 47.93518179167703,
+        "ci_low": 206.8470118471373,
+        "ci_high": 251.71572315286267,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 57.20499999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 43,
+        "t95_s": 70.86599999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 111
+      },
+      {
+        "seed": 45,
+        "t95_s": 61.97049999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 46,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 112
+      },
+      {
+        "seed": 47,
+        "t95_s": 70.0765,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 48,
+        "t95_s": 53.677999999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 49,
+        "t95_s": 63.71049999999999,
+        "total_time_s": 76.54,
+        "mean_egress_s": 25.62735,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 50,
+        "t95_s": 62.09649999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 51,
+        "t95_s": 55.91999999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 52,
+        "t95_s": 58.57249999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 61.03849999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 54,
+        "t95_s": 61.66199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 55,
+        "t95_s": 57.89199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 56,
+        "t95_s": 62.58349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 57,
+        "t95_s": 73.10899999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 58,
+        "t95_s": 64.53699999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 59,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 135
+      },
+      {
+        "seed": 60,
+        "t95_s": 57.96249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 61,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 138
+      }
+    ]
+  },
+  "east-south-plus-widene2--no-E2": {
+    "name": "east-south-plus-widene2--no-E2",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [
+      "E2"
+    ],
+    "exit_ids": [
+      "E1",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 54.57959999999999,
+        "std": 2.892147734087847,
+        "ci_low": 53.22603319495215,
+        "ci_high": 55.93316680504783,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 214.10999999999999,
+        "std": 63.239997087120024,
+        "ci_low": 184.51277030127406,
+        "ci_high": 243.7072296987259,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 206.99940999999998,
+        "std": 80.59833240446204,
+        "ci_low": 169.2782293012903,
+        "ci_high": 244.72059069870966,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 53.40099999999998,
+        "total_time_s": 69.29,
+        "mean_egress_s": 19.88215,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 43,
+        "t95_s": 57.25749999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 44,
+        "t95_s": 49.483499999999985,
+        "total_time_s": 63.730000000000004,
+        "mean_egress_s": 19.24685,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 45,
+        "t95_s": 58.25499999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 46,
+        "t95_s": 53.32949999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 60.434499999999986,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 48,
+        "t95_s": 56.31049999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 49,
+        "t95_s": 55.40049999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 50,
+        "t95_s": 53.71649999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 51,
+        "t95_s": 52.14049999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 52,
+        "t95_s": 49.820999999999984,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 53,
+        "t95_s": 54.04199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 54,
+        "t95_s": 52.53949999999998,
+        "total_time_s": 69.18,
+        "mean_egress_s": 20.8592,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 55,
+        "t95_s": 53.68099999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 56,
+        "t95_s": 55.29849999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 57,
+        "t95_s": 56.84299999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 58,
+        "t95_s": 55.80149999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 59,
+        "t95_s": 50.64899999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 60,
+        "t95_s": 54.84999999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 61,
+        "t95_s": 58.33749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 198
+      }
+    ]
+  },
+  "east-south-plus-widene2--no-exit-1": {
+    "name": "east-south-plus-widene2--no-exit-1",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            2.0
+          ],
+          [
+            14.45,
+            4.0
+          ]
+        ],
+        "exit_id": null
+      },
+      {
+        "type": "widen_exit",
+        "exit_id": "E2",
+        "width_m": 5.0
+      }
+    ],
+    "blocked_exit_ids": [
+      "exit-1"
+    ],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 94.6286249999998,
+        "std": 13.0356844256095,
+        "ci_low": 88.52773689127078,
+        "ci_high": 100.72951310872882,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 84.05549999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 43,
+        "t95_s": 98.00099999999821,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 192
+      },
+      {
+        "seed": 44,
+        "t95_s": 105.08149999999983,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 45,
+        "t95_s": 87.49449999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 46,
+        "t95_s": 89.58149999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 47,
+        "t95_s": 99.97249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 86.97849999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 49,
+        "t95_s": 75.65299999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 50,
+        "t95_s": 91.43649999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 51,
+        "t95_s": 106.2615,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 89.21199999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 53,
+        "t95_s": 100.17449999999987,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 54,
+        "t95_s": 88.39849999999981,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 55,
+        "t95_s": 98.02899999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 56,
+        "t95_s": 95.75149999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 57,
+        "t95_s": 84.77499999999955,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 58,
+        "t95_s": 94.19999999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 59,
+        "t95_s": 100.72099999999904,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 137.56849999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 61,
+        "t95_s": 79.22649999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 195
+      }
+    ]
+  },
+  "add-east-wide-4m--no-E1": {
+    "name": "add-east-wide-4m--no-E1",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            1.0
+          ],
+          [
+            14.45,
+            5.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [
+      "E1"
+    ],
+    "exit_ids": [
+      "E2",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 78.31207499999998,
+        "std": 44.632977956555784,
+        "ci_low": 57.423198314909165,
+        "ci_high": 99.20095168509079,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 231.637,
+        "std": 37.40047299166148,
+        "ci_low": 214.13303983298331,
+        "ci_high": 249.1409601670167,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 229.06543000000002,
+        "std": 48.90088364945976,
+        "ci_low": 206.17911196538856,
+        "ci_high": 251.95174803461148,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 55.88749999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 43,
+        "t95_s": 76.82799999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 52.12949999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 45,
+        "t95_s": 68.09449999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 46,
+        "t95_s": 240.0,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 137
+      },
+      {
+        "seed": 47,
+        "t95_s": 96.99399999999996,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 48,
+        "t95_s": 61.12099999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 49,
+        "t95_s": 62.38099999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 50,
+        "t95_s": 59.85599999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 51,
+        "t95_s": 58.28249999999998,
+        "total_time_s": 72.74,
+        "mean_egress_s": 21.308600000000006,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 52,
+        "t95_s": 67.18999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 53,
+        "t95_s": 63.589,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 54,
+        "t95_s": 66.51449999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 55,
+        "t95_s": 160.1495,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 56,
+        "t95_s": 54.97399999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 57,
+        "t95_s": 61.402499999999975,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 58,
+        "t95_s": 62.679499999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 59,
+        "t95_s": 60.260999999999974,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 60,
+        "t95_s": 65.8855,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 61,
+        "t95_s": 72.02199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 199
+      }
+    ]
+  },
+  "add-east-wide-4m--no-E2": {
+    "name": "add-east-wide-4m--no-E2",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            1.0
+          ],
+          [
+            14.45,
+            5.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [
+      "E2"
+    ],
+    "exit_ids": [
+      "E1",
+      "exit-1"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 54.20197499999998,
+        "std": 3.351709208413393,
+        "ci_low": 52.633326804332214,
+        "ci_high": 55.77062319566775,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 191.21599999999998,
+        "std": 75.43353668523109,
+        "ci_low": 155.91201810410632,
+        "ci_high": 226.51998189589364,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 162.7994725,
+        "std": 107.94419295126836,
+        "ci_low": 112.28003510943486,
+        "ci_high": 213.31890989056515,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 52.79049999999999,
+        "total_time_s": 67.5,
+        "mean_egress_s": 18.493100000000002,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 43,
+        "t95_s": 57.747999999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 44,
+        "t95_s": 48.09949999999999,
+        "total_time_s": 68.14,
+        "mean_egress_s": 17.52615,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 45,
+        "t95_s": 62.42999999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 46,
+        "t95_s": 51.30599999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 47,
+        "t95_s": 56.179499999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 48,
+        "t95_s": 54.41199999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 49,
+        "t95_s": 52.92349999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 50,
+        "t95_s": 53.02449999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 51,
+        "t95_s": 49.13299999999998,
+        "total_time_s": 62.9,
+        "mean_egress_s": 17.42425,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 52,
+        "t95_s": 52.23249999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 53,
+        "t95_s": 55.24299999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 54,
+        "t95_s": 52.60149999999999,
+        "total_time_s": 64.95,
+        "mean_egress_s": 19.4993,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 55,
+        "t95_s": 52.83849999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 198
+      },
+      {
+        "seed": 56,
+        "t95_s": 53.94649999999999,
+        "total_time_s": 71.99,
+        "mean_egress_s": 20.389200000000002,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 57,
+        "t95_s": 57.26799999999998,
+        "total_time_s": 186.3,
+        "mean_egress_s": 22.29195,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 58,
+        "t95_s": 54.033499999999975,
+        "total_time_s": 182.54,
+        "mean_egress_s": 20.365499999999997,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 200
+      },
+      {
+        "seed": 59,
+        "t95_s": 57.69999999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 60,
+        "t95_s": 51.88049999999999,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 199
+      },
+      {
+        "seed": 61,
+        "t95_s": 58.248999999999974,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 197
+      }
+    ]
+  },
+  "add-east-wide-4m--no-exit-1": {
+    "name": "add-east-wide-4m--no-exit-1",
+    "modifications": [
+      {
+        "type": "add_exit",
+        "segment": [
+          [
+            14.45,
+            1.0
+          ],
+          [
+            14.45,
+            5.0
+          ]
+        ],
+        "exit_id": null
+      }
+    ],
+    "blocked_exit_ids": [
+      "exit-1"
+    ],
+    "exit_ids": [
+      "E1",
+      "E2"
+    ],
+    "events": [],
+    "aggregates": {
+      "t95_s": {
+        "mean": 99.47477499999984,
+        "std": 22.454457985158246,
+        "ci_low": 88.96576517459498,
+        "ci_high": 109.9837848254047,
+        "n": 20
+      },
+      "total_time_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "mean_egress_s": {
+        "mean": 240.0,
+        "std": 0.0,
+        "ci_low": 240.0,
+        "ci_high": 240.0,
+        "n": 20
+      },
+      "peak_density_per_m2": {
+        "mean": 6.028558136167213,
+        "std": 0.5432255229111811,
+        "ci_low": 5.774320765509786,
+        "ci_high": 6.28279550682464,
+        "n": 20
+      }
+    },
+    "replicas": [
+      {
+        "seed": 42,
+        "t95_s": 86.91049999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.329603112910633,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 43,
+        "t95_s": 164.67349999999993,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.345473234367975,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 44,
+        "t95_s": 94.94449999999978,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.611913673624757,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 45,
+        "t95_s": 112.09999999999896,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.607922800513832,
+        "n_people": 200,
+        "n_exited": 191
+      },
+      {
+        "seed": 46,
+        "t95_s": 93.26499999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.528384613694779,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 47,
+        "t95_s": 95.47399999999989,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.604333413117173,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 48,
+        "t95_s": 90.48099999999994,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.309000521961797,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 49,
+        "t95_s": 77.60299999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.608370289822269,
+        "n_people": 200,
+        "n_exited": 195
+      },
+      {
+        "seed": 50,
+        "t95_s": 88.17699999999985,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.869798784239509,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 51,
+        "t95_s": 83.33149999999976,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.23438276033706,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 52,
+        "t95_s": 95.61449999999967,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.897736518144176,
+        "n_people": 200,
+        "n_exited": 192
+      },
+      {
+        "seed": 53,
+        "t95_s": 89.79349999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.294901807814731,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 54,
+        "t95_s": 91.70449999999973,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.936966006914548,
+        "n_people": 200,
+        "n_exited": 196
+      },
+      {
+        "seed": 55,
+        "t95_s": 103.56749999999991,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 7.085590326161813,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 56,
+        "t95_s": 85.51299999999998,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.736419799541384,
+        "n_people": 200,
+        "n_exited": 197
+      },
+      {
+        "seed": 57,
+        "t95_s": 87.34649999999962,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.776404904711742,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 58,
+        "t95_s": 94.77249999999992,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.351520800605498,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 59,
+        "t95_s": 139.30399999999997,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.593438304883892,
+        "n_people": 200,
+        "n_exited": 193
+      },
+      {
+        "seed": 60,
+        "t95_s": 136.831,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 5.538328406214687,
+        "n_people": 200,
+        "n_exited": 194
+      },
+      {
+        "seed": 61,
+        "t95_s": 78.08849999999995,
+        "total_time_s": 240.0,
+        "mean_egress_s": 240.0,
+        "peak_density_per_m2": 6.310672643761994,
+        "n_people": 200,
+        "n_exited": 195
+      }
+    ]
+  }
+}

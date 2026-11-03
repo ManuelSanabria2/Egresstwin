@@ -101,6 +101,7 @@ def _forces_kernel(
     k_body,
     kappa,
     cutoff_m,
+    friction_cap,
     out,
 ):
     n = pos.shape[0]
@@ -141,15 +142,21 @@ def _forces_kernel(
                         overlap = 0.0
                     dv_t = (vel[j, 0] - vel[i, 0]) * tx + (vel[j, 1] - vel[i, 1]) * ty
                     mag = a_n * np.exp((r_ij - d) / b_m) + k_body * overlap
-                    fx += mag * nx + kappa * overlap * dv_t * tx
-                    fy += mag * ny + kappa * overlap * dv_t * ty
+                    gamma = kappa * overlap
+                    if gamma > friction_cap:
+                        gamma = friction_cap
+                    fx += mag * nx + gamma * dv_t * tx
+                    fy += mag * ny + gamma * dv_t * ty
         overlap_w = radius[i] - wall_dist[i]
         if overlap_w < 0.0:
             overlap_w = 0.0
         mag_w = a_n * np.exp((radius[i] - wall_dist[i]) / b_m) + k_body * overlap_w
         v_t = vel[i, 0] * (-wall_gy[i]) + vel[i, 1] * wall_gx[i]
-        fx += mag_w * wall_gx[i] - kappa * overlap_w * v_t * (-wall_gy[i])
-        fy += mag_w * wall_gy[i] - kappa * overlap_w * v_t * wall_gx[i]
+        gamma_w = kappa * overlap_w
+        if gamma_w > friction_cap:
+            gamma_w = friction_cap
+        fx += mag_w * wall_gx[i] - gamma_w * v_t * (-wall_gy[i])
+        fy += mag_w * wall_gy[i] - gamma_w * v_t * wall_gx[i]
         out[i, 0] = fx
         out[i, 1] = fy
 
@@ -167,11 +174,15 @@ def compute_forces(
     grid_shape: tuple[int, int],
     layout_cell_size_m: float,
     params: SFParams,
+    dt: float | None = None,
 ) -> np.ndarray:
     """Total force (N, 2) via cell list + Numba kernel.
 
     grid_shape is the simulation grid (rows, cols); the cell list is a
     coarser uniform grid (cell_list_size_m) over the same extent.
+    dt is the integration step the forces will be applied with; when
+    given, the sliding-friction coefficient is capped for stability
+    (see friction_cap).
     """
     cell = params.cell_list_size_m
     grid_rows = max(1, int(np.ceil(grid_shape[0] * layout_cell_size_m / cell)))
@@ -205,6 +216,25 @@ def compute_forces(
         params.k_kg_s2,
         params.kappa,
         params.cutoff_m,
+        friction_cap(params, dt),
         out,
     )
     return out
+
+
+def friction_cap(params: SFParams, dt: float | None) -> float:
+    """Largest stable sliding-friction coefficient kappa*overlap (kg/s).
+
+    The tangential friction kappa * overlap * dv_t is a damper whose
+    coefficient grows with overlap. Integrated explicitly with step dt,
+    a pair's relative tangential velocity is multiplied by
+    (1 - 2 * gamma * dt / m) each step; above gamma = m / (2 dt) the
+    sign flips every step. With the speed cap this became a stable
+    2-cycle in which deeply overlapping pairs (overlap > ~8 cm at
+    dt = 2 ms) froze in place forever (found on a real 200-person run).
+    Capping gamma at m / (2 dt) keeps the damping monotone; below the
+    cap the paper's force is unchanged.
+    """
+    if dt is None or dt <= 0:
+        return float("inf")
+    return params.mass / (2.0 * dt)

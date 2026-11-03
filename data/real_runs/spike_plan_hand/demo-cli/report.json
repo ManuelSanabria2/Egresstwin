@@ -1,0 +1,60 @@
+{
+  "baseline_id": "baseline",
+  "objective": "minimize_t95",
+  "recommendations": [
+    {
+      "modifications": [
+        {
+          "type": "add_exit",
+          "segment": [
+            [
+              14.45,
+              2.0
+            ],
+            [
+              14.45,
+              4.0
+            ]
+          ],
+          "exit_id": null
+        },
+        {
+          "type": "widen_exit",
+          "exit_id": "E2",
+          "width_m": 5.0
+        }
+      ],
+      "scenario_id": "east-south-plus-widene2",
+      "claimed_metrics": {
+        "mean_egress_s": 217.6442125,
+        "peak_density_per_m2": 6.028558136167213,
+        "t95_s": 42.178874999999984,
+        "total_time_s": 221.60999999999999
+      },
+      "rationale": "Baseline T95 mean 95.4589 s (CI 88.81-102.10). Adding east exit at [14.45,2.0]-[14.45,4.0] plus widening E2 to 5.0m gives T95 mean 42.1789 s (CI 41.11-43.24), diff -53.28 s, p=3.88e-13, no CI overlap. Hotspots showed E1 carried 79.7% of people; new exit takes 37.2% share balancing load. Uses 2 changes (<=3)."
+    }
+  ],
+  "robustness": [
+    {
+      "scenario_id": "east-south-plus-widene2",
+      "blocked_exit_id": "E1",
+      "claimed_t95_s": 97.64399999999998
+    },
+    {
+      "scenario_id": "east-south-plus-widene2",
+      "blocked_exit_id": "E2",
+      "claimed_t95_s": 54.57959999999999
+    },
+    {
+      "scenario_id": "east-south-plus-widene2",
+      "blocked_exit_id": "exit-1",
+      "claimed_t95_s": 94.6286249999998
+    }
+  ],
+  "limitations": [
+    "This tool supports decisions; it is not a safety certification.",
+    "Results based on 20 replicas, 200 occupants in spawn-1, same run settings (time cap, speeds, reaction times) as baseline; model assumptions and geometry as in layout summary with 2 baseline exits E1 and E2.",
+    "Total-time and mean-egress means hit the 240 s time cap in baseline; T95 is the decision metric for minimize_t95."
+  ],
+  "summary": "Recommend adding east exit [14.45,2.0]-[14.45,4.0] and widening E2 to 5.0m: T95 95.46s -> 42.18s, significant, N-1 tested."
+}

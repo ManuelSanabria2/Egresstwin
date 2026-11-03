@@ -189,8 +189,10 @@ class MetaClient:
             int(usage.get("output_tokens", 0)),
             int(usage.get("cached_input_tokens", 0)),
         )
+        # A fixture replay is scripted, not the model: label it so in
+        # every trace (pricing above still uses the configured model).
         result = MetaResult(
-            kind="responses_turn", model=model,
+            kind="responses_turn", model="scripted" if self.settings.mock else model,
             text=data.get("text"), data=data, usage=usage,
         )
         # Conversational turns are charged and logged but not cached.
@@ -463,13 +465,21 @@ class MetaClient:
         )
         text = str(getattr(resp, "output_text", "") or "")
         data = json.loads(text)
+        usage = self._responses_usage(resp)
+        return dict(data), text, usage
+
+    @staticmethod
+    def _responses_usage(resp: Any) -> dict[str, Any]:
+        """Token usage of a Responses call, including cached input tokens."""
         usage_obj = getattr(resp, "usage", None)
-        usage = {
+        in_details = getattr(usage_obj, "input_tokens_details", None)
+        out_details = getattr(usage_obj, "output_tokens_details", None)
+        return {
             "input_tokens": int(getattr(usage_obj, "input_tokens", 0) or 0),
             "output_tokens": int(getattr(usage_obj, "output_tokens", 0) or 0),
-            "cached_input_tokens": 0,
+            "cached_input_tokens": int(getattr(in_details, "cached_tokens", 0) or 0),
+            "reasoning_tokens": int(getattr(out_details, "reasoning_tokens", 0) or 0),
         }
-        return dict(data), text, usage
 
     def _real_responses_turn(
         self,
@@ -501,12 +511,7 @@ class MetaClient:
                         ),
                     }
                 )
-        usage_obj = getattr(resp, "usage", None)
-        usage = {
-            "input_tokens": int(getattr(usage_obj, "input_tokens", 0) or 0),
-            "output_tokens": int(getattr(usage_obj, "output_tokens", 0) or 0),
-            "cached_input_tokens": 0,
-        }
+        usage = self._responses_usage(resp)
         data = {
             "response_id": str(getattr(resp, "id", "") or ""),
             "function_calls": calls,

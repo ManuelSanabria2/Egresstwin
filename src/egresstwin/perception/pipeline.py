@@ -39,6 +39,8 @@ from egresstwin.perception.segmenter import (
 )
 
 LOW_CONFIDENCE = 0.7
+# Widest body in the simulator: radius 0.35 m (SFParams.radius_max).
+MAX_BODY_DIAMETER_M = 0.7
 
 
 @dataclass
@@ -407,18 +409,61 @@ def image_to_layout(
     # anything bigger that stays disconnected fails validation below.
     from scipy import ndimage
 
+    # The cell-level floor field routes everyone along the geodesic
+    # shortest path, whatever its width. A passage narrower than the
+    # widest simulated body (0.7 m) jams: that person is squeezed
+    # between two walls and blocks everyone routed behind them (seen on
+    # real runs: a 0.2-0.4 m slit left by an offset door box, and a
+    # 0.6 m gap between a kitchen block and a partition). A
+    # morphological opening with a 0.7 m disk removes such passages and
+    # keeps every wider space intact; if that disconnects a room,
+    # validation fails visibly instead of trapping people.
+    radius_cells = MAX_BODY_DIAMETER_M / 2.0 / cell_size_m
+    span = int(np.ceil(radius_cells))
+    yy, xx = np.mgrid[-span : span + 1, -span : span + 1]
+    disk = (yy**2 + xx**2) <= radius_cells**2
+    opened = ndimage.binary_opening(walkable, structure=disk)
+    slit_cells = int((walkable & ~opened).sum())
+    if slit_cells:
+        walkable = opened
+        warnings.append(
+            f"removed {slit_cells} walkable cells in passages narrower than "
+            f"{MAX_BODY_DIAMETER_M:.1f} m (not every body fits); check doors in the overlay"
+        )
+
     labelled, n_comp = ndimage.label(walkable)
     if n_comp > 1:
         sizes = ndimage.sum_labels(walkable, labelled, range(1, n_comp + 1))
         speck_cells = max(1, round(1.0 / (cell_size_m**2)))
-        pruned = 0
+        # Furniture drawn as an outlined, colour-filled shape (desks,
+        # tables) leaves an enclosed region that is not floor. Floor is
+        # paper-white; an enclosed region whose pixels are mostly
+        # coloured is a filled shape. Enclosed white regions are left
+        # alone: they mean a missed door and must fail validation.
+        with Image.open(path) as im:
+            grey_min = np.asarray(
+                im.convert("RGB").resize((cols, rows), Image.Resampling.BOX)
+            ).min(axis=2)
+        pruned = filled = filled_cells = 0
         for comp, size in enumerate(sizes, start=1):
-            if size < speck_cells and size < sizes.max():
-                walkable[labelled == comp] = False
+            if size >= sizes.max():
+                continue
+            region = labelled == comp
+            if size < speck_cells:
+                walkable[region] = False
                 pruned += int(size)
+            elif float(np.median(grey_min[region])) < 230.0:
+                walkable[region] = False
+                filled += 1
+                filled_cells += int(size)
         if pruned:
             warnings.append(
                 f"pruned {pruned} isolated walkable cells smaller than 1 m2 (ink specks)"
+            )
+        if filled:
+            warnings.append(
+                f"{filled} enclosed colour-filled shape(s) ({filled_cells} cells, "
+                f"{filled_cells * cell_size_m**2:.1f} m2) treated as furniture, not floor"
             )
 
     exits, exit_info, doors, exit_warnings = _build_exits(

@@ -1,0 +1,124 @@
+{
+  "source_image": "C:\\Users\\manue\\OneDrive\\Documentos\\PROYECTOS PORTAFOLIO REAL\\hackthon meta}\\egresstwin\\data\\samples\\test_plans\\test_office.png",
+  "source_image_hash": "bdc00926d43065639e70fb331f6803d932769529d1ea012aba9a63b55e203999",
+  "image_size_px": {
+    "w": 900,
+    "h": 650
+  },
+  "image_type": "floor_plan",
+  "models": {
+    "spark": "muse-spark-1.3",
+    "sam": "sam-3.1"
+  },
+  "cell_size_m": 0.1,
+  "grid_shape": {
+    "rows": 130,
+    "cols": 180
+  },
+  "meters_per_pixel": 0.01997439180537772,
+  "scale": {
+    "meters_per_pixel": 0.01997439180537772,
+    "source": "annotation",
+    "assumed": false,
+    "detail": "annotation '15.6 m' over outer width 781 px"
+  },
+  "exits": [
+    {
+      "id": "E1",
+      "label": "exit",
+      "confidence": 0.8172,
+      "source": "spark+sam+opencv_gap",
+      "box_px": [
+        339,
+        447,
+        111,
+        79
+      ],
+      "width_m": 1.5380281690140851
+    },
+    {
+      "id": "E2",
+      "label": "exit",
+      "confidence": 0.9398,
+      "source": "spark+sam+opencv_gap",
+      "box_px": [
+        751,
+        287,
+        90,
+        80
+      ],
+      "width_m": 1.5380281690140842
+    }
+  ],
+  "doors": [
+    {
+      "label": "door",
+      "confidence": 0.85,
+      "box_px": [
+        159,
+        209,
+        91,
+        80
+      ]
+    },
+    {
+      "label": "door",
+      "confidence": 0.8,
+      "box_px": [
+        359,
+        229,
+        91,
+        79
+      ]
+    },
+    {
+      "label": "door",
+      "confidence": 0.85,
+      "box_px": [
+        647,
+        236,
+        83,
+        79
+      ]
+    }
+  ],
+  "obstacles": [],
+  "spawn_zones": [
+    {
+      "id": "spawn-1",
+      "count": 50,
+      "polygon": [
+        [
+          3.8350000000000004,
+          2.875
+        ],
+        [
+          14.965000000000002,
+          2.875
+        ],
+        [
+          14.965000000000002,
+          9.525
+        ],
+        [
+          3.8350000000000004,
+          9.525
+        ]
+      ]
+    }
+  ],
+  "plan_notes": "Schematic plan with OPEN OFFICE west, central corridor, MEETING northeast and southeast room. Two exterior exits: south-center door on outer wall and east wall door marked EXIT. Three interior doorways with grey slabs: west wall, central T-junction, and horizontal wall between MEETING and southeast room. No stairs shown. Blue and dark grey rectangles are furniture and may affect egress but do not block openings. Overall width 15.6 m shown below plan.",
+  "plan_confidence": 0.87,
+  "warnings": [
+    "removed 163 walkable cells in passages narrower than 0.7 m (not every body fits); check doors in the overlay",
+    "3 enclosed colour-filled shape(s) (444 cells, 4.4 m2) treated as furniture, not floor"
+  ],
+  "validation_warnings": [],
+  "costs": {
+    "spark_usd": 0.0,
+    "sam_usd": 0.0,
+    "total_usd": 0.0,
+    "cached": true
+  },
+  "walkable_cells": 11967
+}

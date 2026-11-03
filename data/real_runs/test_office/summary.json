@@ -1,0 +1,34 @@
+{
+  "mode": "real",
+  "image": "C:\\Users\\manue\\OneDrive\\Documentos\\PROYECTOS PORTAFOLIO REAL\\hackthon meta}\\egresstwin\\data\\samples\\test_plans\\test_office.png",
+  "layout_shape": [
+    130,
+    180
+  ],
+  "people": 200,
+  "max_time_s": 240.0,
+  "exits": [
+    "E1",
+    "E2"
+  ],
+  "baseline_t95_s": {
+    "mean": 38.28099999999999,
+    "std": 1.8179620530461527,
+    "ci_low": 37.430167568849654,
+    "ci_high": 39.13183243115033,
+    "n": 20
+  },
+  "agent_model": "muse-spark-1.3",
+  "agent_turns": 20,
+  "agent_status": "VERIFIED",
+  "agent_reason": "report verified",
+  "agent_cost_usd": 0.2287812,
+  "scenarios_run": 60,
+  "perception_cost_usd": {
+    "spark_usd": 0.0,
+    "sam_usd": 0.0,
+    "total_usd": 0.0,
+    "cached": true
+  },
+  "elapsed_s": 5406.5
+}

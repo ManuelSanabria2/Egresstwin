@@ -116,7 +116,7 @@ class ScriptedModel:
         return SimpleNamespace(
             data={"response_id": f"resp-{self.n_calls}", "function_calls": calls, "text": ""},
             cost_usd=0.001, usage={"input_tokens": 100, "output_tokens": 20},
-            model="muse-spark-1.3",
+            model="scripted",
         )
 
 
@@ -171,6 +171,53 @@ def test_tool_schemas_are_strict() -> None:
     }
     assert all(s["strict"] is True for s in schemas)
     assert all(s["parameters"]["additionalProperties"] is False for s in schemas)
+
+    # Strict mode (as enforced by the real Meta API): every object lists
+    # all its properties as required and forbids extra keys; no $ref,
+    # tuple or discriminator keywords reach the wire.
+    def walk(node: object) -> None:
+        if isinstance(node, dict):
+            for banned in ("$ref", "$defs", "prefixItems", "oneOf", "discriminator",
+                           "const", "default"):
+                assert banned not in node, banned
+            if node.get("type") == "object" or node.get("type") == ["object", "null"]:
+                assert node["additionalProperties"] is False
+                assert sorted(node["required"]) == sorted(node["properties"])
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+
+    for schema in schemas:
+        walk(schema["parameters"])
+
+
+def test_strict_nulls_are_dropped_before_validation() -> None:
+    from egresstwin.agent.tools import TOOL_ARG_MODELS, drop_nulls
+
+    # What a strict-mode model sends for "not set": explicit nulls.
+    args = {"report": {
+        "baseline_id": "baseline", "objective": "minimize_t95",
+        "recommendations": [{
+            "modifications": [{"type": "widen_exit", "exit_id": "E1", "width_m": 2.0},
+                              {"type": "add_exit", "segment": [[0, 1], [0, 2]],
+                               "exit_id": None}],
+            "scenario_id": "s1",
+            "claimed_metrics": {"t95_s": 10.0, "total_time_s": None,
+                                "mean_egress_s": None, "peak_density_per_m2": None},
+            "rationale": None,
+        }],
+        "robustness": None, "limitations": None, "summary": None,
+    }}
+    report = TOOL_ARG_MODELS["submit_report"].model_validate(drop_nulls(args)).report
+    rec = report.recommendations[0]
+    assert rec.claimed_metrics == {"t95_s": 10.0}
+    assert rec.modifications[1].exit_id is None
+    assert report.robustness == [] and report.summary == ""
+    stress = TOOL_ARG_MODELS["stress_test"].model_validate(
+        drop_nulls({"scenario_id": "s1", "replicas": None, "block_at_s": None}))
+    assert stress.replicas == 5 and stress.block_at_s is None
 
 
 def test_happy_flow_verified_with_multiple_calls_per_turn(tmp_path: Path) -> None:

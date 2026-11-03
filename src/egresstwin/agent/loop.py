@@ -19,7 +19,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from egresstwin.agent.report import AgentReport, Objective
-from egresstwin.agent.tools import TOOL_ARG_MODELS, AgentTools, tool_schemas
+from egresstwin.agent.tools import TOOL_ARG_MODELS, AgentTools, drop_nulls, tool_schemas
 from egresstwin.agent.trace import TraceWriter, new_run_id
 from egresstwin.agent.verifier import VerifierConfig, verify_report
 from egresstwin.layout.schema import Layout
@@ -40,6 +40,9 @@ class AgentRunResult:
     scenarios_run: int = 0
     reason: str = ""
     events: list[dict[str, Any]] = field(default_factory=list)
+    # Who drove the run, read from the turn events: the real model id,
+    # or "scripted" for a scripted/fixture driver.
+    model: str = ""
 
 
 def load_system_prompt() -> str:
@@ -188,7 +191,7 @@ class AgentLoop:
                     model_cls = TOOL_ARG_MODELS.get(name)
                     if model_cls is None:
                         raise ValueError(f"unknown tool {name!r}")
-                    validated = model_cls.model_validate(args_obj)
+                    validated = model_cls.model_validate(drop_nulls(args_obj))
                     args = validated.model_dump(mode="python")
                     self._emit(
                         {"event": "tool_call", "turn": turn, "tool": name,
@@ -258,6 +261,10 @@ class AgentLoop:
             scenarios_run=self.tools.scenarios_run,
             reason=reason,
             events=list(self.trace.events),
+            model=", ".join(sorted({
+                str(e.get("model") or "unknown")
+                for e in self.trace.events if e.get("event") == "turn"
+            })),
         )
         if final_report is not None:
             (self.trace.run_dir / "report.json").write_text(

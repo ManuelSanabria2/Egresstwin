@@ -91,10 +91,96 @@ TOOL_ARG_MODELS: dict[str, type[BaseModel]] = {
 }
 
 
-def _strict(schema: dict[str, Any]) -> dict[str, Any]:
-    schema = dict(schema)
-    schema["additionalProperties"] = False
-    return schema
+# Keywords kept in the wire schema. Numeric ranges are accepted by the
+# Meta API in strict mode and the model honours them (probed: asked
+# for 30 replicas, it sent the maximum, 20). Lengths, tuple shapes and
+# discriminators are dropped; the Pydantic models still enforce every
+# constraint on the way in.
+_KEEP = ("type", "description", "enum", "items", "properties", "required",
+         "additionalProperties", "anyOf", "minimum", "maximum",
+         "exclusiveMinimum", "exclusiveMaximum")
+
+
+def _nullable(node: dict[str, Any]) -> dict[str, Any]:
+    if "enum" in node and None not in node["enum"]:
+        node["enum"] = [*node["enum"], None]
+    if "anyOf" in node:
+        if not any(o.get("type") == "null" for o in node["anyOf"]):
+            node["anyOf"] = [*node["anyOf"], {"type": "null"}]
+        return node
+    kind = node.get("type")
+    if isinstance(kind, str) and kind != "null":
+        node["type"] = [kind, "null"]
+    elif isinstance(kind, list) and "null" not in kind:
+        node["type"] = [*kind, "null"]
+    return node
+
+
+def _to_strict(node: dict[str, Any], defs: dict[str, Any]) -> dict[str, Any]:
+    """Rewrite a Pydantic JSON schema node into strict function-call form.
+
+    Every object lists all its properties as required and forbids extra
+    keys; fields that were optional become nullable (the loop drops the
+    nulls before Pydantic validation, so defaults still apply). $refs are
+    inlined, discriminated oneOf becomes anyOf, const becomes a one-value
+    enum, tuples become plain arrays, and a free-form metric map becomes
+    an object with the known metric keys.
+    """
+    if "$ref" in node:
+        node = {**defs[node["$ref"].split("/")[-1]], **{k: v for k, v in node.items()
+                                                         if k != "$ref"}}
+    node = dict(node)
+    if "const" in node:
+        node["enum"] = [node.pop("const")]
+    if "oneOf" in node:
+        node["anyOf"] = node.pop("oneOf")
+    if "prefixItems" in node:
+        n_items = len(node["prefixItems"])
+        node["items"] = _to_strict(node.pop("prefixItems")[0], defs)
+        node["description"] = (node.get("description", "") +
+                               f" Exactly {n_items} items.").strip()
+    out: dict[str, Any] = {k: node[k] for k in _KEEP if k in node}
+    if "anyOf" in out:
+        out["anyOf"] = [_to_strict(o, defs) for o in out["anyOf"]]
+    if isinstance(out.get("items"), dict):
+        out["items"] = _to_strict(out["items"], defs)
+    if out.get("type") == "object":
+        props = dict(node.get("properties", {}))
+        extra = node.get("additionalProperties")
+        if not props and isinstance(extra, dict):
+            # dict[str, float]: claimed metrics, keyed by metric name.
+            props = {k: dict(extra) for k in METRIC_KEYS}
+            out["description"] = (out.get("description", "") + " Keys: metric names; "
+                                  "set the ones you claim, null the rest.").strip()
+            required: set[str] = set()
+        else:
+            # Discriminator tags (const) are always sent, never null.
+            required = set(node.get("required", [])) | {
+                name for name, sub in props.items() if "const" in sub
+            }
+        out["properties"] = {
+            name: (_to_strict(sub, defs) if name in required
+                   else _nullable(_to_strict(sub, defs)))
+            for name, sub in props.items()
+        }
+        out["required"] = list(props)
+        out["additionalProperties"] = False
+    return out
+
+
+def strict_parameters(model: type[BaseModel]) -> dict[str, Any]:
+    """Strict JSON schema for one tool's arguments model."""
+    schema = model.model_json_schema()
+    return _to_strict(schema, schema.get("$defs", {}))
+
+
+def drop_nulls(value: Any) -> Any:
+    """Remove null-valued keys (strict mode sends null for 'not set')."""
+    if isinstance(value, dict):
+        return {k: drop_nulls(v) for k, v in value.items() if v is not None}
+    if isinstance(value, list):
+        return [drop_nulls(v) for v in value]
+    return value
 
 
 def tool_schemas() -> list[dict[str, Any]]:
@@ -106,7 +192,7 @@ def tool_schemas() -> list[dict[str, Any]]:
                 "type": "function",
                 "name": name,
                 "description": _DESCRIPTIONS[name],
-                "parameters": _strict(model.model_json_schema()),
+                "parameters": strict_parameters(model),
                 "strict": True,
             }
         )
@@ -141,6 +227,12 @@ def _record_summary(record) -> dict[str, Any]:  # noqa: ANN001
         "modifications": record.modifications,
         "metrics": {k: record.aggregate(k) for k in METRIC_KEYS},
         "n_replicas": len(record.replicas),
+        # Times are censored at the cap when people stay inside; say so.
+        "people_exited": {
+            "min": min((r.n_exited for r in record.replicas), default=0),
+            "max": max((r.n_exited for r in record.replicas), default=0),
+            "of": max((r.n_people for r in record.replicas), default=0),
+        },
     }
 
 

@@ -1,0 +1,22 @@
+{
+  "status": "VERIFIED",
+  "checks": [
+    {
+      "claim": "baseline_exists",
+      "passed": true,
+      "detail": "baseline 'baseline' found in store"
+    },
+    {
+      "claim": "baseline_matches",
+      "passed": true,
+      "detail": "report baseline 'baseline' vs store baseline 'baseline'"
+    },
+    {
+      "claim": "honest_no_improvement",
+      "passed": true,
+      "detail": "report recommends nothing; no improvement claim to check"
+    }
+  ],
+  "n_passed": 3,
+  "n_checks": 3
+}

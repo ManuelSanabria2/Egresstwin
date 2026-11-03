@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from egresstwin.sim.social_force import SFParams
+from egresstwin.sim.social_force import SFParams, friction_cap
 
 
 def compute_forces_reference(
@@ -23,8 +23,13 @@ def compute_forces_reference(
     wall_gx: np.ndarray,
     wall_gy: np.ndarray,
     params: SFParams,
+    dt: float | None = None,
 ) -> np.ndarray:
-    """Total force (N, 2) on every agent, Helbing et al. (2000)."""
+    """Total force (N, 2) on every agent, Helbing et al. (2000).
+
+    With dt, sliding friction is capped as in social_force.friction_cap.
+    """
+    cap = friction_cap(params, dt)
     n = len(pos)
     forces = params.mass * (desired_speed[:, None] * desired_dir - vel) / params.tau_s
     for i in range(n):
@@ -45,7 +50,8 @@ def compute_forces_reference(
             overlap = max(r_ij - d, 0.0)
             dv_t = float(np.dot(vel[j] - vel[i], tangent))
             mag = params.a_n * np.exp((r_ij - d) / params.b_m) + params.k_kg_s2 * overlap
-            forces[i] += mag * normal + params.kappa * overlap * dv_t * tangent
+            gamma = min(params.kappa * overlap, cap)
+            forces[i] += mag * normal + gamma * dv_t * tangent
         # Wall force from the precomputed wall field (O(1) lookup upstream).
         overlap_w = max(radius[i] - wall_dist[i], 0.0)
         mag_w = (
@@ -55,7 +61,8 @@ def compute_forces_reference(
         normal_w = np.array([wall_gx[i], wall_gy[i]])
         tangent_w = np.array([-wall_gy[i], wall_gx[i]])
         v_t = float(np.dot(vel[i], tangent_w))
-        forces[i] += mag_w * normal_w - params.kappa * overlap_w * v_t * tangent_w
+        gamma_w = min(params.kappa * overlap_w, cap)
+        forces[i] += mag_w * normal_w - gamma_w * v_t * tangent_w
     return forces
 
 
@@ -73,7 +80,8 @@ def step_reference(
 ) -> tuple[np.ndarray, np.ndarray]:
     """One semi-implicit Euler step (no wall guard; tests only)."""
     forces = compute_forces_reference(
-        pos, vel, radius, desired_speed, desired_dir, wall_dist, wall_gx, wall_gy, params
+        pos, vel, radius, desired_speed, desired_dir, wall_dist, wall_gx, wall_gy, params,
+        dt=dt,
     )
     new_vel = vel + forces / params.mass * dt
     speed = np.hypot(new_vel[:, 0], new_vel[:, 1])
