@@ -106,6 +106,8 @@ def main() -> int:
         shutil.rmtree(stale)
 
     image = Path(summary["image"])
+    if not image.is_absolute():
+        image = ROOT / image
     try:
         image_rel = image.resolve().relative_to(ROOT).as_posix()
     except ValueError:

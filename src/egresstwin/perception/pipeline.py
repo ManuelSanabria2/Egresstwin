@@ -39,6 +39,7 @@ from egresstwin.perception.segmenter import (
 )
 
 LOW_CONFIDENCE = 0.7
+_REPO_ROOT = Path(__file__).resolve().parents[3]
 # Widest body in the simulator: radius 0.35 m (SFParams.radius_max).
 MAX_BODY_DIAMETER_M = 0.7
 
@@ -106,6 +107,15 @@ def _resolve_scale(
         "cannot resolve scale: give two reference points, a known door width, "
         "or use an image with a readable dimension annotation"
     )
+
+
+def _repo_relative(path: Path) -> str:
+    """Path relative to the repository root, so committed reports never
+    carry a local absolute path; just the file name if outside it."""
+    try:
+        return path.resolve().relative_to(_REPO_ROOT).as_posix()
+    except ValueError:
+        return path.name
 
 
 def _gap_side(gap: list[int], bbox: tuple[int, int, int, int]) -> str:
@@ -512,7 +522,7 @@ def image_to_layout(
 
     total_cost = plan.cost_usd + sam_box.cost_usd + sam_concepts.cost_usd
     report: dict[str, Any] = {
-        "source_image": str(path),
+        "source_image": _repo_relative(path),
         "source_image_hash": digest,
         "image_size_px": {"w": width, "h": height},
         "image_type": plan.image_type,

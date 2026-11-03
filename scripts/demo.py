@@ -226,6 +226,14 @@ class ScriptedDemoModel:
         return self._honest()
 
 
+def _rel(path: Path) -> str:
+    """Repo-relative path for logs and saved summaries (no local paths)."""
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.name
+
+
 def main() -> int:
     image = (ROOT / ARGS.image).resolve() if not Path(ARGS.image).is_absolute() \
         else Path(ARGS.image)
@@ -236,7 +244,7 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     mode = "MOCK (no network, no cost)" if ARGS.mock else "REAL (Meta Model API)"
     print(f"EgressTwin demo - {mode}")
-    print(f"image: {image}")
+    print(f"image: {_rel(image)}")
     started = time.perf_counter()
 
     if not ARGS.mock and not os.environ.get("MODEL_API_KEY"):
@@ -303,7 +311,7 @@ def main() -> int:
     baseline = tools.store.get("baseline")
     summary = {
         "mode": "mock" if ARGS.mock else "real",
-        "image": str(image),
+        "image": _rel(image),
         "layout_shape": list(layout.shape),
         "people": ARGS.people,
         "max_time_s": ARGS.max_time,

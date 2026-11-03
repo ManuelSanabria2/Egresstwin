@@ -1,5 +1,5 @@
 EgressTwin demo - REAL (Meta Model API)
-image: C:\Users\manue\OneDrive\Documentos\PROYECTOS PORTAFOLIO REAL\hackthon meta}\egresstwin\data\samples\spike_plan_hand.png
+image: data/samples/spike_plan_hand.png
 layout: 117x157 cells, exits ['E1', 'E2'], warnings 2
 baseline T95: {'mean': 95.4588999999999, 'std': 14.200557196814483, 'ci_low': 88.81283465270064, 'ci_high': 102.10496534729916, 'n': 20}
 agent: VERIFIED (report verified), scenarios 27, cost USD 0.1056214

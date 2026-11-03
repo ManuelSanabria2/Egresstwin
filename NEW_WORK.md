@@ -63,7 +63,7 @@ stamps or rejects.
 | `config.py` | Settings (model IDs, budget, mock mode) via pydantic-settings |
 | `meta/client.py` | Only access point to the Meta Model API: OpenAI SDK wrapper, retries with backoff, disk cache by input hash, cost log, budget guard, mock mode from fixtures |
 | `meta/costs.py` | Editable price table and `BudgetExceeded` guard |
-| `meta/spark.py`, `meta/sam.py`, `meta/voice.py` | Thin helpers for Muse Spark, SAM 3.1 and Muse Voice |
+| `meta/spark.py`, `meta/sam.py` | Thin helpers for Muse Spark and SAM 3.1 |
 | `layout/schema.py` | `Layout` model: walkable grid (`.npz`), obstacles, exit segments, spawn zones, explicit scale |
 | `layout/validate.py` | Connectivity, exit placement and narrow-passage validation |
 | `layout/edit.py` | Pure manual corrections: add/remove exit or obstacle, paint wall, mark walkable |
