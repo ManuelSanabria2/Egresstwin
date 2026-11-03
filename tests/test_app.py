@@ -52,7 +52,7 @@ def fake_agent(layout, objective, on_event, runs_dir, run_id, max_changes, const
 def fake_bench(out_dir):  # noqa: ANN001, ANN202
     return {"scaling": [{"n_people": 3, "wall_s": 0.1}],
             "throughput": {"scenarios": 1, "replicas": 1, "wall_s": 0.1,
-                           "scenarios_per_min": 600.0}, "figures": []}
+                           "runs_per_min": 600.0}, "figures": []}
 
 
 @pytest.fixture
@@ -208,5 +208,5 @@ def test_demo_mode_and_bench(client: TestClient) -> None:
     started = client.post("/api/bench/run").json()
     job = wait_job(client, started["job_id"])
     assert job["status"] == "done"
-    assert job["result"]["throughput"]["scenarios_per_min"] > 0
+    assert job["result"]["throughput"]["runs_per_min"] > 0
     assert client.get("/api/bench").json()["figures"] == []

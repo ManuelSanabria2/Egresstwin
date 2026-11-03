@@ -305,8 +305,10 @@ def default_bench_runner(out_dir: Path) -> dict[str, Any]:
     started = time.perf_counter()
     run_sweep(room(40), specs, replicas=3, seed=42)
     sweep_s = time.perf_counter() - started
+    # 4 scenarios x 3 replicas = 12 simulation runs.
     throughput = {"scenarios": 4, "replicas": 3, "wall_s": round(sweep_s, 3),
-                  "scenarios_per_min": round(12 / max(sweep_s, 1e-9) * 60, 2)}
+                  "runs_per_min": round(12 / max(sweep_s, 1e-9) * 60, 2),
+                  "backend": "serial"}
 
     out_dir.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(7, 4))
@@ -317,8 +319,8 @@ def default_bench_runner(out_dir: Path) -> dict[str, Any]:
     fig.savefig(out_dir / "bench_scaling.png", dpi=130, bbox_inches="tight")
     plt.close(fig)
     fig, ax = plt.subplots(figsize=(7, 4))
-    ax.bar(["sweep 4 scenarios x 3 replicas"], [throughput["scenarios_per_min"]])
-    ax.set_ylabel("scenarios per minute")
+    ax.bar(["sweep 4 scenarios x 3 replicas"], [throughput["runs_per_min"]])
+    ax.set_ylabel("simulation runs per minute")
     ax.set_title("Sweep throughput (serial backend)")
     fig.savefig(out_dir / "bench_throughput.png", dpi=130, bbox_inches="tight")
     plt.close(fig)

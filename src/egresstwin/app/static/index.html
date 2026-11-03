@@ -195,6 +195,7 @@ img.figure{max-width:100%;border:1px solid var(--line);border-radius:6px;backgro
   <h2>Performance</h2>
   <p><button id="bench-btn" type="button">Run benchmark</button> <span id="bench-status" class="small"></span></p>
   <div id="bench-summary"></div>
+  <img id="bench-fig-0" class="figure" alt="Parallel sweep speedup figure">
   <div class="row">
     <div class="col"><img id="bench-fig-1" class="figure" alt="Simulation scaling figure"></div>
     <div class="col"><img id="bench-fig-2" class="figure" alt="Sweep throughput figure"></div>
@@ -736,15 +737,29 @@ async function finishAgent(jobId) {
 }
 /* ---------- performance ---------- */
 function showBench(bench) {
+  // Figures are matched by name so older bench files still render.
   const fig = bench.figures || [];
-  if (fig[0]) $("bench-fig-1").src = "/api/bench/figures/" + fig[0];
-  if (fig[1]) $("bench-fig-2").src = "/api/bench/figures/" + fig[1];
+  const slots = {"bench_parallel.png": "bench-fig-0", "bench_scaling.png": "bench-fig-1",
+                 "bench_throughput.png": "bench-fig-2"};
+  fig.forEach((name) => { if (slots[name]) $(slots[name]).src = "/api/bench/figures/" + name; });
   let html = "";
-  if (bench.scaling) html += "<table><tr><th>People</th><th>Wall-clock (s)</th></tr>" +
+  const par = bench.sweep_parallel;
+  if (par) {
+    html += '<p class="small">Parallel sweep (' + par.backend + "): " + par.set.scenarios +
+      " scenarios × " + par.set.replicas + " replicas = " + par.set.runs + " runs, " +
+      par.set.people + " people, on " + par.machine.cpu + " (" + par.machine.logical_cpus +
+      " logical CPUs). " + par.note + "</p>";
+    html += "<table><tr><th>Processes</th><th>Wall-clock (s)</th><th>Speedup</th>" +
+      "<th>Efficiency</th><th>Runs/min</th><th>Same results</th></tr>" +
+      par.runs.map((r) => "<tr><td>" + r.workers + "</td><td>" + r.wall_s + "</td><td>" +
+        r.speedup + "</td><td>" + r.efficiency + "</td><td>" + r.runs_per_min + "</td><td>" +
+        (r.identical_to_1_process ? "yes" : "NO") + "</td></tr>").join("") + "</table>";
+  }
+  if (bench.scaling) html += "<table><tr><th>People (single run)</th><th>Wall-clock (s)</th></tr>" +
     bench.scaling.map((s) => "<tr><td>" + s.n_people + "</td><td>" + s.wall_s + "</td></tr>").join("") + "</table>";
-  if (bench.throughput) html += '<p class="small">Sweep: ' + bench.throughput.scenarios + " scenarios × " +
+  if (bench.throughput) html += '<p class="small">Quick sweep: ' + bench.throughput.scenarios + " scenarios × " +
     bench.throughput.replicas + " replicas in " + bench.throughput.wall_s + " s = " +
-    bench.throughput.scenarios_per_min + " scenarios/min (serial backend).</p>";
+    bench.throughput.runs_per_min + " runs/min (" + (bench.throughput.backend || "serial") + " backend).</p>";
   $("bench-summary").innerHTML = html || '<p class="small">No benchmark data yet.</p>';
 }
 $("bench-btn").addEventListener("click", async () => {

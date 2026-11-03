@@ -17,10 +17,115 @@
     "scenarios": 4,
     "replicas": 3,
     "wall_s": 34.823,
-    "scenarios_per_min": 20.68
+    "runs_per_min": 20.68,
+    "backend": "serial"
   },
   "figures": [
+    "bench_parallel.png",
     "bench_scaling.png",
     "bench_throughput.png"
-  ]
+  ],
+  "sweep_parallel": {
+    "measured_at": "2026-11-03T02:03:50-0500",
+    "machine": {
+      "cpu": "AMD Ryzen 3 3300X 4-Core Processor",
+      "logical_cpus": 8,
+      "os": "Windows-11-10.0.26300-SP0",
+      "python": "3.12.10"
+    },
+    "set": {
+      "scenarios": 8,
+      "replicas": 5,
+      "runs": 40,
+      "people": 200,
+      "max_time_s": 300.0,
+      "room_m": [
+        20.0,
+        12.0
+      ],
+      "cell_size_m": 0.1
+    },
+    "backend": "local (ProcessPoolExecutor, spawn, NUMBA_NUM_THREADS=1 per worker)",
+    "note": "Wall time includes cold process-pool start-up. Speedup and efficiency are relative to the 1-process run.",
+    "runs": [
+      {
+        "workers": 1,
+        "wall_s": 381.82,
+        "startup_s": 1.659,
+        "identical_to_1_process": true,
+        "speedup": 1.0,
+        "efficiency": 1.0,
+        "runs_per_min": 6.29
+      },
+      {
+        "workers": 2,
+        "wall_s": 204.254,
+        "startup_s": 1.564,
+        "identical_to_1_process": true,
+        "speedup": 1.869,
+        "efficiency": 0.935,
+        "runs_per_min": 11.75
+      },
+      {
+        "workers": 4,
+        "wall_s": 100.916,
+        "startup_s": 1.679,
+        "identical_to_1_process": true,
+        "speedup": 3.784,
+        "efficiency": 0.946,
+        "runs_per_min": 23.78
+      },
+      {
+        "workers": 8,
+        "wall_s": 87.17,
+        "startup_s": 2.41,
+        "identical_to_1_process": true,
+        "speedup": 4.38,
+        "efficiency": 0.548,
+        "runs_per_min": 27.53
+      }
+    ],
+    "scenario_results": [
+      {
+        "scenario": "baseline",
+        "t95_mean_s": 64.58,
+        "exited": "1000/1000"
+      },
+      {
+        "scenario": "widen-E1-2.0",
+        "t95_mean_s": 110.4,
+        "exited": "998/1000"
+      },
+      {
+        "scenario": "widen-E2-2.0",
+        "t95_mean_s": 42.67,
+        "exited": "1000/1000"
+      },
+      {
+        "scenario": "widen-both-1.8",
+        "t95_mean_s": 30.44,
+        "exited": "1000/1000"
+      },
+      {
+        "scenario": "add-north-exit",
+        "t95_mean_s": 97.58,
+        "exited": "998/1000"
+      },
+      {
+        "scenario": "baseline-no-E1",
+        "t95_mean_s": 115.04,
+        "exited": "1000/1000"
+      },
+      {
+        "scenario": "baseline-no-E2",
+        "t95_mean_s": 82.47,
+        "exited": "1000/1000"
+      },
+      {
+        "scenario": "widen-E1-add-north",
+        "t95_mean_s": 46.11,
+        "exited": "1000/1000"
+      }
+    ]
+  }
 }
