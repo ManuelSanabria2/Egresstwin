@@ -41,6 +41,8 @@ h3{margin:14px 0 6px;font-size:17px}
 canvas.stage{width:100%;height:auto;background:var(--surface2);border:1px solid var(--line);border-radius:6px}
 .warnbox{background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:10px 14px;margin:8px 0}
 .warnbox:empty{display:none}
+.errorbox{background:var(--bad-bg);color:var(--bad);border:2px solid var(--bad);border-radius:6px;padding:12px 16px;margin:10px 22px;font-weight:600}
+.errorbox[hidden]{display:none}
 .card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0;background:var(--surface)}
 .card .tool{font-weight:700;font-size:15px}
 .card pre{white-space:pre-wrap;word-break:break-word;font-size:12.5px;color:var(--muted);max-height:180px;overflow:auto;margin:6px 0 0}
@@ -84,6 +86,7 @@ img.figure{max-width:100%;border:1px solid var(--line);border-radius:6px;backgro
   <button data-tab="agent" type="button">3. Agent</button>
   <button data-tab="performance" type="button">4. Performance</button>
 </nav>
+<div class="errorbox" id="error-banner" role="alert" hidden></div>
 <main>
 <section class="tab active" id="tab-layout">
   <h2>From image to a layout you can correct</h2>
@@ -209,8 +212,25 @@ const state = {
 };
 function setStatus(text) { $("global-status").textContent = text; }
 function esc(s) { const d = document.createElement("div"); d.textContent = String(s ?? ""); return d.innerHTML; }
+function showError(message) {
+  const banner = $("error-banner");
+  let text = String(message || "Unknown error");
+  if (/BudgetExceeded|budget/i.test(text) && !/^Budget/.test(text))
+    text = "Budget exhausted — " + text + " Raise META_BUDGET_USD or switch to the cached demo.";
+  banner.textContent = text;
+  banner.hidden = false;
+  setStatus(text);
+  banner.scrollIntoView({block: "nearest"});
+}
+function clearError() { $("error-banner").hidden = true; }
 async function api(path, options) {
-  const r = await fetch(path, options);
+  let r;
+  try {
+    r = await fetch(path, options);
+  } catch (e) {
+    throw new Error("Cannot reach the EgressTwin server (API down?). " +
+      "Start it with: .venv/Scripts/python.exe -m uvicorn egresstwin.app.api:app --app-dir src --port 8077");
+  }
   if (!r.ok) { let msg = r.statusText; try { msg = (await r.json()).detail || msg; } catch (e) {}
     throw new Error(msg); }
   return r.json();
@@ -253,6 +273,11 @@ $("scale-mode").addEventListener("change", () => {
 $("file").addEventListener("change", () => {
   const f = $("file").files[0];
   if (!f) return;
+  if (f.type && !f.type.startsWith("image/")) {
+    showError("That file is not an image. Upload a PNG or JPEG floor plan.");
+    return;
+  }
+  clearError();
   state.previewUrl = URL.createObjectURL(f);
   state.scalePoints = [];
   loadImage(state.previewUrl, () => drawLayout());
@@ -327,7 +352,7 @@ async function sendEdit(body) {
     state.layoutId = state.layout.layout_id;
     drawLayout();
     setStatus("Layout corrected. Re-run the simulation when ready.");
-  } catch (e) { setStatus("Edit rejected: " + e.message); }
+  } catch (e) { showError("Edit rejected: " + e.message); }
 }
 $("layout-canvas").addEventListener("click", (ev) => {
   const p = canvasPoint(ev, $("layout-canvas"));
@@ -382,7 +407,7 @@ $("process-btn").addEventListener("click", async () => {
     state.layoutId = state.layout.layout_id;
     loadImage("/api/layouts/" + state.layoutId + "/image", () => drawLayout());
     setStatus("Layout ready. Correct it if needed, then run a simulation.");
-  } catch (e) { setStatus("Layout failed: " + e.message); }
+  } catch (e) { showError("Layout failed: " + e.message); }
 });
 /* ---------- simulation ---------- */
 let simClock = {playing: false, t: 0, last: 0};
@@ -599,7 +624,7 @@ $("sim-btn").addEventListener("click", async () => {
     const result = await pollJob(started.job_id, $("sim-status"));
     showSimulation(result);
     setStatus("Simulation done.");
-  } catch (e) { setStatus("Simulation failed: " + e.message); }
+  } catch (e) { showError("Simulation failed: " + e.message); }
 });
 function showSimulation(result) {
   state.simAnim = result.animation;
@@ -694,7 +719,7 @@ $("agent-btn").addEventListener("click", async () => {
       addCard(event);
     };
     source.onerror = () => { source.close(); finishAgent(started.job_id); };
-  } catch (e) { setStatus("Agent failed to start: " + e.message); }
+  } catch (e) { showError("Agent failed to start: " + e.message); }
 });
 async function finishAgent(jobId) {
   try {
@@ -707,7 +732,7 @@ async function finishAgent(jobId) {
     simClock.t = 0; simClock.playing = true;
     drawAgentAnims();
     setStatus("Agent done: " + j.result.status + " ($" + Number(j.result.total_cost_usd || 0).toFixed(4) + ").");
-  } catch (e) { setStatus("Agent failed: " + e.message); }
+  } catch (e) { showError("Agent failed: " + e.message); }
 }
 /* ---------- performance ---------- */
 function showBench(bench) {
@@ -728,7 +753,7 @@ $("bench-btn").addEventListener("click", async () => {
     const summary = await pollJob(started.job_id, $("bench-status"));
     showBench(summary);
     setStatus("Benchmark done.");
-  } catch (e) { setStatus("Benchmark failed: " + e.message); }
+  } catch (e) { showError("Benchmark failed: " + e.message); }
 });
 /* ---------- demo ---------- */
 $("demo-btn").addEventListener("click", async () => {
@@ -750,9 +775,10 @@ $("demo-btn").addEventListener("click", async () => {
     showBench(demo.bench);
     setStatus("Demo loaded from cache. No network, no API key, no cost.");
     showTab("layout");
-  } catch (e) { setStatus("Demo failed: " + e.message); }
+  } catch (e) { showError("Demo failed: " + e.message); }
 });
 api("/api/bench").then(showBench).catch(() => {});
+api("/api/health").then(() => clearError()).catch((e) => showError(e.message));
 renderTimeline();
 drawLayout();
 </script>

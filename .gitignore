@@ -29,3 +29,6 @@ Thumbs.db
 
 # Media generated locally (tracked samples live in data/samples/)
 *.tmp
+
+# Local graphify knowledge-graph output
+graphify-out/

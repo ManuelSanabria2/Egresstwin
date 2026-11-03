@@ -9,6 +9,7 @@ and no API key.
 
 from __future__ import annotations
 
+import io
 import json
 import threading
 import time
@@ -405,12 +406,25 @@ def create_app(
         known_door_width_m: float | None = Form(None),
         known_door_box: str | None = Form(None),
     ) -> dict[str, Any]:
+        content = await image.read()
+        # Fail fast and visibly on a non-image upload instead of
+        # surfacing an opaque perception stack later.
+        from PIL import Image, UnidentifiedImageError
+
+        try:
+            with Image.open(io.BytesIO(content)) as probe:
+                probe.verify()
+        except (UnidentifiedImageError, OSError, ValueError) as exc:
+            raise HTTPException(
+                400, "uploaded file is not a readable image: "
+                "upload a PNG or JPEG floor plan"
+            ) from exc
         layout_id = uuid.uuid4().hex[:12]
         directory = runs / "app" / "layouts" / layout_id
         directory.mkdir(parents=True, exist_ok=True)
         suffix = Path(image.filename or "plan.png").suffix or ".png"
         image_path = directory / f"source{suffix}"
-        image_path.write_bytes(await image.read())
+        image_path.write_bytes(content)
         scale_kwargs: dict[str, Any] = {}
         if scale_mode == "two_points":
             if not scale_points or scale_distance_m is None:

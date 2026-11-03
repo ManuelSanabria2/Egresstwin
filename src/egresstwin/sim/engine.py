@@ -311,8 +311,40 @@ def run(layout: Layout, scenario: Scenario, seed: int) -> SimResult:
         desired_dir = np.zeros((n, 2))
         for k in range(len(exits)):
             sel = active & started & (assigned == k)
-            if sel.any():
-                desired_dir[sel] = floor.direction_at(k, pos[sel])
+            if not sel.any():
+                continue
+            desired_dir[sel] = floor.direction_at(k, pos[sel])
+            # Wall-ahead fallback: the gradient direction can point
+            # into a thin wall (hand-drawn plans), where the wall
+            # force then cancels the driving force and the agent
+            # freezes forever. If the cell ahead is not walkable,
+            # head for the walkable neighbour cell with the smallest
+            # geodesic distance instead (steepest descent on the
+            # same floor field, so the route cannot change).
+            idx = np.flatnonzero(sel)
+            ahead = pos[idx] + desired_dir[idx] * (1.5 * cell)
+            ar = np.clip((ahead[:, 1] / cell).astype(int), 0, layout.shape[0] - 1)
+            ac = np.clip((ahead[:, 0] / cell).astype(int), 0, layout.shape[1] - 1)
+            for j in idx[~walkable[ar, ac]]:
+                r0, c0 = layout.cell_of(float(pos[j, 0]), float(pos[j, 1]))
+                best, best_d = None, np.inf
+                for dr in (-1, 0, 1):
+                    for dc in (-1, 0, 1):
+                        if dr == 0 and dc == 0:
+                            continue
+                        rr, cc = r0 + dr, c0 + dc
+                        if not (0 <= rr < layout.shape[0] and 0 <= cc < layout.shape[1]):
+                            continue
+                        if walkable[rr, cc] and floor.distances[k, rr, cc] < best_d:
+                            best, best_d = (rr, cc), float(floor.distances[k, rr, cc])
+                if best is not None:
+                    target = np.array(
+                        [(best[1] + 0.5) * cell, (best[0] + 0.5) * cell]
+                    )
+                    vec = target - pos[j]
+                    norm = float(np.hypot(vec[0], vec[1]))
+                    if norm > 1e-12:
+                        desired_dir[j] = vec / norm
         wall_d, wall_gx, wall_gy = wall.sample(pos)
         # Semi-implicit Euler in substeps: the k = 1.2e5 contact spring
         # is stiff at dt = 0.01 in dense overlap (velocity flips each

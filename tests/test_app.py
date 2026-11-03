@@ -162,6 +162,40 @@ def test_simulate_and_optimize_sse(client: TestClient) -> None:
     assert job["result"]["animations"]["baseline"]["frames"]
 
 
+def test_invalid_image_rejected_visibly(client: TestClient) -> None:
+    resp = client.post(
+        "/api/layouts",
+        files={"image": ("notes.txt", b"this is not an image", "text/plain")},
+    )
+    assert resp.status_code == 400
+    assert "not a readable image" in resp.json()["detail"]
+
+
+def test_budget_exhaustion_surfaces_in_job(tmp_path: Path) -> None:
+    from egresstwin.meta.costs import BudgetExceeded
+
+    def broke_perception(image_path, output_dir, scale_kwargs):  # noqa: ANN001, ANN202
+        raise BudgetExceeded("charge of USD 1.0 would exceed budget: spent USD 60")
+
+    app = create_app(
+        runs_dir=tmp_path / "runs", demo_dir=tmp_path / "demo",
+        perception_runner=broke_perception, agent_factory=fake_agent,
+        bench_runner=fake_bench,
+    )
+    budget_client = TestClient(app)
+    image = Image.new("RGB", (64, 48), "white")
+    import io
+
+    buf = io.BytesIO()
+    image.save(buf, format="PNG")
+    started = budget_client.post(
+        "/api/layouts", files={"image": ("plan.png", buf.getvalue(), "image/png")}
+    ).json()
+    job = wait_job(budget_client, started["job_id"])
+    assert job["status"] == "error"
+    assert "BudgetExceeded" in job["error"]
+
+
 def test_demo_mode_and_bench(client: TestClient) -> None:
     demo = client.get("/api/demo")
     assert demo.status_code == 200

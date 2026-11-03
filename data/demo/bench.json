@@ -2,22 +2,22 @@
   "scaling": [
     {
       "n_people": 30,
-      "wall_s": 1.066
+      "wall_s": 1.752
     },
     {
       "n_people": 100,
-      "wall_s": 2.944
+      "wall_s": 4.446
     },
     {
       "n_people": 300,
-      "wall_s": 23.497
+      "wall_s": 36.257
     }
   ],
   "throughput": {
     "scenarios": 4,
     "replicas": 3,
-    "wall_s": 18.56,
-    "scenarios_per_min": 38.79
+    "wall_s": 34.823,
+    "scenarios_per_min": 20.68
   },
   "figures": [
     "bench_scaling.png",
