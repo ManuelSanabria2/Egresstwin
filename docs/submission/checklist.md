@@ -10,7 +10,7 @@ MANUAL can only be closed by Manuel.
 | 2 | License | DONE | MIT `LICENSE` at repo root, tracked in git; `license = MIT` in `pyproject.toml` |
 | 3 | No secrets in history | DONE (fallback scan) | `gitleaks` is not installed on this machine, so the fallback from the task was run: `git log -p --all` scanned for API-key, token, private-key and password patterns - no matches (only the empty `MODEL_API_KEY=` placeholder in `.env.example`). `.env` is gitignored and untracked. Optional: run `gitleaks detect` once where the binary is available |
 | 4 | Assets with rights | DONE | Every image is project-generated (synthetic) and registered with origin and license in `data/ASSETS.md`, including the new `docs/screenshots/` figures |
-| 5 | README final, real results, no TBD | DONE | `README.md` rewritten in English: demo T95/CI, verification 5/6 with the V6 failure explained, benchmark table, 75 tests, USD 0.08 API spend, run instructions. `Select-String TBD` over README/NEW_WORK: clean |
+| 5 | README final, real results, no TBD | DONE | `README.md` rewritten in English: real muse-spark-1.3 runs (2026-11-03), verification 5/6 with the V6 failure explained, measured parallel benchmark, 83 tests, about USD 0.59 API spend, run instructions. `Select-String TBD` over README/NEW_WORK: clean |
 | 6 | NEW_WORK.md complete | DONE | First commit date, full commit range/table, every new module listed, inspiration, reused published work declared |
 | 7 | Screenshots | DONE | `docs/screenshots/01_image_to_layout.png` and `02_simulation.png`, generated from the real demo cache by `scripts/make_screenshots.py`, plus verification and benchmark figures |
 | 8 | Demo video script | DONE | `docs/submission/video_script.md`, timed 0:00-3:00 as specified |

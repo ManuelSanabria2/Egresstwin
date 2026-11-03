@@ -26,7 +26,7 @@
     "bench_throughput.png"
   ],
   "sweep_parallel": {
-    "measured_at": "2026-11-03T02:03:50-0500",
+    "measured_at": "2026-11-03T06:36:15-0500",
     "machine": {
       "cpu": "AMD Ryzen 3 3300X 4-Core Processor",
       "logical_cpus": 8,
@@ -50,81 +50,81 @@
     "runs": [
       {
         "workers": 1,
-        "wall_s": 381.82,
-        "startup_s": 1.659,
+        "wall_s": 433.696,
+        "startup_s": 1.398,
         "identical_to_1_process": true,
         "speedup": 1.0,
         "efficiency": 1.0,
-        "runs_per_min": 6.29
+        "runs_per_min": 5.53
       },
       {
         "workers": 2,
-        "wall_s": 204.254,
-        "startup_s": 1.564,
+        "wall_s": 346.835,
+        "startup_s": 2.144,
         "identical_to_1_process": true,
-        "speedup": 1.869,
-        "efficiency": 0.935,
-        "runs_per_min": 11.75
+        "speedup": 1.25,
+        "efficiency": 0.625,
+        "runs_per_min": 6.92
       },
       {
         "workers": 4,
-        "wall_s": 100.916,
-        "startup_s": 1.679,
+        "wall_s": 187.03,
+        "startup_s": 2.325,
         "identical_to_1_process": true,
-        "speedup": 3.784,
-        "efficiency": 0.946,
-        "runs_per_min": 23.78
+        "speedup": 2.319,
+        "efficiency": 0.58,
+        "runs_per_min": 12.83
       },
       {
         "workers": 8,
-        "wall_s": 87.17,
-        "startup_s": 2.41,
+        "wall_s": 142.544,
+        "startup_s": 3.236,
         "identical_to_1_process": true,
-        "speedup": 4.38,
-        "efficiency": 0.548,
-        "runs_per_min": 27.53
+        "speedup": 3.043,
+        "efficiency": 0.38,
+        "runs_per_min": 16.84
       }
     ],
     "scenario_results": [
       {
         "scenario": "baseline",
-        "t95_mean_s": 64.58,
-        "exited": "1000/1000"
+        "t95_mean_s": 64.34,
+        "exited": "999/1000"
       },
       {
         "scenario": "widen-E1-2.0",
-        "t95_mean_s": 110.4,
-        "exited": "998/1000"
+        "t95_mean_s": 63.22,
+        "exited": "999/1000"
       },
       {
         "scenario": "widen-E2-2.0",
-        "t95_mean_s": 42.67,
+        "t95_mean_s": 40.01,
         "exited": "1000/1000"
       },
       {
         "scenario": "widen-both-1.8",
-        "t95_mean_s": 30.44,
+        "t95_mean_s": 28.42,
         "exited": "1000/1000"
       },
       {
         "scenario": "add-north-exit",
-        "t95_mean_s": 97.58,
-        "exited": "998/1000"
+        "t95_mean_s": 42.26,
+        "exited": "999/1000"
       },
       {
         "scenario": "baseline-no-E1",
-        "t95_mean_s": 115.04,
+        "t95_mean_s": 108.62,
         "exited": "1000/1000"
       },
       {
         "scenario": "baseline-no-E2",
-        "t95_mean_s": 82.47,
+        "t95_mean_s": 81.13,
         "exited": "1000/1000"
       },
       {
         "scenario": "widen-E1-add-north",
-        "t95_mean_s": 46.11,
-        "exited": "1000/1000"
+        "t95_mean_s": 42.14,
+        "exited": "999/1000"
       }
     ]
   }

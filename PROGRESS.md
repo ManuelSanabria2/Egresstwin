@@ -359,3 +359,121 @@ Bitacora updated at the end of each prompt (see INSTRUCCIONES.md, section 7).
   (engine wall-ahead fallback, upload validation, demo/cost scripts)
   are intentionally not part of the submission commit.
 - Accumulated API cost: unchanged, ~USD 0.08 (this task used no API).
+
+## 2026-11-03 - P11 (corrective): real parallelism, real model runs, honest demo
+
+Step 1 - local sweep backend (`cb688f5`). `parallel/sweep.py` gains
+`backend="local"`: (scenario, replica) pairs go to a spawn
+`ProcessPoolExecutor`. Workers are created with `NUMBA_NUM_THREADS=1`
+(plus the OpenMP/BLAS counts at 1) through a spawn context that sets
+them at process birth. Results are reassembled by index and equal the
+serial backend for the same seed (`tests/test_sweep.py`, 6 tests,
+including real dispatch to worker pids). AgentTools defaults to
+`local`. An adversarial review found 6 defects, all fixed before the
+commit: a broken-pool discard race, an exit hang with queued work,
+uncancelled futures, thread pinning applied too late, a missing
+dispatch test, and the 61-worker cap on Windows.
+
+Step 2 - benchmark (`c129e61`). `scripts/bench_sweep.py`: 8 scenarios
+x 5 replicas, 200 people, 20 x 12 m room, cold pool per count. The
+first measurement (381.8 / 204.3 / 100.9 / 87.2 s at 1/2/4/8
+processes) was taken with the simulator as it was then. Step 4 found
+that this simulator froze people in place, so that measurement is
+superseded (see Step 6). The old quick-bench key `scenarios_per_min`
+held runs per minute and was renamed `runs_per_min`.
+
+Step 3 - README (`be7314d`): parallelism claims limited to what exists
+(serial + local process pool, serial kernel, no MPI); the unused
+`mpi4py` extra was dropped.
+
+Step 4 - real runs with muse-spark-1.3, META_MOCK=0 (`6138d4b`).
+Fixed in the loop: the API returned 400 "'required' is required to
+be supplied and to be an array including every key in properties". Tool
+schemas are now rewritten into strict form (every key required,
+optional keys nullable, no $ref/prefixItems/oneOf/discriminator).
+Numeric ranges are kept: a probe showed the API accepts them, and the
+model asked for 30 replicas but sent the maximum, 20. Nulls are
+dropped before Pydantic. `previous_response_id` chaining works;
+the first chained probe got a 500 that did not reproduce in three
+retries (the client retries with backoff). Cached input tokens are now
+read from `input_tokens_details`. In the run, the model once sent
+`rationale` as a list; the validation error went back as a tool
+result and the model corrected it.
+Problems the real runs exposed outside the loop, and fixes:
+- Perception: desks drawn as outlined, colour-filled shapes left
+  enclosed "floor" (test_office failed validation). Colour-filled
+  enclosed regions are now furniture. Passages narrower than the
+  widest body (0.7 m) are removed by morphological opening. Without
+  that, the cell-level floor field routed people into slits (an
+  offset Spark door box left a 0.2-0.4 m slit) and into a 0.6 m gap
+  (restaurant), where they jammed.
+- Simulator, people frozen forever (attempt 1 on test_office: every
+  replica censored at 240 s, 149-196 of 200 out). Three causes, found
+  by tracing forces: (a) sliding friction kappa*overlap*dt/m > 1 at
+  deep overlap gave a sign-flipping 2-cycle; it is now capped at
+  m/(2 dt), with a regression test; (b) the desired direction pointed
+  into a wall and balanced the wall repulsion about 0.18 m short of
+  it, so a sliding rule now applies within 0.3 m; (c) static standoffs
+  of a few people held each other with near-zero net force, so anyone
+  with < 0.25 m progress in 2 s now turns their direction by a seeded
+  random angle (separate RNG stream) for 1 s.
+- Metrics: T95 was the percentile over people who got out. It is now
+  the population percentile, finite only if >= 95% got out. Total
+  and mean stay censored at the cap if anyone is inside, and tool
+  results report `people_exited`.
+Attempt 1 (before the simulator fixes) was stopped after 7 turns. Its
+trace was overwritten when the run was relaunched into the same
+directory; its cost is in the ledger.
+Results (saved in `data/real_runs/`, 200 people, cap 240 s):
+- `spike_plan_hand.png`: baseline T95 95.46 s (CI 88.81-102.10, 20
+  replicas). Recommendation: add an east exit and widen E2 to 5.0 m,
+  T95 42.18 s (CI 41.11-43.24). N-1 T95 97.64 / 54.58 / 94.63 s.
+  VERIFIED 14/14. 11 turns, 27 scenarios, 86,253 tokens in and 8,641
+  out, USD 0.1056, 86 min.
+- `test_office.png`: baseline T95 38.28 s (CI 37.43-39.13). The best
+  candidate (3 added exits) reached T95 31.75 s but 59.38 s with E1
+  blocked. The verifier rejected two reports; the final report
+  recommended no change and was VERIFIED 3/3. 20 turns, 60 scenarios
+  (budget), 282,389 tokens in and 34,347 out, USD 0.2288, 90 min.
+- Perception in real mode on the other plans: `test_classroom.png`
+  and `spike_plan_synth.png` got no exit from Spark (the classroom read
+  returned one misplaced door). `test_restaurant.png`, `test_shop.png`
+  and `test_apartment.png` stop with "needs manual correction":
+  regions reachable only through gaps under 0.7 m.
+
+Step 5 - demo (`e62dff3`). `data/demo` is rebuilt from the
+`spike_plan_hand` real run by `scripts/build_demo_cache.py`, which
+refuses non-real or scripted traces. The old scripted `agent_run`
+files are gone. Turn cards show the model and response id. Scripted
+traces (mock fixture replay, `demo.py --mock`) carry model "scripted"
+and show "SCRIPTED (no model call)" in the UI; checked in the browser.
+
+Step 6 - documents and re-measurement with the fixed simulator:
+- Verification rerun: still 5/6. V4 room 2 peak is now 0.51 (was
+  0.53) people/m^2, and V6 RMSE is 0.219 (was 0.188) m/s, still
+  failing on monotonicity.
+- Benchmark rerun: 433.7 / 346.8 / 187.0 / 142.5 s, speedup 1.25 /
+  2.32 / 3.04, efficiency 0.63 / 0.58 / 0.38. Per-task times at 8
+  processes add up to 881.5 s against 433.7 s serial (about 2x per-run
+  slowdown with 8 processes on 4 cores). 4 of 40 runs keep one person
+  inside until the 300 s cap and take 40.7-64.1 s. The low 2-process
+  efficiency is not fully explained; not investigated.
+- README, submission text, video script (`docs/submission/video_script.md`,
+  now about 520 spoken words, so trim to fit 3:00) and the cost report
+  are updated.
+- Tests: 83 passed, `ruff check` clean.
+
+Open issues:
+- 0-7 of 200 people per replica can remain inside at the cap on
+  perceived plans. Reported, never hidden.
+- Low parallel efficiency at 2 processes is not understood.
+- Spark door boxes are offset by about 10-30 px, which inflates some
+  exit widths (E2 = 3.74 m on spike_plan_hand).
+- A live 200-person agent run takes about 1.5 h on this machine.
+
+Accumulated API cost: USD 0.5391 in the ledgers (production
+`runs/costs.jsonl`: 50 real calls, USD 0.4734, of which the two agent
+runs are USD 0.3344; the P01 spike ledger: USD 0.0658). Not in any
+ledger: about USD 0.0133 of P01 probes, plus about USD 0.04 of
+direct-SDK probes on 2026-11-03 (strict-schema and chaining tests,
+estimated from returned token counts). All-in: about USD 0.59.

@@ -25,7 +25,7 @@
     "metrics": {
       "n_exited": 20,
       "wall_crossing_points": 0,
-      "checked_points": 1715
+      "checked_points": 1664
     },
     "detail": "All 20 rounded the corner and left; no wall crossing in any frame.",
     "figure": "v2_corner.png"
@@ -75,7 +75,7 @@
     "passed": true,
     "metrics": {
       "peak_density_room1_per_m2": 2.381,
-      "peak_density_room2_per_m2": 0.531,
+      "peak_density_room2_per_m2": 0.51,
       "n_exited": 149
     },
     "detail": "Queue forms before the corridor; room 2 stays free-flowing.",
@@ -110,12 +110,12 @@
         4.5
       ],
       "mean_speeds_mps": [
-        1.135,
-        1.211,
-        1.021,
-        1.013,
-        0.458,
-        0.34
+        1.137,
+        1.207,
+        1.155,
+        1.017,
+        0.494,
+        0.396
       ],
       "weidmann_speeds_mps": [
         1.339,
@@ -126,16 +126,16 @@
         0.092
       ],
       "samples_per_bin": [
-        4349,
-        4139,
-        10656,
-        6797,
-        6162,
-        5202
+        4375,
+        4201,
+        9343,
+        6788,
+        5961,
+        3871
       ],
-      "rmse_mps": 0.188
+      "rmse_mps": 0.219
     },
-    "detail": "FAIL, reported as-is. Binned means [1.13, 1.21, 1.02, 1.01, 0.46, 0.34] m/s at densities [0.25, 0.75, 1.25, 1.75, 2.5, 4.5] people/m^2: the overall drop with density and the RMSE (0.188 m/s, inside the 0.30 tolerance) follow Weidmann, but the two lowest bins are not monotonic (sparse-corridor samples include queue-tail deceleration) and the highest bin stays faster than the empirical curve. Known model limitation, already noted in PROGRESS.md during P02: at crush densities the simulated flow runs above handbook values with the Helbing parameters. The monotonicity criterion was fixed before running and is not relaxed to hide this.",
+    "detail": "FAIL, reported as-is. Binned means [1.14, 1.21, 1.15, 1.02, 0.49, 0.4] m/s at densities [0.25, 0.75, 1.25, 1.75, 2.5, 4.5] people/m^2: the overall drop with density and the RMSE (0.219 m/s, inside the 0.30 tolerance) follow Weidmann, but the two lowest bins are not monotonic (sparse-corridor samples include queue-tail deceleration) and the highest bin stays faster than the empirical curve. Known model limitation, already noted in PROGRESS.md during P02: at crush densities the simulated flow runs above handbook values with the Helbing parameters. The monotonicity criterion was fixed before running and is not relaxed to hide this.",
     "figure": "v6_fundamental_diagram.png"
   }
 ]

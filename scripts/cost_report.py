@@ -14,6 +14,9 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Spend not in any ledger, recorded by hand in PROGRESS.md.
+UNLOGGED_P01_USD = 0.0133
+UNLOGGED_P11_USD = 0.04
 
 
 def _read_ledger(path: Path) -> list[dict]:
@@ -66,11 +69,15 @@ def main() -> int:
     lines += [
         f"**Total ledger-backed real API spend: USD {grand_real:.4f}.**",
         "",
-        "PROGRESS.md (P01 entry) additionally records about "
-        "USD 0.0133 of exploratory probes that were not written to "
-        "either ledger, putting the all-in project spend at about "
-        "USD 0.08. The spike cap was USD 2; the production budget "
-        "guard META_BUDGET_USD defaults to USD 60.",
+        "Calls made outside both ledgers (recorded in PROGRESS.md): "
+        f"about USD {UNLOGGED_P01_USD:.4f} of P01 exploratory probes, and "
+        f"about USD {UNLOGGED_P11_USD:.2f} of direct-SDK probes on "
+        "2026-11-03 while fixing the strict tool schemas and "
+        "previous_response_id chaining (estimated from the token counts "
+        "the API returned; some output counts were not printed). "
+        f"All-in project spend: about USD "
+        f"{grand_real + UNLOGGED_P01_USD + UNLOGGED_P11_USD:.2f}. "
+        "The budget guard META_BUDGET_USD defaults to USD 60.",
     ]
     out = ROOT / "docs" / "cost_report.md"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")

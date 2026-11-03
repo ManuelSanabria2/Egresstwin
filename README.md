@@ -55,25 +55,41 @@ from the committed demo cache with `python scripts/make_screenshots.py`.
 
 All numbers below come from committed artifacts; nothing is estimated.
 
-### End-to-end demo (bundled plan, mock perception, real simulation)
+### Real agent runs with muse-spark-1.3 (Meta Model API)
 
-`python scripts/demo.py --mock` runs image, layout, baseline, agent,
-N-1 stress test and verified report in about 7 s on the development
-machine, with no network and no cost:
+Two end-to-end runs with `META_MOCK=0`: Muse Spark read the plan
+(SAM 3.1 box prompts, OpenCV walls), and Muse Spark drove the agent
+through the Responses API with `previous_response_id`. Every number
+below is in the saved run under `data/real_runs/` (trace with response
+ids, token usage and cost per turn; report; verification; scenario
+store). Each run used 200 people, a 240 s time cap and the local
+sweep backend.
 
-- Layout: 120 x 160 cells at 0.1 m, exits E1 (1.54 m) and E2 (1.14 m).
-- Baseline (12 people, 3 replicas): T95 10.9 s (95% CI 8.4-13.4),
-  total time 12.5 s, peak density 1.38 people/m^2.
-- Agent: explored widening both exits; no modification beat the
-  baseline with statistical significance, so the report recommends
-  changing nothing and the verifier stamps it **VERIFIED**
-  (3 of 3 checks). This is deliberate: the verifier rewards honesty,
-  not change for its own sake.
-- In the agent acceptance test (a clogged 12-person room with two
-  0.5 m exits, baseline censored at 60 s), the agent widens one exit
-  to 2.4 m (T95 4.6 s, everyone out), passes the N-1 stress test and
-  is stamped VERIFIED with 11 of 11 claims (`tests/test_agent.py`,
-  `PROGRESS.md`).
+| | `spike_plan_hand.png` (hand-drawn style) | `test_plans/test_office.png` |
+| --- | --- | --- |
+| Baseline T95 (20 replicas) | 95.46 s (95% CI 88.81-102.10) | 38.28 s (95% CI 37.43-39.13) |
+| Agent outcome | Add an east exit and widen E2 to 5.0 m: T95 42.18 s (95% CI 41.11-43.24); N-1 T95 97.64 / 54.58 / 94.63 s with each exit blocked | Best candidate (three added exits) reached T95 31.75 s but rose to 59.38 s with E1 blocked; the agent recommended no change |
+| Verifier | **VERIFIED**, 14 of 14 checks | **VERIFIED**, 3 of 3 checks (honest no-change report, accepted after two rejected reports) |
+| Model turns / scenarios | 11 / 27 | 20 / 60 (scenario budget reached) |
+| Tokens in / out | 86,253 / 8,641 | 282,389 / 34,347 |
+| Agent API cost | USD 0.1056 | USD 0.2288 |
+| Wall time | 86 min | 90 min |
+
+The web app's "Load demo" replays the `spike_plan_hand.png` run from
+`data/demo` with its real response ids and costs, without network
+access. `python scripts/demo.py --mock` still runs the whole flow
+offline, with recorded perception fixtures and a scripted driver in
+place of the model. Its trace is labelled `scripted` in the model
+field and in the UI, never `muse-spark-1.3`.
+
+What the real runs exposed and what was fixed (details in `PROGRESS.md`):
+the API needs fully strict tool schemas; furniture drawn as filled
+shapes and passages narrower than a body broke perceived layouts; and
+three simulator defects froze people in place (unstable friction,
+standing against a wall, static standoffs). In both runs, between 0
+and 7 of 200 people per replica are still inside at the time cap.
+T95 stays defined because at least 95% got out, but total and mean
+egress time are censored at the cap.
 
 ### Simulator verification (RiMEA / Weidmann)
 
@@ -86,9 +102,9 @@ criterion fixed before the run was not relaxed. Full report:
 | V1 Free walking speed, 40 m corridor (RiMEA Test 1) | PASS - 30.5-31.1 s (band 26-34 s) |
 | V2 Movement around a corner (RiMEA Test 6) | PASS - 20/20 out, 0 wall crossings |
 | V3 Reaction-time distribution (RiMEA Test 5) | PASS - max start error 0.82 s |
-| V4 Two-room bottleneck (RiMEA Test 12) | PASS - peak density 2.38 vs 0.53 people/m^2 |
+| V4 Two-room bottleneck (RiMEA Test 12) | PASS - peak density 2.38 vs 0.51 people/m^2 |
 | V5 Exit choice (RiMEA Test 11) | PASS - 85/15 near/far split |
-| V6 Fundamental diagram vs Weidmann (1993) | FAIL - RMSE 0.188 m/s is inside tolerance, but the two lowest density bins are not monotonic; known crush-density limitation, documented in the report |
+| V6 Fundamental diagram vs Weidmann (1993) | FAIL - RMSE 0.219 m/s is inside tolerance, but the two lowest density bins are not monotonic; known crush-density limitation, documented in the report |
 
 ![V1 corridor speed](docs/figures/verification/v1_corridor_speed.png)
 ![V4 bottleneck](docs/figures/verification/v4_bottleneck.png)
@@ -106,38 +122,52 @@ parallelised: the Numba kernel is serial.
 
 Measured with `python scripts/bench_sweep.py` on the development machine
 (AMD Ryzen 3 3300X, 4 cores / 8 threads, 16 GB RAM, Windows 11, Python
-3.12). The set is 8 scenarios x 5 replicas = 40 runs, 200 people, in a
-20 x 12 m room. Each process count starts a cold pool, so wall time
-includes process start-up (1.6-2.4 s). Raw data is in
-`data/demo/bench.json` (`sweep_parallel`):
+3.12), with the current simulator. The set is 8 scenarios x 5
+replicas = 40 runs, 200 people, in a 20 x 12 m room. Each process
+count starts a cold pool, so wall time includes process start-up
+(1.4-3.2 s). Raw data is in `data/demo/bench.json` (`sweep_parallel`):
 
 | Worker processes | Wall time | Speedup | Efficiency | Runs/min |
 | --- | --- | --- | --- | --- |
-| 1 | 381.8 s | 1.00 | 1.00 | 6.3 |
-| 2 | 204.3 s | 1.87 | 0.93 | 11.8 |
-| 4 | 100.9 s | 3.78 | 0.95 | 23.8 |
-| 8 | 87.2 s | 4.38 | 0.55 | 27.5 |
+| 1 | 433.7 s | 1.00 | 1.00 | 5.5 |
+| 2 | 346.8 s | 1.25 | 0.63 | 6.9 |
+| 4 | 187.0 s | 2.32 | 0.58 | 12.8 |
+| 8 | 142.5 s | 3.04 | 0.38 | 16.8 |
 
-All four process counts produced identical results. Speedup is close to
-linear up to the 4 physical cores. Going from 4 to 8 processes runs on
-SMT threads of the same 4 cores and adds only about 16%.
+All four process counts produced identical results. Scaling is well
+below linear, and these measurements show two reasons. First, with 8
+processes the per-run times add up to 881.5 s, against 433.7 s when
+the same 40 runs execute one at a time, so each run is about 2x slower
+when 8 share 4 physical cores. Second, the runs are uneven (8.2 s to
+64.1 s at 8 processes): the 4 runs that keep one person inside until
+the 300 s cap are the longest and set a floor on wall time. The 2-process
+efficiency (0.63) is lower than these two effects explain; it was
+not investigated further.
 
 ![Parallel sweep speedup](data/demo/bench_parallel.png)
 
-Earlier single-process measurements from the same machine, in a small
-12 x 6 m bench room (`data/demo/bench.json`, `scaling` and
-`throughput`): one run with 30 people took 1.75 s, with 100 people
-4.45 s, and with 300 people 36.26 s. A serial sweep of 4 scenarios x 3
-replicas (12 runs, 40 people) took 34.82 s, or 20.7 runs/min.
+An earlier run of the same benchmark (commit `c129e61`: 381.8 / 204.3 /
+100.9 / 87.2 s) predates the 2026-11-03 simulator fixes. In that version
+people froze in place, so every run behaved differently, and it is
+superseded.
+
+Earlier single-process measurements from the same machine, also from
+before those fixes, in a small 12 x 6 m bench room (`data/demo/bench.json`,
+`scaling` and `throughput`): one run with 30 people took 1.75 s, with
+100 people 4.45 s, and with 300 people 36.26 s. A serial sweep of 4
+scenarios x 3 replicas (12 runs, 40 people) took 34.82 s, or 20.7
+runs/min.
 
 ### Tests and API cost
 
-- Test suite: 75 passed (`pytest`), `ruff check` clean. The 6 web-app
+- Test suite: 83 passed (`pytest`), `ruff check` clean. The 6 web-app
   tests need loopback sockets and run outside restricted sandboxes,
   as in CI.
-- Total project API spend: USD 0.0658 in the logged ledgers
-  (19 real calls in the perception spike), about USD 0.08 including
-  exploratory probes recorded in `PROGRESS.md`. Budget guard:
+- Total project API spend: USD 0.5391 in the logged ledgers (69 real
+  calls: 19 in the perception spike, 50 through the production client,
+  of which USD 0.3344 are the two real agent runs above). About USD
+  0.59 all-in, counting probes that bypassed the ledgers (recorded in
+  `PROGRESS.md`). Budget guard:
   `META_BUDGET_USD` (default 60) raises `BudgetExceeded`. Detail:
   [docs/cost_report.md](docs/cost_report.md).
 
@@ -227,6 +257,23 @@ about 0.6 m/s (relaxed), 1.0 m/s (normal) and 1.5 m/s (nervous).
 Integration is semi-implicit Euler at dt = 0.01 s with 5 force
 substeps per step (the stiff contact spring is unstable at 0.01 s in
 dense overlap) and a per-agent speed cap of 1.3 x desired speed.
+Three numerical and behavioural additions go beyond the 2000 paper.
+Each was added after real runs showed people freezing in place
+(`sim/social_force.py`, `sim/engine.py`):
+
+1. Sliding friction kappa x overlap is capped at m / (2 dt). Above that
+   value, the explicit step reversed the tangential velocity on every
+   substep.
+2. Within 0.3 m of body contact with a wall, the desired direction
+   drops its component into the wall, so people slide along it.
+3. Anyone who moves less than 0.25 m in 2 s turns their desired
+   direction by a seeded random angle of up to 90 degrees for 1 s. This
+   stands in for the paper's fluctuation term, which breaks static
+   standoffs.
+
+T95 is the population percentile: people still inside count as not yet
+out, so T95 is finite only when at least 95% got out.
+
 Same seed, same result: the kernel is serial and deterministic;
 parallelism lives only in the scenario sweep, which spreads
 (scenario, replica) pairs over local worker processes.
@@ -261,6 +308,19 @@ parallelism lives only in the scenario sweep, which spreads
 - Parallelism is limited to one machine: the `local` sweep backend
   spreads runs over worker processes. There is no MPI or cluster
   backend, and one simulation always runs on one core.
+- Real-mode perception (2026-11-03) produced a valid layout for 2 of
+  the 7 bundled plans tried: `spike_plan_hand.png` and `test_office.png`.
+  On `test_classroom.png` and `spike_plan_synth.png`, Muse Spark returned
+  no exit. On `test_restaurant.png`, `test_shop.png` and
+  `test_apartment.png`, part of the floor is reachable only through a
+  gap narrower than 0.7 m. Those plans stop with a "needs manual
+  correction" error and are not silently patched. Spark door boxes can
+  also be offset by about 10-30 px, which overestimates some exit widths
+  (E2 on `spike_plan_hand.png` reads 3.74 m).
+- On perceived plans with 200 people, 0-7 people per replica can
+  remain inside at the time cap (corners of irregular perceived
+  walls). They are reported (`people_exited` in every tool result), and
+  total and mean egress time are censored for those replicas.
 - This tool supports decisions; it is not a safety certification.
 
 ## License
