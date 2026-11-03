@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import threading
 import time
 import uuid
@@ -21,8 +22,8 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from egresstwin.layout import edit as layout_edit
@@ -372,7 +373,13 @@ def create_app(
     perception_runner: Callable | None = None,
     agent_factory: Callable | None = None,
     bench_runner: Callable | None = None,
+    demo_only: bool | None = None,
 ) -> FastAPI:
+    """Build the app. demo_only (default: EGRESSTWIN_DEMO_ONLY=1) serves
+    only the recorded demo replay: every POST is refused, so nothing
+    reaches the Meta API and no simulation runs on the server."""
+    if demo_only is None:
+        demo_only = os.environ.get("EGRESSTWIN_DEMO_ONLY", "").lower() in ("1", "true", "yes")
     runs = Path(runs_dir)
     demo = Path(demo_dir) if demo_dir is not None else DEFAULT_DEMO
     registry = JobRegistry(runs / "app")
@@ -387,6 +394,19 @@ def create_app(
         shutdown_pools()
 
     app = FastAPI(title="EgressTwin", lifespan=lifespan)
+
+    if demo_only:
+        @app.middleware("http")
+        async def refuse_writes(request: Request, call_next):  # noqa: ANN001, ANN202
+            if request.method not in ("GET", "HEAD", "OPTIONS"):
+                return JSONResponse(
+                    {"detail": "This deployment is demo-only: it replays a recorded "
+                               "real run and makes no API calls. Run the app locally "
+                               "to upload plans, simulate or optimize."},
+                    status_code=403,
+                )
+            return await call_next(request)
+
     perception = perception_runner or default_perception_runner
     bench = bench_runner or default_bench_runner
 
@@ -404,7 +424,8 @@ def create_app(
 
     @app.get("/api/health")
     def health() -> dict[str, Any]:
-        return {"ok": True, "layouts": len(layouts), "jobs": len(registry.jobs)}
+        return {"ok": True, "layouts": len(layouts), "jobs": len(registry.jobs),
+                "demo_only": demo_only}
 
     @app.get("/")
     def index() -> FileResponse:

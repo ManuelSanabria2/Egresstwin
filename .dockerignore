@@ -1,0 +1,15 @@
+.git
+.venv
+.env
+.env.*
+.cache
+.pytest_cache
+.ruff_cache
+pytest-of-*
+runs
+graphify-out
+**/__pycache__
+data/real_runs
+data/samples/test_plans
+tests
+bench

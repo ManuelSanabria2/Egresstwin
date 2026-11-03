@@ -210,3 +210,17 @@ def test_demo_mode_and_bench(client: TestClient) -> None:
     assert job["status"] == "done"
     assert job["result"]["throughput"]["runs_per_min"] > 0
     assert client.get("/api/bench").json()["figures"] == []
+
+
+def test_demo_only_refuses_writes_and_serves_the_replay(tmp_path: Path, client: TestClient) -> None:
+    demo_dir = tmp_path / "demo"
+    app = create_app(runs_dir=tmp_path / "runs2", demo_dir=demo_dir, demo_only=True)
+    c = TestClient(app)
+    assert c.get("/api/health").json()["demo_only"] is True
+    assert c.get("/api/demo").status_code == 200
+    refused = c.post("/api/layouts", files={"image": ("p.png", b"x", "image/png")})
+    assert refused.status_code == 403 and "demo-only" in refused.json()["detail"]
+    assert c.post("/api/bench/run").status_code == 403
+    assert c.post("/api/layouts/demo/optimize", json={}).status_code == 403
+    # The regular app is unaffected.
+    assert client.get("/api/health").json()["demo_only"] is False

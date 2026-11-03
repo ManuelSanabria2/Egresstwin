@@ -224,10 +224,18 @@ function showError(message) {
   banner.scrollIntoView({block: "nearest"});
 }
 function clearError() { $("error-banner").hidden = true; }
+// A static export (scripts/deploy_space.py) injects
+// window.EGRESSTWIN_STATIC_ROUTES: API paths are then read from files
+// next to index.html and nothing can be written. Absent, nothing changes.
+const STATIC_ROUTES = window.EGRESSTWIN_STATIC_ROUTES || null;
+function route(path) { return (STATIC_ROUTES && STATIC_ROUTES[path]) || path; }
 async function api(path, options) {
+  if (STATIC_ROUTES && ((options && options.method && options.method !== "GET") || !STATIC_ROUTES[path]))
+    throw new Error("This static demo only replays a recorded run. Run the app locally " +
+      "to upload plans, simulate or optimize.");
   let r;
   try {
-    r = await fetch(path, options);
+    r = await fetch(route(path), options);
   } catch (e) {
     throw new Error("Cannot reach the EgressTwin server (API down?). " +
       "Start it with: .venv/Scripts/python.exe -m uvicorn egresstwin.app.api:app --app-dir src --port 8077");
@@ -693,7 +701,7 @@ function showReport(result) {
   const sv = result.simulator_verification;
   if (sv && sv.available)
     html += '<p class="small">Simulator verification: <strong>' + sv.passed + " of " + sv.total +
-      ' standard cases passed</strong> (RiMEA / Weidmann) — <a href="/api/verification/report" target="_blank" rel="noopener">verification report</a>. ' +
+      ' standard cases passed</strong> (RiMEA / Weidmann) — <a href="' + route("/api/verification/report") + '" target="_blank" rel="noopener">verification report</a>. ' +
       "The stamp above verifies this report against the simulator; this line states how the simulator itself scores against standard tests.</p>";
   else if (sv)
     html += '<p class="small">Simulator verification: not run yet (python scripts/run_verification.py).</p>';
@@ -758,7 +766,7 @@ function showBench(bench) {
   const fig = bench.figures || [];
   const slots = {"bench_parallel.png": "bench-fig-0", "bench_scaling.png": "bench-fig-1",
                  "bench_throughput.png": "bench-fig-2"};
-  fig.forEach((name) => { if (slots[name]) $(slots[name]).src = "/api/bench/figures/" + name; });
+  fig.forEach((name) => { if (slots[name]) $(slots[name]).src = route("/api/bench/figures/" + name); });
   let html = "";
   const par = bench.sweep_parallel;
   if (par) {
@@ -794,7 +802,7 @@ $("demo-btn").addEventListener("click", async () => {
     const demo = await api("/api/demo");
     state.layout = demo.layout;
     state.layoutId = demo.layout.layout_id;
-    loadImage("/api/layouts/demo/image", () => drawLayout());
+    loadImage(route("/api/layouts/demo/image"), () => drawLayout());
     drawLayout();
     showSimulation(demo.simulation);
     $("agent-cards").innerHTML = "";
@@ -810,7 +818,18 @@ $("demo-btn").addEventListener("click", async () => {
   } catch (e) { showError("Demo failed: " + e.message); }
 });
 api("/api/bench").then(showBench).catch(() => {});
-api("/api/health").then(() => clearError()).catch((e) => showError(e.message));
+api("/api/health").then((h) => {
+  clearError();
+  if (!h.demo_only) return;
+  // Demo-only deployment: replay the recorded real run, nothing else.
+  ["file", "process-btn", "sim-btn", "agent-btn", "bench-btn", "event-pick-exit",
+   "event-draw-hazard", "event-clear"].forEach((id) => { if ($(id)) $(id).disabled = true; });
+  document.querySelectorAll(".edit-mode").forEach((b) => { b.disabled = true; });
+  $("demo-btn").textContent = "Replay recorded real run";
+  setStatus("Demo-only deployment: replaying a recorded real muse-spark-1.3 run. " +
+            "Uploading, simulating and optimizing need a local install.");
+  $("demo-btn").click();
+}).catch((e) => showError(e.message));
 renderTimeline();
 drawLayout();
 </script>

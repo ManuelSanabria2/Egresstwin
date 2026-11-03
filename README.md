@@ -173,6 +173,28 @@ runs/min.
 
 ## How to run it
 
+### Online demo
+
+https://huggingface.co/spaces/ManuelSanabria/egresstwin replays the
+recorded real `spike_plan_hand.png` run in the browser. You get the
+layout, the baseline simulation, the agent trace with real response ids
+and costs, the VERIFIED report and the benchmark figures. It is a
+static export of the app's demo-only mode, made with
+`scripts/deploy_space.py`: no server, no API key and no API calls.
+Uploading, simulating and optimizing need a local install.
+
+The same demo-only app also runs as a container, served on port 7860.
+Every request that would write anything is refused:
+
+```bash
+docker build -t egresstwin-demo .
+docker run -p 7860:7860 egresstwin-demo
+```
+
+The image was not built on the development machine, which has no Docker,
+and it is not hosted: Hugging Face requires a PRO plan for Docker Spaces
+on free hardware, and returned 402 for this account.
+
 ### Mock mode (no network, no API key, no cost)
 
 ```bash
