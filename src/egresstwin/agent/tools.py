@@ -8,6 +8,7 @@ cannot invent metrics: the verifier re-checks its claims here.
 from __future__ import annotations
 
 import re
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -155,6 +156,8 @@ class AgentTools:
         max_scenarios: int = 60,
         default_max_time_s: float = 300.0,
         sweep_runner=None,  # noqa: ANN001
+        sweep_backend: str = "local",
+        sweep_workers: int | None = None,
     ) -> None:
         self.layout = layout
         self.store = store or ScenarioStore()
@@ -162,7 +165,10 @@ class AgentTools:
         self.max_scenarios = max_scenarios
         self.default_max_time_s = default_max_time_s
         self.scenarios_run = 0
-        self._runner = sweep_runner or run_sweep
+        # Default: real simulations spread over local worker processes.
+        self._runner = sweep_runner or partial(
+            run_sweep, backend=sweep_backend, workers=sweep_workers
+        )
         self._counter = 0
 
     # -- budget ------------------------------------------------------

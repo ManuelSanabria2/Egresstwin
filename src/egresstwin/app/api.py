@@ -15,6 +15,7 @@ import threading
 import time
 import uuid
 from collections.abc import Callable
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -373,7 +374,16 @@ def create_app(
     demo = Path(demo_dir) if demo_dir is not None else DEFAULT_DEMO
     registry = JobRegistry(runs / "app")
     layouts: dict[str, LayoutRecord] = {}
-    app = FastAPI(title="EgressTwin")
+    @asynccontextmanager
+    async def lifespan(_app: FastAPI):  # noqa: ANN202
+        yield
+        # Stopping the server drops queued sweep replicas in the
+        # local worker pool instead of waiting for them.
+        from egresstwin.parallel.sweep import shutdown_pools
+
+        shutdown_pools()
+
+    app = FastAPI(title="EgressTwin", lifespan=lifespan)
     perception = perception_runner or default_perception_runner
     bench = bench_runner or default_bench_runner
 
