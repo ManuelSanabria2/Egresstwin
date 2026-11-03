@@ -1,12 +1,13 @@
 {
   "layout_file": "layout.npz",
-  "image": "data/samples/spike_plan_synth.png",
+  "image": "data/samples/spike_plan_hand.png",
   "simulation_file": "simulation.json",
   "agent_file": "agent.json",
   "bench_file": "bench.json",
+  "source_run": "data/real_runs/spike_plan_hand",
   "perception": {
-    "source_image": "C:\\Users\\manue\\OneDrive\\Documentos\\PROYECTOS PORTAFOLIO REAL\\hackthon meta}\\egresstwin\\data\\samples\\spike_plan_synth.png",
-    "source_image_hash": "257b6754f58b3fc19791c7670877dfa61eb9c1f2125d4690c031e221ded05d95",
+    "source_image": "C:\\Users\\manue\\OneDrive\\Documentos\\PROYECTOS PORTAFOLIO REAL\\hackthon meta}\\egresstwin\\data\\samples\\spike_plan_hand.png",
+    "source_image_hash": "4dd81ae4bc9afb5dfa30f210fae3d68611a3adce7fa2487a5aa30fe339dc420f",
     "image_size_px": {
       "w": 800,
       "h": 600
@@ -18,63 +19,63 @@
     },
     "cell_size_m": 0.1,
     "grid_shape": {
-      "rows": 120,
-      "cols": 160
+      "rows": 117,
+      "cols": 157
     },
-    "meters_per_pixel": 0.02,
+    "meters_per_pixel": 0.019568345323741007,
     "scale": {
-      "meters_per_pixel": 0.02,
-      "source": "user_two_points",
+      "meters_per_pixel": 0.019568345323741007,
+      "source": "annotation",
       "assumed": false,
-      "detail": "user reference: 680.0 px = 13.6 m"
+      "detail": "annotation '13.6 m' over outer width 695 px"
     },
     "exits": [
       {
         "id": "E1",
         "label": "exit",
-        "confidence": 0.96,
+        "confidence": 0.9555,
         "source": "spark+sam+opencv_gap",
         "box_px": [
-          180,
+          150,
           452,
-          80,
-          88
+          112,
+          91
         ],
-        "width_m": 1.5399999999999996
+        "width_m": 2.289496402877698
       },
       {
         "id": "E2",
         "label": "exit",
-        "confidence": 0.96,
-        "source": "spark+sam+opencv_gap",
+        "confidence": 0.95,
+        "source": "spark+opencv_gap",
         "box_px": [
-          652,
-          420,
-          88,
+          622,
+          401,
+          90,
           60
         ],
-        "width_m": 1.1400000000000006
+        "width_m": 3.7375539568345326
       }
     ],
     "doors": [
       {
         "label": "door",
-        "confidence": 0.95,
+        "confidence": 0.9,
         "box_px": [
-          360,
-          200,
-          44,
-          60
+          358,
+          191,
+          48,
+          72
         ]
       },
       {
         "label": "door",
-        "confidence": 0.95,
+        "confidence": 0.9,
         "box_px": [
-          540,
-          316,
-          60,
-          48
+          538,
+          301,
+          63,
+          52
         ]
       }
     ],
@@ -85,40 +86,38 @@
         "count": 50,
         "polygon": [
           [
-            3.5350000000000006,
-            2.9350000000000005
+            3.49,
+            2.9050000000000002
           ],
           [
-            13.265,
-            2.9350000000000005
+            13.010000000000002,
+            2.9050000000000002
           ],
           [
-            13.265,
-            9.865000000000002
+            13.010000000000002,
+            9.695
           ],
           [
-            3.5350000000000006,
-            9.865000000000002
+            3.49,
+            9.695
           ]
         ]
       }
     ],
-    "plan_notes": "demo cache read",
-    "plan_confidence": 0.95,
+    "plan_notes": "STAIRS in southwest corner adjacent to south EXIT. Dark square near center appears to be column/obstruction. North and east exterior walls show no openings. Plan shows two interior connecting doors and two perimeter exits.",
+    "plan_confidence": 0.88,
     "warnings": [
-      "pruned 229 isolated walkable cells smaller than 1 m2 (ink specks)",
-      "passage narrower than 0.60 m detected (minimum local width about 0.20 m)"
+      "removed 467 walkable cells in passages narrower than 0.7 m (not every body fits); check doors in the overlay",
+      "6 wall gap(s) matched no Spark door and were ignored; add any real exit manually"
     ],
-    "validation_warnings": [
-      "passage narrower than 0.60 m detected (minimum local width about 0.20 m)"
-    ],
+    "validation_warnings": [],
     "costs": {
       "spark_usd": 0.0,
       "sam_usd": 0.0,
       "total_usd": 0.0,
-      "cached": false
+      "cached": true
     },
-    "walkable_cells": 11509
+    "walkable_cells": 10814
   },
-  "note": "Cached demo run. Simulations and verification are real; the perception read is seeded from the synthetic plan ground truth so the demo needs no network or API key."
+  "note": "Recorded real run: perception and agent by muse-spark-1.3 through the Meta Model API (response ids, token usage and costs are in the agent trace). Replaying it needs no network or API key; only the canvas animations are re-simulated locally."
 }

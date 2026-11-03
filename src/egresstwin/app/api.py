@@ -356,6 +356,7 @@ def default_agent_factory(layout: Layout, objective: str, on_event, runs_dir: Pa
         "status": result.status, "report": result.report,
         "verification": result.verification, "reason": result.reason,
         "total_cost_usd": result.total_cost_usd, "turns": result.turns,
+        "model": result.model,
         "scenarios_run": result.scenarios_run, "animations": animations,
         "simulator_verification": load_verification_status(),
     }

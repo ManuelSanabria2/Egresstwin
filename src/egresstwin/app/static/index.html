@@ -663,16 +663,33 @@ function addCard(event) {
   if (event.turn) title += " · turn " + event.turn;
   let body = event.summary || event.text || "";
   if (event.event === "tool_call") body = JSON.stringify(event.arguments || {});
-  if (event.cost_usd) body += "\ncost so far in turn: $" + event.cost_usd;
+  if (event.event === "turn") {
+    title += " · " + (isScripted(event.model) ? "SCRIPTED (no model call)" : (event.model || "unknown model"));
+    const u = event.usage || {};
+    body = "response " + (event.response_id || "-") +
+      (u.input_tokens !== undefined ? " · tokens in " + u.input_tokens + " / out " + u.output_tokens : "") +
+      (body ? "\n" + body : "");
+  }
+  if (event.cost_usd) body += "\ncost of this turn: $" + event.cost_usd;
   card.innerHTML = '<div class="tool">' + esc(title) + "</div>" + (body ? "<pre>" + esc(body) + "</pre>" : "");
   box.appendChild(card);
   card.scrollIntoView({block: "nearest"});
+}
+function isScripted(model) { return String(model || "").split(",").some((m) => m.trim().startsWith("scripted")); }
+function agentModel(result) {
+  if (result.model) return result.model;
+  const turns = (result.events || []).filter((e) => e.event === "turn");
+  return [...new Set(turns.map((e) => e.model || "unknown"))].join(", ");
 }
 function showReport(result) {
   const v = result.verification || {};
   const report = result.report || {};
   const cls = v.status === "VERIFIED" ? "" : v.status === "PARTIALLY_VERIFIED" ? "partial" : "failed";
   let html = '<p><span class="stamp ' + cls + '">' + esc(v.status || result.status || "NO REPORT") + "</span></p>";
+  const model = agentModel(result);
+  if (model)
+    html += '<p class="small">Agent driven by: <strong>' + esc(isScripted(model) ? "scripted" : model) + "</strong>" +
+      (isScripted(model) ? " — a scripted driver, not a model run; simulations and verifier are real." : "") + "</p>";
   const sv = result.simulator_verification;
   if (sv && sv.available)
     html += '<p class="small">Simulator verification: <strong>' + sv.passed + " of " + sv.total +
