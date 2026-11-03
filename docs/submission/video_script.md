@@ -5,8 +5,9 @@ movements slow. Voice-over text below is in English (international
 judges); bracketed notes are screen directions in Spanish and are not
 read aloud. Total spoken text is about 520 words, roughly 3.5 minutes
 at a calm 150 words per minute: speak a little faster or trim the
-0:45-1:05 segment to fit 3:00. If a live step stalls, cut to the cached demo
-("Load demo" button): it replays the same flow with no network.
+0:45-1:05 segment to fit 3:00. If a live step stalls, cut to the recorded
+run ("Replay recorded run" button): it replays the same flow with no
+network, and its banner states the model, date, turns, cost and verdict.
 
 Prepare before recording: server running with
 `.venv/Scripts/python.exe -m uvicorn egresstwin.app.api:app --app-dir src --port 8077`,
@@ -57,7 +58,7 @@ interval from eighty-nine to one hundred and two. Not a single number
 
 ### 1:05-1:45 - The agent optimizes
 
-[Screen: "Load demo"; Agent tab; scroll the trace cards: each turn
+[Screen: "Replay recorded run"; Agent tab; scroll the trace cards: each turn
 card shows muse-spark-1.3, its response id and its cost. Caption:
 "recorded real run, replayed".]
 

@@ -48,8 +48,8 @@ from the committed demo cache with `python scripts/make_screenshots.py`.
    robustness, and issues `VERIFIED`, `PARTIALLY_VERIFIED` or `FAILED`
    per claim. An honest "change nothing" report is verified as such.
 5. **Web app** (`app/`): FastAPI backend and a single-page UI (vanilla JS
-   and canvas, no build step) with a cached demo mode that needs no
-   network and no API key.
+   and canvas, no build step). It can replay a recorded real Muse Spark
+   run without network access or an API key.
 
 ## Real results
 
@@ -75,7 +75,7 @@ sweep backend.
 | Agent API cost | USD 0.1056 | USD 0.2288 |
 | Wall time | 86 min | 90 min |
 
-The web app's "Load demo" replays the `spike_plan_hand.png` run from
+The web app's "Replay recorded run" button replays the `spike_plan_hand.png` run from
 `data/demo` with its real response ids and costs, without network
 access. `python scripts/demo.py --mock` still runs the whole flow
 offline, with recorded perception fixtures and a scripted driver in
@@ -223,10 +223,12 @@ uv run python scripts/demo.py --mock
 
 Open http://127.0.0.1:8077 in a browser: upload a plan, correct the
 layout on the image, watch the evacuation, run the agent and read its
-verified report. The "Load demo" button replays a complete cached run
-from `data/demo` (perception layout, simulation, agent trace with a
-VERIFIED stamp, benchmark figures) with no network and no API key.
-Rebuild that cache with `python scripts/build_demo_cache.py`.
+verified report. The "Replay recorded run" button replays the recorded
+real run in `data/demo`: perception layout, simulation, the agent trace
+with a VERIFIED stamp, and benchmark figures. It works with no network
+and no API key. Its banner reads the model, date, turns, cost and
+verdict from the run itself. Rebuild it from another real run with
+`python scripts/build_demo_cache.py --run data/real_runs/<plan>`.
 
 ### Real API use
 

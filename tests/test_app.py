@@ -201,6 +201,7 @@ def test_demo_mode_and_bench(client: TestClient) -> None:
     assert demo.status_code == 200
     data = demo.json()
     assert data["layout"]["layout_id"] == "demo"
+    assert "run" in data["source"]  # where the replayed run is saved
     assert data["simulation"]["animation"]["frames"]
     assert data["agent"]["verification"]["status"] == "VERIFIED"
     assert client.get("/api/layouts/demo/image").status_code == 200

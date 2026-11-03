@@ -654,6 +654,8 @@ def create_app(
             "simulation": load("simulation_file"),
             "agent": agent_payload,
             "bench": load("bench_file"),
+            # Where the replayed run is saved (trace, report, costs).
+            "source": {"run": manifest.get("source_run"), "image": manifest.get("image")},
         }
 
     @app.get("/api/verification")
