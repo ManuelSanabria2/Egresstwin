@@ -61,9 +61,12 @@ digital twin:
   before the run was not relaxed.
 - Demo baseline (12 people, 3 replicas): T95 10.9 s, 95% CI
   8.4-13.4.
-- Performance on a 4-core Ryzen, no GPU: 30 people in 1.75 s,
-  300 in 36.26 s; a 4-scenario x 3-replica sweep in 34.82 s
-  (20.7 scenarios/min).
+- Parallel sweep on a 4-core / 8-thread Ryzen 3 3300X, no GPU:
+  8 scenarios x 5 replicas with 200 people took 381.8 s on 1 worker
+  process and 100.9 s on 4 (speedup 3.78, efficiency 0.95). On 8
+  processes it took 87.2 s (speedup 4.38): 8 processes share the 4
+  physical cores through SMT. Results were identical at every
+  process count.
 - 75 tests pass, `ruff` clean. Total API spend for the whole
   project: about USD 0.08, behind a hard budget guard.
 - Runs with no network and no API key: `python scripts/demo.py --mock`,

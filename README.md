@@ -93,20 +93,42 @@ criterion fixed before the run was not relaxed. Full report:
 ![V1 corridor speed](docs/figures/verification/v1_corridor_speed.png)
 ![V4 bottleneck](docs/figures/verification/v4_bottleneck.png)
 
-### Parallel / sweep performance
+### Sweep parallelism (measured)
 
-Measured on the development machine (Ryzen 3 3300X, 4 cores / 8 threads,
-16 GB RAM, no CUDA); raw data in `data/demo/bench.json`:
+The scenario sweep has two backends: `serial` (one process) and `local`
+(a `ProcessPoolExecutor` on one machine; each worker process is started
+with `NUMBA_NUM_THREADS=1` so processes do not oversubscribe cores). The
+work unit is one (scenario, replica) pair. The local backend returns
+exactly the same records as the serial one for the same seed
+(`tests/test_sweep.py`). The agent uses `local` by default. There is no
+MPI or multi-machine backend, and a single simulation is not
+parallelised: the Numba kernel is serial.
 
-| Workload | Wall time |
-| --- | --- |
-| 30 people, single run | 1.75 s |
-| 100 people, single run | 4.45 s |
-| 300 people, single run | 36.26 s |
-| Sweep: 4 scenarios x 3 replicas | 34.82 s (20.7 scenarios/min) |
+Measured with `python scripts/bench_sweep.py` on the development machine
+(AMD Ryzen 3 3300X, 4 cores / 8 threads, 16 GB RAM, Windows 11, Python
+3.12). The set is 8 scenarios x 5 replicas = 40 runs, 200 people, in a
+20 x 12 m room. Each process count starts a cold pool, so wall time
+includes process start-up (1.6-2.4 s). Raw data is in
+`data/demo/bench.json` (`sweep_parallel`):
 
-![Scaling](data/demo/bench_scaling.png)
-![Throughput](data/demo/bench_throughput.png)
+| Worker processes | Wall time | Speedup | Efficiency | Runs/min |
+| --- | --- | --- | --- | --- |
+| 1 | 381.8 s | 1.00 | 1.00 | 6.3 |
+| 2 | 204.3 s | 1.87 | 0.93 | 11.8 |
+| 4 | 100.9 s | 3.78 | 0.95 | 23.8 |
+| 8 | 87.2 s | 4.38 | 0.55 | 27.5 |
+
+All four process counts produced identical results. Speedup is close to
+linear up to the 4 physical cores. Going from 4 to 8 processes runs on
+SMT threads of the same 4 cores and adds only about 16%.
+
+![Parallel sweep speedup](data/demo/bench_parallel.png)
+
+Earlier single-process measurements from the same machine, in a small
+12 x 6 m bench room (`data/demo/bench.json`, `scaling` and
+`throughput`): one run with 30 people took 1.75 s, with 100 people
+4.45 s, and with 300 people 36.26 s. A serial sweep of 4 scenarios x 3
+replicas (12 runs, 40 people) took 34.82 s, or 20.7 runs/min.
 
 ### Tests and API cost
 
@@ -206,7 +228,8 @@ Integration is semi-implicit Euler at dt = 0.01 s with 5 force
 substeps per step (the stiff contact spring is unstable at 0.01 s in
 dense overlap) and a per-agent speed cap of 1.3 x desired speed.
 Same seed, same result: the kernel is serial and deterministic;
-parallelism lives in the scenario sweep (scenarios x replicas).
+parallelism lives only in the scenario sweep, which spreads
+(scenario, replica) pairs over local worker processes.
 
 ## Repository map
 
@@ -217,7 +240,7 @@ parallelism lives in the scenario sweep (scenarios x replicas).
 | `src/egresstwin/layout/` | Layout model, validation, manual edits |
 | `src/egresstwin/sim/` | Floor field, wall field, social-force kernel, engine, timed events, metrics |
 | `src/egresstwin/scenarios/` | Modification specs (widen/add exit, remove obstacle) and feasibility |
-| `src/egresstwin/parallel/` | Scenario sweep and result store with confidence intervals |
+| `src/egresstwin/parallel/` | Scenario sweep (serial and local process-pool backends) and result store with confidence intervals |
 | `src/egresstwin/agent/` | Tool-calling optimizer loop, deterministic verifier, trace, report |
 | `src/egresstwin/validation/` | RiMEA/Weidmann verification cases |
 | `src/egresstwin/app/` | FastAPI backend and single-page UI |
@@ -235,8 +258,9 @@ parallelism lives in the scenario sweep (scenarios x replicas).
 - At crush densities the simulated door flow runs above handbook
   values with the Helbing parameters; this is the documented cause
   of the V6 verification failure and is not hidden.
-- The sweep backend is serial/multiprocessing; `mpi4py` is an
-  optional extra that needs MS-MPI on Windows.
+- Parallelism is limited to one machine: the `local` sweep backend
+  spreads runs over worker processes. There is no MPI or cluster
+  backend, and one simulation always runs on one core.
 - This tool supports decisions; it is not a safety certification.
 
 ## License

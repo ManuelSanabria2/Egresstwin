@@ -125,6 +125,7 @@ license): `openai` SDK (client for the Meta Model API), `pydantic`,
 `pydantic-settings`, `numpy`, `numba`, `scipy`,
 `opencv-python-headless`, `pillow`, `fastapi`, `uvicorn`,
 `sse-starlette`, `python-multipart`, `matplotlib`, and
-`meta-sam-parser` (official SAM parser for Python). `mpi4py` is an
-optional dependency (`parallel` extra) and needs MS-MPI on Windows.
+`meta-sam-parser` (official SAM parser for Python). Sweep parallelism
+uses only the standard library (`concurrent.futures`); there is no MPI
+dependency.
 Dev tools: `pytest`, `ruff`, `httpx`.
